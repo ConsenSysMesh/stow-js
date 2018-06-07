@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   entry: path.join(__dirname, '/lib/index.js'),
   devtool: 'source-map',
+  performance: { hints: false },
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'linnia.js',
