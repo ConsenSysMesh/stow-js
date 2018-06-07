@@ -13,3 +13,16 @@ let linnia = new Linnia(web3)
 // get the deployed contracts
 let { hub, users, records, permissions } = await linnia.getContractInstances()
 ```
+
+# Building
+## Building for Node.js
+```
+npm run build:es5
+```
+The compiled library is generated in `lib`, which you can require by typing `require('./lib')`
+
+## Building for browser
+```
+npm run build:browser
+```
+The compiled browser library is generated at `dist/linnia.js`.
