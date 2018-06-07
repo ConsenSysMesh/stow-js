@@ -1,0 +1,48 @@
+{
+  "name": "linnia",
+  "version": "0.1.0",
+  "description": "Linnia JavaScript API",
+  "main": "lib/index.js",
+  "browser": "dist/linnia.js",
+  "scripts": {
+    "build:es5": "babel src -d lib -s",
+    "build:browser": "webpack --mode=production",
+    "build": "npm run build:es5 && npm run build:browser",
+    "lint": "eslint src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConsenSys/linnia-js.git"
+  },
+  "author": "Wenchao Wang <wenchao.wang@consensys.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ConsenSys/linnia-js/issues"
+  },
+  "homepage": "https://github.com/ConsenSys/linnia-js#readme",
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "eth-ecies": "^1.0.3",
+    "truffle-contract": "^3.0.5",
+    "web3": "^0.20.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "chai": "^4.1.2",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.8.2",
+    "mocha": "^5.2.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4"
+  }
+}
