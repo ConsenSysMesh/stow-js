@@ -5,7 +5,7 @@ import LinniaUsers from './contracts/LinniaUsers';
 import LinniaRecords from './contracts/LinniaRecords';
 import LinniaPermissions from './contracts/LinniaPermissions';
 
-import deploy from './deploy';
+import _deploy from './deploy';
 
 /**
  * Optional constructor params
@@ -84,7 +84,7 @@ export default class Linnia {
    *  contracts
    */
   static async deploy(web3, ipfs, opt) {
-    const deployed = await deploy(web3, opt);
+    const deployed = await _deploy(web3, opt);
     return new Linnia(web3, ipfs, {
       hubAddress: deployed.hubInstance.address,
     });
