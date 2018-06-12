@@ -65,10 +65,10 @@ export default class Linnia {
     const recordsAddress = await hubInstance.recordsContract();
     const permissionsAddress = await hubInstance.permissionsContract();
     return {
-      hubInstance,
-      usersInstance: await this._users.at(usersAddress),
-      recordsInstance: await this._records.at(recordsAddress),
-      permissionsInstance: await this._permissions.at(permissionsAddress),
+      hub: hubInstance,
+      users: await this._users.at(usersAddress),
+      records: await this._records.at(recordsAddress),
+      permissions: await this._permissions.at(permissionsAddress),
     };
   }
 
@@ -79,11 +79,11 @@ export default class Linnia {
    *  network you want to deploy the contracts on
    * @param {Object} ipfs An instantiated ipfs API object, used by the created
    *  Linnia API
-   * @param {Object} opt Optional web3 transaction object
+   * @param {?Object} opt Optional web3 transaction object
    * @returns {Promise<Linnia>} A Linnia API object using the deployed
    *  contracts
    */
-  static async deploy(web3, ipfs, opt) {
+  static async deploy(web3, ipfs, opt = {}) {
     const deployed = await _deploy(web3, opt);
     return new Linnia(web3, ipfs, {
       hubAddress: deployed.hubInstance.address,
