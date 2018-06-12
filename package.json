@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "testrpc": "ganache-cli -p 7545 -i 5777",
     "test": "mocha --require babel-register",
-    "prepublish": "npm run build"
+    "prepare": "npm run build:es5"
   },
   "repository": {
     "type": "git",
