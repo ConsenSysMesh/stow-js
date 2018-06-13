@@ -5,38 +5,21 @@ import LinniaUsers from './contracts/LinniaUsers';
 import LinniaRecords from './contracts/LinniaRecords';
 import LinniaPermissions from './contracts/LinniaPermissions';
 
-import _deploy from './deploy';
-
-/**
- * Optional constructor params
- * @typedef {Object} LinniaConstructorOpts
- * @property {?string} hubAddress Hub contract address, hex formatted
- */
-
-/**
- * Linnia contract instances
- * @typedef {Object} LinniaContractInstances
- * @property {Object} hubInstance
- * @property {Object} usersInstance
- * @property {Object} recordsInstance
- * @property {Object} permissionsInstance
- */
+import deployFunctions from './deploy';
+import recordsFunctions from './records';
 
 /**
  * Linnia API object
- * @typedef {Object} Linnia
- * @property {Object} web3
- * @property {Object} ipfs
  */
-export default class Linnia {
+class Linnia {
   /**
    * Create a new Linnia API object
    * @param {Object} web3 An instantiated web3 API object
    * @param {Object} ipfs An instantiated ipfs API object
-   * @param {?LinniaConstructorOpts} opts Optional constructor options
+   * @param {?{?hubAddress: string}} opt Optional constructor options
    * @returns {Linnia} Created Linnia API object
    */
-  constructor(web3, ipfs, opts = {}) {
+  constructor(web3, ipfs, opt = {}) {
     this.web3 = web3;
     this.ipfs = ipfs;
     // truffle contracts
@@ -49,15 +32,15 @@ export default class Linnia {
     this._records.setProvider(web3.currentProvider);
     this._permissions.setProvider(web3.currentProvider);
     // set hub address
-    if (opts.hubAddress) {
+    if (opt.hubAddress) {
       // using user defined address
-      this._hubAddress = opts.hubAddress;
+      this._hubAddress = opt.hubAddress;
     }
   }
 
   /**
    * Get Linnia contract instances, wrapped in truffle contract
-   * @returns {Promise<LinniaContractInstances>}
+   * @returns {Promise<{hub: Object, users: Object, records: Object, permission: Object}>}
    */
   async getContractInstances() {
     const hubInstance = await this._getHubInstance();
@@ -73,6 +56,15 @@ export default class Linnia {
   }
 
   /**
+   * Get a record from Linnia by data hash
+   * @param {string} dataHash hex-encoded data hash, 0x prefixed
+   */
+  async getRecord(dataHash) {
+    const { records } = await this.getContractInstances();
+    return recordsFunctions.getRecord(records, dataHash);
+  }
+
+  /**
    * Deploy Linnia contracts, and construct the Linnia API that uses the newly
    *  deployed contracts.
    * @param {Object} web3 An instantiated web3 API object, configured to the
@@ -80,11 +72,10 @@ export default class Linnia {
    * @param {Object} ipfs An instantiated ipfs API object, used by the created
    *  Linnia API
    * @param {?Object} opt Optional web3 transaction object
-   * @returns {Promise<Linnia>} A Linnia API object using the deployed
-   *  contracts
+   * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
    */
   static async deploy(web3, ipfs, opt = {}) {
-    const deployed = await _deploy(web3, opt);
+    const deployed = await deployFunctions(web3, opt);
     return new Linnia(web3, ipfs, {
       hubAddress: deployed.hubInstance.address,
     });
@@ -99,3 +90,5 @@ export default class Linnia {
     return this._hub.deployed();
   }
 }
+
+export default Linnia;
