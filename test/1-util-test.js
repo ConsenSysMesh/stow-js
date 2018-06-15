@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import encoding from '../src/encoding';
+import { encoding } from '../src';
 
 // real ipfs hashes
 const ipfsHash = 'QmUMqi1rr4Ad1eZ3ctsRUEmqK2U3CyZqpetUe51LB9GiAM';
