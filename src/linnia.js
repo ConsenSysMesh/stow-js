@@ -5,8 +5,9 @@ import LinniaUsers from './contracts/LinniaUsers';
 import LinniaRecords from './contracts/LinniaRecords';
 import LinniaPermissions from './contracts/LinniaPermissions';
 
-import deployFunctions from './deploy';
-import recordsFunctions from './records';
+import _deploy from './deploy';
+import _recordsFunctions from './records';
+import _encoding from './encoding';
 
 /**
  * Linnia API object
@@ -61,7 +62,16 @@ class Linnia {
    */
   async getRecord(dataHash) {
     const { records } = await this.getContractInstances();
-    return recordsFunctions.getRecord(records, dataHash);
+    return _recordsFunctions.getRecord(records, dataHash);
+  }
+
+  async _getHubInstance() {
+    // get hub contract instance
+    // look up address either from user defined address or artifact
+    if (this._hubAddress) {
+      return this._hub.at(this._hubAddress);
+    }
+    return this._hub.deployed();
   }
 
   /**
@@ -75,20 +85,13 @@ class Linnia {
    * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
    */
   static async deploy(web3, ipfs, opt = {}) {
-    const deployed = await deployFunctions(web3, opt);
+    const deployed = await _deploy(web3, opt);
     return new Linnia(web3, ipfs, {
       hubAddress: deployed.hubInstance.address,
     });
   }
-
-  async _getHubInstance() {
-    // get hub contract instance
-    // look up address either from user defined address or artifact
-    if (this._hubAddress) {
-      return this._hub.at(this._hubAddress);
-    }
-    return this._hub.deployed();
-  }
 }
+
+Linnia.encoding = _encoding;
 
 export default Linnia;
