@@ -27,10 +27,12 @@ describe('Linnia-records', () => {
     await contracts.users.setProvenance(provider, 1, { from: admin });
     // append a file
     const tx = await contracts.records.addRecordByProvider(
-      testDataHash, patient, testMetaData, testDataUri, {
+      testDataHash, patient, testMetaData,
+      testDataUri, {
         from: provider,
         gas: 500000,
-      });
+      },
+    );
     recordAddTime = web3.eth.getBlock(tx.receipt.blockNumber).timestamp;
   });
   describe('view record', () => {

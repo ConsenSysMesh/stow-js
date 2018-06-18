@@ -7,6 +7,7 @@ import LinniaPermissions from './contracts/LinniaPermissions';
 
 import _deploy from './deploy';
 import _recordsFunctions from './records';
+import _permissionsFunctions from './permissions';
 import _encoding from './encoding';
 
 /**
@@ -63,6 +64,16 @@ class Linnia {
   async getRecord(dataHash) {
     const { records } = await this.getContractInstances();
     return _recordsFunctions.getRecord(records, dataHash);
+  }
+
+  /**
+   * Get permission information of a record
+   * @param {string} dataHash hex-encoded data hash, 0x prefixed
+   * @param {string} viewerAddress hex-encoded ethereum address
+   */
+  async getPermission(dataHash, viewerAddress) {
+    const { permissions } = await this.getContractInstances();
+    return _permissionsFunctions.getPermission(permissions, dataHash, viewerAddress);
   }
 
   async _getHubInstance() {
