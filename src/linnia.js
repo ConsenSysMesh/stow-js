@@ -42,7 +42,7 @@ class Linnia {
 
   /**
    * Get Linnia contract instances, wrapped in truffle contract
-   * @returns {Promise<{hub: Object, users: Object, records: Object, permission: Object}>}
+   * @returns {Promise<{hub: Object, users: Object, records: Object, permissions: Object}>}
    */
   async getContractInstances() {
     const hubInstance = await this._getHubInstance();
