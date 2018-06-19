@@ -32,7 +32,7 @@ Deploys Linnia contracts onto the network defined in `web3`.
 ### Parameters
 1. `Object` - An instantiated web3 API object
 1. `Object` - An instantiated IPFS API object
-1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction)
+1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction). If not specified, defaults will be used in the transactions that deploy the contracts.
 
 ### Returns
 `Promise<Linnia>` - A promise when resolved returns a Linnia API object, that uses the deployed contract instances.
@@ -56,7 +56,7 @@ Linnia.deploy(web3, ipfs, {
 ```javascript
 linnia.getContractInstances()
 ```
-Gets deployed Linnia contract instances, wrapped in truffle contract.
+Gets Linnia contract instances, wrapped in truffle contract.
 
 ### Returns
 `Promise<Object>` - A promise when resolved returns an object with truffle Contract instances.
