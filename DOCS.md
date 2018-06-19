@@ -27,7 +27,7 @@ const linnia = new Linnia(web3, ipfs)
 ```javascript
 Linnia.deploy(web3, ipfs, [, options])
 ```
-Deploys Linnia contracts onto the network defined in `web3`.
+Deploys Linnia contracts onto the network defined in `web3`. This allows you to use your own instances of Linnia contracts with Linnia JS. However record querying functionalities are not currently available for self-deployed instances.
 
 ### Parameters
 1. `Object` - An instantiated web3 API object
