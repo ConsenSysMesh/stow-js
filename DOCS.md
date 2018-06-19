@@ -10,7 +10,7 @@ new Linnia(web3, ipfs [, options])
 ### Parameters
 1. `Object` - An instantiated web3 API object
 1. `Object` - An instantiated IPFS API object
-1. `Object` - Optional constructor params
+1. `Object` - (Optional) Constructor options
   - `hubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
 
 ### Example
@@ -32,7 +32,7 @@ Deploys Linnia contracts onto the network defined in `web3`.
 ### Parameters
 1. `Object` - An instantiated web3 API object
 1. `Object` - An instantiated IPFS API object
-1. `Object` - A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction)
+1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction)
 
 ### Returns
 `Promise<Linnia>` - A promise when resolved returns a Linnia API object, that uses the deployed contract instances.
@@ -59,7 +59,11 @@ linnia.getContractInstances()
 Gets deployed Linnia contract instances, wrapped in truffle contract.
 
 ### Returns
-`Promise<{hub: Object, users: Object, records: Object, permissions: Object}>` - A promise when resolved returns an object with Truffle Contract instances
+`Promise<Object>` - A promise when resolved returns an object with truffle Contract instances.
+- `hub`: `Object` - LinniaHub truffle contract instance
+- `users`: `Object` - LinniaUsers truffle contract instance
+- `records`: `Object` - LinniaRecords truffle contract instance
+- `permissions`: `Object` - LinniaPermissions truffle contract instance
 
 ### Example
 ```javascript
