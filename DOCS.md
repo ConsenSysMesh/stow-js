@@ -93,6 +93,19 @@ Gets a record from Linnia by data hash
 - `dataUri`: `String` - URI of the data
 - `timestamp`: `Date` - The timestamp when the record is added to Linnia
 
+## linnia.getAttestation
+```javascript
+linnia.getAttestation(dataHash, attestatorAddress)
+```
+Gets the attestation of the data
+
+### Parameters
+1. `String` - The data hash, hex-encoded, 0x prefixed
+1. `String` - The address of the attestator
+
+### Returns
+`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attestator.
+
 ## linnia.getPermission
 ```javascript
 Linnia.getPermission(dataHash, viewerAddress)

@@ -61,6 +61,7 @@ class Linnia {
   /**
    * Get a record from Linnia by data hash
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
+   * @returns {Object}
    */
   async getRecord(dataHash) {
     const { records } = await this.getContractInstances();
@@ -68,9 +69,20 @@ class Linnia {
   }
 
   /**
+   * Get record attestation from Linnia
+   * @param {String} dataHash hex-encoded data hash, 0x prefixed
+   * @returns {Boolean} True if attested by specified user
+   */
+  async getAttestation(dataHash, attestatorAddress) {
+    const { records } = await this.getContractInstances();
+    return _recordsFunctions.getAttestation(records, dataHash, attestatorAddress);
+  }
+
+  /**
    * Get permission information of a record
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
    * @param {String} viewerAddress hex-encoded ethereum address
+   * @returns {Object}
    */
   async getPermission(dataHash, viewerAddress) {
     const { permissions } = await this.getContractInstances();

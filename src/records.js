@@ -10,6 +10,10 @@ const getRecord = async (contract, dataHash) => {
   };
 };
 
+const getAttestation = (contract, dataHash, attestator) =>
+  contract.sigExists.call(dataHash, attestator);
+
 export default {
   getRecord,
+  getAttestation,
 };
