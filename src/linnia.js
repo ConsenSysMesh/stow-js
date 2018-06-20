@@ -9,6 +9,7 @@ import _deploy from './deploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _encoding from './encoding';
+import _util from './util';
 
 /**
  * Linnia API object
@@ -18,7 +19,7 @@ class Linnia {
    * Create a new Linnia API object
    * @param {Object} web3 An instantiated web3 API object
    * @param {Object} ipfs An instantiated ipfs API object
-   * @param {?{?hubAddress: string}} opt Optional constructor options
+   * @param {?{?hubAddress: String}} opt Optional constructor options
    * @returns {Linnia} Created Linnia API object
    */
   constructor(web3, ipfs, opt = {}) {
@@ -59,7 +60,7 @@ class Linnia {
 
   /**
    * Get a record from Linnia by data hash
-   * @param {string} dataHash hex-encoded data hash, 0x prefixed
+   * @param {String} dataHash hex-encoded data hash, 0x prefixed
    */
   async getRecord(dataHash) {
     const { records } = await this.getContractInstances();
@@ -68,8 +69,8 @@ class Linnia {
 
   /**
    * Get permission information of a record
-   * @param {string} dataHash hex-encoded data hash, 0x prefixed
-   * @param {string} viewerAddress hex-encoded ethereum address
+   * @param {String} dataHash hex-encoded data hash, 0x prefixed
+   * @param {String} viewerAddress hex-encoded ethereum address
    */
   async getPermission(dataHash, viewerAddress) {
     const { permissions } = await this.getContractInstances();
@@ -104,5 +105,6 @@ class Linnia {
 }
 
 Linnia.encoding = _encoding;
+Linnia.util = _util;
 
 export default Linnia;

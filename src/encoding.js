@@ -1,6 +1,9 @@
 import bs58 from 'bs58';
 import ethjsUtil from 'ethjs-util';
 
+// XXX
+// Remove from lib once URI schema is changed
+
 /**
  * Convert a hex-encoded sha2-256 hash to IPFS hash
  * @param {string} hash hex-encoded sha2-256 hash

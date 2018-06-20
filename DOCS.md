@@ -107,3 +107,50 @@ Gets the permission information of a record
 `Promise<Object>` - A promise when resolved returns a Linnia Permission object.
 - `canAccess`: `bool` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
+
+---
+# Utility functions
+
+## Linnia.util.encrypt
+```javascript
+Linnia.util.encrypt(pubKeyTo, plaintext [, options])
+```
+Encrypts a message using ECIES.
+
+### Parameters
+1. `Buffer|String` - The public key to encrypt the data to (64 bytes)
+1. `Buffer|String` - The plaintext data
+1. `Object` - (Optional) Encryption options
+- `iv`: `Buffer` - (Optional) Initial vector used in AES-256-CBC (16 bytes)
+- `ephemPrivKey`: `Buffer` - (Optional) Ephemeral private key in Diffie-Hellman
+
+### Returns
+`Buffer` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
+
+### Example
+```javascript
+let pubKey = '0xb1f26f98d374540eac3d31208f13a3935318e228207084c9ee32d741ff1ad2341af4ac9658aba4a254bf1dc6451b3c08524febba5273bec227c73e25cd376387'
+let encrypted = Linnia.util.encrypt(pubKey, 'foo')
+console.log(encrypted.toString('hex'))
+```
+
+## Linnia.util.decrypt
+```javascript
+Linnia.util.decrypt(privKey, ciphertext)
+```
+Decrypts a message ECIES encrypted by `Linnia.util.encrypt`.
+
+### Parameters
+1. `Buffer|String` - The private key to decrypt the data (32 bytes)
+1. `Buffer|String` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
+
+### Returns
+`Buffer` - The decrypted plaintext
+
+### Example
+```javascript
+let encrypted = '0xbf18f1b6eb4b748b18cc3bd4a8d47f5f045766a445431dd918a43d6ca7871bdf7acd2214dce02a508a97f173f0697e781cf3cbf1b2d6fc0dcce940cdcef0aab443469773eb672b04117d4cb36336891aa98cd21f07d994b756f456f52db2b26a316fdbaaf87f52a638e0ad4d4280b63ec6447befdc97ecf07117bfc9eb8f8a073f';
+let privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b'
+let plaintext = Linnia.util.decrypt(privKey, encrypted).toString()
+// plaintext is 'foo'
+```
