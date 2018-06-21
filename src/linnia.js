@@ -5,6 +5,7 @@ import LinniaUsers from './contracts/LinniaUsers';
 import LinniaRecords from './contracts/LinniaRecords';
 import LinniaPermissions from './contracts/LinniaPermissions';
 
+import Record from './record';
 import _deploy from './deploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
@@ -61,16 +62,28 @@ class Linnia {
   /**
    * Get a record from Linnia by data hash
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
+   * @returns {Promise<Record>}
    */
   async getRecord(dataHash) {
+    const { records, permissions } = await this.getContractInstances();
+    return Record.fromContract(records, permissions, dataHash);
+  }
+
+  /**
+    * Get record attestation from Linnia
+    * @param {String} dataHash hex-encoded data hash, 0x prefixed
+    * @returns {Promise<Boolean>} True if attested by specified user
+   */
+  async getAttestation(dataHash, attestatorAddress) {
     const { records } = await this.getContractInstances();
-    return _recordsFunctions.getRecord(records, dataHash);
+    return _recordsFunctions.getAttestation(records, dataHash, attestatorAddress);
   }
 
   /**
    * Get permission information of a record
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
    * @param {String} viewerAddress hex-encoded ethereum address
+   * @returns {Promise<{canAccess: Boolean, dataUri: String}>}
    */
   async getPermission(dataHash, viewerAddress) {
     const { permissions } = await this.getContractInstances();

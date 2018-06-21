@@ -35,7 +35,7 @@ describe('Linnia-records', () => {
     );
     recordAddTime = web3.eth.getBlock(tx.receipt.blockNumber).timestamp;
   });
-  describe('view record', () => {
+  describe('get record', () => {
     it('should return the formatted data record', async () => {
       const record = await linnia.getRecord(testDataHash);
       assert.equal(record.owner, patient);
@@ -45,6 +45,16 @@ describe('Linnia-records', () => {
       assert.equal(record.dataUri, testDataUri);
       assert.typeOf(record.timestamp, 'Date');
       assert.equal(record.timestamp.getTime() / 1000, recordAddTime);
+    });
+  });
+  describe('get attestation', () => {
+    it('should return true if attested by specified user', async () => {
+      const att = await linnia.getAttestation(testDataHash, provider);
+      assert.isTrue(att);
+    });
+    it('should return false if not attested by specified user', async () => {
+      const att = await linnia.getAttestation(testDataHash, patient);
+      assert.isFalse(att);
     });
   });
 });
