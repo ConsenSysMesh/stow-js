@@ -85,7 +85,7 @@ Gets a record from Linnia by data hash
 1. `String` - The data hash, hex-encoded, 0x prefixed
 
 ### Returns
-`Promise<Object>` - A promise when resolved returns a Linnia Record object.
+`Promise<Object>` - A promise when resolved returns an instance of Record class.
 - `owner`: `String` - Hex-encoded record owner address
 - `metadataHash`: `String` - Hex-encoded metadata hash
 - `sigCount`: `Object` - A bignumber object, the signature count
@@ -118,7 +118,60 @@ Gets the permission information of a record
 
 ### Returns
 `Promise<Object>` - A promise when resolved returns a Linnia Permission object.
-- `canAccess`: `bool` - True if the specified viewer is allowed to access the record
+- `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
+- `dataUri`: `String` - The data URI of the shared record
+
+---
+# Record class
+An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.
+
+## Members
+- `owner`: `String` - Hex-encoded record owner address
+- `metadataHash`: `String` - Hex-encoded metadata hash
+- `sigCount`: `Object` - A bignumber object, the signature count
+- `irisScore`: `Object` - A bignumber object, the IRIS score
+- `dataUri`: `String` - URI of the data
+- `timestamp`: `Date` - The timestamp when the record is added to Linnia
+
+## record.getAttestation
+```javascript
+record.getAttestation(attestatorAddress)
+```
+Gets the attestation of the data
+
+### Parameters
+1. `String` - The address of the attestator
+
+### Returns
+`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attestator.
+
+### Example
+```javascript
+let dataHash = '0x174e6ab7cf9a53497cff763d0743258f5d5014cb20ae08c7ec22bf50f5d5e326'
+let attestator = '0xac07bea81fe26b379de0e4327f1a6ecd0875edfc'
+linnia.getRecord(dataHash)
+  .then((record) => record.getAttestation(attestator))
+  .then((attested) => {
+    if (attested) {
+      // ...
+    } else {
+      // ...
+    }
+  })
+```
+
+## record.getPermission
+```javascript
+record.getPermission(viewerAddress)
+```
+Gets the permission information of a record
+
+### Parameters
+1. `String` - The address of the data viewer
+
+### Returns
+`Promise<Object>` - A promise when resolved returns a Linnia Permission object.
+- `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
 
 ---
