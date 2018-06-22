@@ -68,10 +68,10 @@ Gets Linnia contract instances, wrapped in truffle contract.
 ### Example
 ```javascript
 linnia.getContractInstances().then((instances) => {
-  let hub = instances.hub;
-  let users = instances.users;
-  let records = instances.records;
-  let permissions = instances.permissions;
+  let hub = instances.hub
+  let users = instances.users
+  let records = instances.records
+  let permissions = instances.permissions
 })
 ```
 
@@ -174,6 +174,46 @@ Gets the permission information of a record
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
 
+## record.decryptData
+```javascript
+record.decryptData(privKey, uriResolver)
+```
+Gets the plaintext data of the record
+
+### Parameters
+1. `Buffer|String` - The private key to decrypt the data
+1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the hex data URI. The function should return the encrypted data in a buffer.
+
+### Returns
+`Promise<Buffer>` - The plaintext data
+
+### Example
+```javascript
+let privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b'
+linnia.decryptData(privKey, (dataUri) => {
+  // assume data URI is HTTP URL here
+  return fetch(dataUri).then((res) => {
+    return res.arrayBuffer()
+  })
+}).then((plainText) => {
+  console.log(plainText.toString())
+})
+```
+
+## record.decryptPermissioned
+```javascript
+record.decryptPerissioned(viewerAddress, privKey, uriResolver)
+```
+Gets the plaintext data of a permissioned copy of the record
+
+### Parameters
+1. `String` - The address of viewer
+1. `Buffer|String` - The private key to decrypt the data of the permissioned copy. Note that this is the key controlled by the viewer, not the record owner.
+1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the hex data URI. The function should return the encrypted data in a buffer.
+
+### Returns
+`Promise<Buffer>` - The plaintext data
+
 ---
 # Utility functions
 
@@ -215,7 +255,7 @@ Decrypts a message ECIES encrypted by `Linnia.util.encrypt`.
 
 ### Example
 ```javascript
-let encrypted = '0xbf18f1b6eb4b748b18cc3bd4a8d47f5f045766a445431dd918a43d6ca7871bdf7acd2214dce02a508a97f173f0697e781cf3cbf1b2d6fc0dcce940cdcef0aab443469773eb672b04117d4cb36336891aa98cd21f07d994b756f456f52db2b26a316fdbaaf87f52a638e0ad4d4280b63ec6447befdc97ecf07117bfc9eb8f8a073f';
+let encrypted = '0xbf18f1b6eb4b748b18cc3bd4a8d47f5f045766a445431dd918a43d6ca7871bdf7acd2214dce02a508a97f173f0697e781cf3cbf1b2d6fc0dcce940cdcef0aab443469773eb672b04117d4cb36336891aa98cd21f07d994b756f456f52db2b26a316fdbaaf87f52a638e0ad4d4280b63ec6447befdc97ecf07117bfc9eb8f8a073f'
 let privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b'
 let plaintext = Linnia.util.decrypt(privKey, encrypted).toString()
 // plaintext is 'foo'
