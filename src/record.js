@@ -1,5 +1,7 @@
+import eutil from 'ethereumjs-util';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
+import _util from './util';
 
 class Record {
   constructor(
@@ -32,6 +34,52 @@ class Record {
    */
   async getPermission(viewer) {
     return _permissionsFunctions.getPermission(this.contracts.permissions, this.dataHash, viewer);
+  }
+
+  /**
+   * Gets the plaintext data of this record
+   * @param {Buffer|String} privKey Private key to decrypt the data
+   * @param {Function} uriResolver Async function that takes a data URI string and returns the data
+   * @returns {Buffer} Plaintext data
+   */
+  async decryptData(privKey, uriResolver) {
+    const ciphertext = await uriResolver(this.dataUri);
+    const plaintext = _util.decrypt(privKey, ciphertext);
+    // check hash
+    if (!this.verifyData(plaintext)) {
+      throw new Error('plaintext data hash mismatch');
+    }
+    return plaintext;
+  }
+
+  /**
+   * Gets the plaintext data of a permissioned copy of the record
+   * @param {String} viewer Address of the viewer
+   * @param {Buffer|String} privKey Private key to decrypt the data
+   * @param {Function} uriResolver Async function that takes a data URI string and returns the data
+   * @returns {Buffer} Plaintext data
+   */
+  async decryptPermissioned(viewer, privKey, uriResolver) {
+    // get the permissioned data URI
+    const perm = await this.getPermission(viewer);
+    if (!perm.canAccess) {
+      throw new Error('viewer has no permission to view the data');
+    }
+    const ciphertext = await uriResolver(perm.dataUri);
+    const plaintext = _util.decrypt(privKey, ciphertext);
+    if (!this.verifyData(plaintext)) {
+      throw new Error('plaintext data hash mismatch');
+    }
+    return plaintext;
+  }
+
+  /**
+   * Verifies data against the data hash in Linnia
+   * @param {Buffer|String} plaintext Plaintext data to be verified
+   * @returns {Boolean} True if data hash matches
+   */
+  verifyData(plaintext) {
+    return eutil.bufferToHex(eutil.keccak256(plaintext)) === this.dataHash;
   }
 
   static async fromContract(recordsContract, permissionsContract, dataHash) {
