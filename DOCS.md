@@ -200,6 +200,18 @@ linnia.decryptData(privKey, (dataUri) => {
 })
 ```
 
+## record.verifyData
+```javascript
+record.verifyData(plaintext)
+```
+Verifies the hash of the data against the one in Linnia.
+
+### Parameters
+1. `Buffer|String` - The plaintext data to be verified
+
+### Returns
+`Boolean` - True if hash matches
+
 ## record.decryptPermissioned
 ```javascript
 record.decryptPerissioned(viewerAddress, privKey, uriResolver)

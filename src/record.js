@@ -46,7 +46,7 @@ class Record {
     const ciphertext = await uriResolver(this.dataUri);
     const plaintext = _util.decrypt(privKey, ciphertext);
     // check hash
-    if (eutil.bufferToHex(eutil.keccak256(plaintext)) !== this.dataHash) {
+    if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
     }
     return plaintext;
@@ -67,10 +67,19 @@ class Record {
     }
     const ciphertext = await uriResolver(perm.dataUri);
     const plaintext = _util.decrypt(privKey, ciphertext);
-    if (eutil.bufferToHex(eutil.keccak256(plaintext)) !== this.dataHash) {
+    if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
     }
     return plaintext;
+  }
+
+  /**
+   * Verifies data against the data hash in Linnia
+   * @param {Buffer|String} plaintext Plaintext data to be verified
+   * @returns {Boolean} True if data hash matches
+   */
+  verifyData(plaintext) {
+    return eutil.bufferToHex(eutil.keccak256(plaintext)) === this.dataHash;
   }
 
   static async fromContract(recordsContract, permissionsContract, dataHash) {

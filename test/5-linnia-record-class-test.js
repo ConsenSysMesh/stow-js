@@ -123,4 +123,16 @@ describe('Record class', () => {
       }
     });
   });
+  describe('verify data', () => {
+    it('should return true if data hash matches', async () => {
+      const record = await linnia.getRecord(testDataHash);
+      const verify = record.verifyData('foobar');
+      assert.isTrue(verify);
+    });
+    it('should return true if data hash does not match', async () => {
+      const record = await linnia.getRecord(testDataHash);
+      const verify = record.verifyData('fox');
+      assert.isFalse(verify);
+    });
+  });
 });
