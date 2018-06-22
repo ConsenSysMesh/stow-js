@@ -108,7 +108,7 @@ Gets the attestation of the data
 
 ## linnia.getPermission
 ```javascript
-Linnia.getPermission(dataHash, viewerAddress)
+linnia.getPermission(dataHash, viewerAddress)
 ```
 Gets the permission information of a record
 
