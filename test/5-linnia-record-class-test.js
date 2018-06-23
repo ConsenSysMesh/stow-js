@@ -1,4 +1,6 @@
 import { assert } from 'chai';
+import crypto from 'crypto';
+import eutil from 'ethereumjs-util';
 import Web3 from 'web3';
 import Linnia from '../src';
 
@@ -12,7 +14,7 @@ const testDataUri = '0x59742369c54039d5611d84452aa6c31b72da336b76ed4029b12c3dc54
 const testMetaData = 'Blood_Pressure';
 const testSharedUri = '0xde1f76340a34698d41d362010bbc3c05c26f25d659904ef08ef7bd5eac0dbea4';
 const privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b';
-const pubKey = '0xb1f26f98d374540eac3d31208f13a3935318e228207084c9ee32d741ff1ad2341af4ac9658aba4a254bf1dc6451b3c08524febba5273bec227c73e25cd376387';
+const pubKey = eutil.bufferToHex(eutil.privateToPublic(privKey));
 
 describe('Record class', () => {
   const [admin, user1, user2, user3, provider] = web3.eth.accounts;
@@ -72,6 +74,7 @@ describe('Record class', () => {
     it('should decrypt the data if hash is correct', async () => {
       // make the URI resolver always return the encrypted data
       const uriResolver = (dataUri) => {
+        // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
         return Linnia.util.encrypt(pubKey, testData);
       };
@@ -94,6 +97,7 @@ describe('Record class', () => {
   describe('decrypt permissioned', () => {
     it('should decrypt the data if has permission and hash is correct', async () => {
       const uriResolver = (dataUri) => {
+        // the URI being passed in should be the shared copy
         assert.equal(dataUri, testSharedUri);
         return Linnia.util.encrypt(pubKey, testData);
       };
@@ -133,6 +137,21 @@ describe('Record class', () => {
       const record = await linnia.getRecord(testDataHash);
       const verify = record.verifyData('fox');
       assert.isFalse(verify);
+    });
+  });
+  describe('reencrypt data', () => {
+    it('should re-encrypt to the public key', async () => {
+      const uriResolver = (dataUri) => {
+        assert.equal(dataUri, testDataUri);
+        return Linnia.util.encrypt(pubKey, testData);
+      };
+      // make a new keypair
+      const priv = crypto.randomBytes(32);
+      const pub = eutil.privateToPublic(priv);
+      const record = await linnia.getRecord(testDataHash);
+      const reencrypted = await record.reencryptData(pub, privKey, uriResolver);
+      // the re-encrypted data should be decryptable by the new priv key
+      assert.equal(Linnia.util.decrypt(priv, reencrypted).toString(), testData);
     });
   });
 });
