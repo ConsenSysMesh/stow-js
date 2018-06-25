@@ -82,6 +82,18 @@ class Record {
     return eutil.bufferToHex(eutil.keccak256(plaintext)) === this.dataHash;
   }
 
+  /**
+   * Re-encrypts the data to another public key
+   * @param {Buffer|String} pubKey Public key to re-encrypt the data to
+   * @param {BUffer|String} privKey Private key to decrypt the record data
+   * @param {Function} uriResolver Async function that takes a data URI string and returns the data
+   * @returns {Buffer} Re-encrypted data
+   */
+  async reencryptData(pubKey, privKey, uriResolver) {
+    const plaintext = await this.decryptData(privKey, uriResolver);
+    return _util.encrypt(pubKey, plaintext);
+  }
+
   static async fromContract(recordsContract, permissionsContract, dataHash) {
     const r = await _recordsFunctions.getRecord(recordsContract, dataHash);
     const contracts = {

@@ -182,7 +182,7 @@ Gets the plaintext data of the record
 
 ### Parameters
 1. `Buffer|String` - The private key to decrypt the data
-1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the hex data URI. The function should return the encrypted data in a buffer.
+1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
 
 ### Returns
 `Promise<Buffer>` - The plaintext data
@@ -200,6 +200,20 @@ linnia.decryptData(privKey, (dataUri) => {
 })
 ```
 
+## record.decryptPermissioned
+```javascript
+record.decryptPerissioned(viewerAddress, privKey, uriResolver)
+```
+Gets the plaintext data of a permissioned copy of the record
+
+### Parameters
+1. `String` - The address of viewer
+1. `Buffer|String` - The private key to decrypt the data of the permissioned copy. Note that this is the key controlled by the viewer, not the record owner.
+1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
+
+### Returns
+`Promise<Buffer>` - The plaintext data
+
 ## record.verifyData
 ```javascript
 record.verifyData(plaintext)
@@ -212,19 +226,19 @@ Verifies the hash of the data against the one in Linnia.
 ### Returns
 `Boolean` - True if hash matches
 
-## record.decryptPermissioned
+## record.reencryptData
 ```javascript
-record.decryptPerissioned(viewerAddress, privKey, uriResolver)
+record.reencryptData(pubKey, privKey, uriResolver)
 ```
-Gets the plaintext data of a permissioned copy of the record
+Re-encrypts the data to another public key
 
 ### Parameters
-1. `String` - The address of viewer
-1. `Buffer|String` - The private key to decrypt the data of the permissioned copy. Note that this is the key controlled by the viewer, not the record owner.
-1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the hex data URI. The function should return the encrypted data in a buffer.
+1. `Buffer|String` - Public key to re-encrypt the data to
+1. `Buffer|String` - Private key to decrypt the record data. This should be a key controlled by the record owner
+1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
 
 ### Returns
-`Promise<Buffer>` - The plaintext data
+`Buffer` - The re-encrypted data
 
 ---
 # Utility functions
