@@ -35,7 +35,7 @@ jobs:
 
       # run tests!
 
-      - run: npm run testnet && sleep 5s
+      - run: npm run testrpc && sleep 5s
       - run: npm test
 
 
