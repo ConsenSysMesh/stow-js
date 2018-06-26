@@ -16,6 +16,24 @@ module.exports = {
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "destroy",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [],
       "name": "owner",
@@ -47,11 +65,25 @@ module.exports = {
       "constant": false,
       "inputs": [
         {
-          "name": "newOwner",
+          "name": "_newOwner",
           "type": "address"
         }
       ],
       "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_recipient",
+          "type": "address"
+        }
+      ],
+      "name": "destroyAndSend",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -140,6 +172,18 @@ module.exports = {
           "indexed": true,
           "name": "previousOwner",
           "type": "address"
+        }
+      ],
+      "name": "OwnershipRenounced",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "previousOwner",
+          "type": "address"
         },
         {
           "indexed": true,
@@ -208,74 +252,84 @@ module.exports = {
       "type": "function"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550610994806100606000396000f30060806040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063142ebf3c1461009d5780638da5cb5b146100f4578063c60bdc7f1461014b578063cccb7c75146101a6578063d183ce74146101fd578063e5e1e62d14610258578063f2fde38b146102b3578063fc0d561e146102f6575b34801561009a57600080fd5b50005b3480156100a957600080fd5b506100b261034d565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561010057600080fd5b50610109610373565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561015757600080fd5b5061018c600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610398565b604051808215151515815260200191505060405180910390f35b3480156101b257600080fd5b506101bb6104fd565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561020957600080fd5b5061023e600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610523565b604051808215151515815260200191505060405180910390f35b34801561026457600080fd5b50610299600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610688565b604051808215151515815260200191505060405180910390f35b3480156102bf57600080fd5b506102f4600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506107ed565b005b34801561030257600080fd5b5061030b610942565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156103f657600080fd5b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507fc3834b6a6bc9b4a5538ab1ee44dfee2fb113517bee43239c8a74dda600a2d0488184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561058157600080fd5b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f1ff0355b14b79d86f4f21bb793eb52594d7042eceb82300fafcf98ac866b53728184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106e657600080fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f84e234a166a8b8da8cfe867be159e3d188f9c528fc0aca6a2d02edbaed8fcde98184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561084857600080fd5b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff161415151561088457600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582074508d2472e9c868311e746ddb4a460ee4aadb8deeff0a5974da73f49a6695800029",
-  "deployedBytecode": "0x60806040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063142ebf3c1461009d5780638da5cb5b146100f4578063c60bdc7f1461014b578063cccb7c75146101a6578063d183ce74146101fd578063e5e1e62d14610258578063f2fde38b146102b3578063fc0d561e146102f6575b34801561009a57600080fd5b50005b3480156100a957600080fd5b506100b261034d565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561010057600080fd5b50610109610373565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561015757600080fd5b5061018c600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610398565b604051808215151515815260200191505060405180910390f35b3480156101b257600080fd5b506101bb6104fd565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561020957600080fd5b5061023e600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610523565b604051808215151515815260200191505060405180910390f35b34801561026457600080fd5b50610299600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610688565b604051808215151515815260200191505060405180910390f35b3480156102bf57600080fd5b506102f4600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506107ed565b005b34801561030257600080fd5b5061030b610942565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156103f657600080fd5b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507fc3834b6a6bc9b4a5538ab1ee44dfee2fb113517bee43239c8a74dda600a2d0488184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561058157600080fd5b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f1ff0355b14b79d86f4f21bb793eb52594d7042eceb82300fafcf98ac866b53728184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156106e657600080fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f84e234a166a8b8da8cfe867be159e3d188f9c528fc0aca6a2d02edbaed8fcde98184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561084857600080fd5b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff161415151561088457600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582074508d2472e9c868311e746ddb4a460ee4aadb8deeff0a5974da73f49a6695800029",
-  "sourceMap": "193:1344:0:-;;;540:24;8:9:-1;5:2;;;30:1;27;20:12;5:2;540:24:0;509:10:6;501:5;;:18;;;;;;;;;;;;;;;;;;193:1344:0;;;;;;",
-  "deployedSourceMap": "193:1344:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;193:1344:0;;229:32;;8:9:-1;5:2;;;30:1;27;20:12;5:2;229:32:0;;;;;;;;;;;;;;;;;;;;;;;;;;;238:20:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;238:20:6;;;;;;;;;;;;;;;;;;;;;;;;;;;598:287:0;;8:9:-1;5:2;;;30:1;27;20:12;5:2;598:287:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;309:44;;8:9:-1;5:2;;;30:1;27;20:12;5:2;309:44:0;;;;;;;;;;;;;;;;;;;;;;;;;;;1200:335;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1200:335:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;891:303;;8:9:-1;5:2;;;30:1;27;20:12;5:2;891:303:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;832:174:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;832:174:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;267:36:0;;8:9:-1;5:2;;;30:1;27;20:12;5:2;267:36:0;;;;;;;;;;;;;;;;;;;;;;;;;;;229:32;;;;;;;;;;;;;:::o;238:20:6:-;;;;;;;;;;;;;:::o;598:287:0:-;704:4;724:12;653:5:6;;;;;;;;;;;639:19;;:10;:19;;;631:28;;;;;;;;747:13:0;;;;;;;;;;;724:37;;787:14;771:13;;:30;;;;;;;;;;;;;;;;;;816:41;836:4;842:14;816:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;874:4;867:11;;598:287;;;;:::o;309:44::-;;;;;;;;;;;;;:::o;1200:335::-;1324:4;1344:12;653:5:6;;;;;;;;;;;639:19;;:10;:19;;;631:28;;;;;;;;1367:19:0;;;;;;;;;;;1344:43;;1419:20;1397:19;;:42;;;;;;;;;;;;;;;;;;1454:53;1480:4;1486:20;1454:53;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1524:4;1517:11;;1200:335;;;;:::o;891:303::-;1003:4;1023:12;653:5:6;;;;;;;;;;;639:19;;:10;:19;;;631:28;;;;;;;;1046:15:0;;;;;;;;;;;1023:39;;1090:16;1072:15;;:34;;;;;;;;;;;;;;;;;;1121:45;1143:4;1149:16;1121:45;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1183:4;1176:11;;891:303;;;;:::o;832:174:6:-;653:5;;;;;;;;;;;639:19;;:10;:19;;;631:28;;;;;;;;928:1;908:22;;:8;:22;;;;900:31;;;;;;;;970:8;942:37;;963:5;;;;;;;;;;;942:37;;;;;;;;;;;;993:8;985:5;;:16;;;;;;;;;;;;;;;;;;832:174;:::o;267:36:0:-;;;;;;;;;;;;;:::o",
-  "source": "pragma solidity ^0.4.23;\n\nimport \"node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"./LinniaUsers.sol\";\nimport \"./LinniaRecords.sol\";\nimport \"./LinniaPermissions.sol\";\n\n\ncontract LinniaHub is Ownable {\n    LinniaUsers public usersContract;\n    LinniaRecords public recordsContract;\n    LinniaPermissions public permissionsContract;\n\n    event LogUsersContractSet(address from, address to);\n    event LogRecordsContractSet(address from, address to);\n    event LogPermissionsContractSet(address from, address to);\n\n    constructor() public { }\n\n    function () public { }\n\n    function setUsersContract(LinniaUsers _usersContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(usersContract);\n        usersContract = _usersContract;\n        emit LogUsersContractSet(prev, _usersContract);\n        return true;\n    }\n\n    function setRecordsContract(LinniaRecords _recordsContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(recordsContract);\n        recordsContract = _recordsContract;\n        emit LogRecordsContractSet(prev, _recordsContract);\n        return true;\n    }\n\n    function setPermissionsContract(LinniaPermissions _permissionsContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(permissionsContract);\n        permissionsContract = _permissionsContract;\n        emit LogPermissionsContractSet(prev, _permissionsContract);\n        return true;\n    }\n}\n",
+  "bytecode": "0x608060405234801561001057600080fd5b50336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550610c3d806100606000396000f3006080604052600436106100af576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063142ebf3c146100be578063715018a61461011557806383197ef01461012c5780638da5cb5b14610143578063c60bdc7f1461019a578063cccb7c75146101f5578063d183ce741461024c578063e5e1e62d146102a7578063f2fde38b14610302578063f5074f4114610345578063fc0d561e14610388575b3480156100bb57600080fd5b50005b3480156100ca57600080fd5b506100d36103df565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561012157600080fd5b5061012a610405565b005b34801561013857600080fd5b50610141610507565b005b34801561014f57600080fd5b5061015861059c565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156101a657600080fd5b506101db600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506105c1565b604051808215151515815260200191505060405180910390f35b34801561020157600080fd5b5061020a610726565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561025857600080fd5b5061028d600480360381019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061074c565b604051808215151515815260200191505060405180910390f35b3480156102b357600080fd5b506102e8600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506108b1565b604051808215151515815260200191505060405180910390f35b34801561030e57600080fd5b50610343600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610a16565b005b34801561035157600080fd5b50610386600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610a7d565b005b34801561039457600080fd5b5061039d610af1565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561046057600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a260008060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561056257600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561061f57600080fd5b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507fc3834b6a6bc9b4a5538ab1ee44dfee2fb113517bee43239c8a74dda600a2d0488184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156107aa57600080fd5b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f1ff0355b14b79d86f4f21bb793eb52594d7042eceb82300fafcf98ac866b53728184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561090f57600080fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f84e234a166a8b8da8cfe867be159e3d188f9c528fc0aca6a2d02edbaed8fcde98184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610a7157600080fd5b610a7a81610b17565b50565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610ad857600080fd5b8073ffffffffffffffffffffffffffffffffffffffff16ff5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614151515610b5357600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505600a165627a7a72305820671041663bf890c482985d0c4d2c16df9df3c59ff6d16e68bb7bda1a6d93b8340029",
+  "deployedBytecode": "0x6080604052600436106100af576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063142ebf3c146100be578063715018a61461011557806383197ef01461012c5780638da5cb5b14610143578063c60bdc7f1461019a578063cccb7c75146101f5578063d183ce741461024c578063e5e1e62d146102a7578063f2fde38b14610302578063f5074f4114610345578063fc0d561e14610388575b3480156100bb57600080fd5b50005b3480156100ca57600080fd5b506100d36103df565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561012157600080fd5b5061012a610405565b005b34801561013857600080fd5b50610141610507565b005b34801561014f57600080fd5b5061015861059c565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b3480156101a657600080fd5b506101db600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506105c1565b604051808215151515815260200191505060405180910390f35b34801561020157600080fd5b5061020a610726565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34801561025857600080fd5b5061028d600480360381019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061074c565b604051808215151515815260200191505060405180910390f35b3480156102b357600080fd5b506102e8600480360381019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506108b1565b604051808215151515815260200191505060405180910390f35b34801561030e57600080fd5b50610343600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610a16565b005b34801561035157600080fd5b50610386600480360381019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610a7d565b005b34801561039457600080fd5b5061039d610af1565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561046057600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167ff8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c6482060405160405180910390a260008060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561056257600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561061f57600080fd5b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507fc3834b6a6bc9b4a5538ab1ee44dfee2fb113517bee43239c8a74dda600a2d0488184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415156107aa57600080fd5b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f1ff0355b14b79d86f4f21bb793eb52594d7042eceb82300fafcf98ac866b53728184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000806000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561090f57600080fd5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16905082600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055507f84e234a166a8b8da8cfe867be159e3d188f9c528fc0aca6a2d02edbaed8fcde98184604051808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a16001915050919050565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610a7157600080fd5b610a7a81610b17565b50565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610ad857600080fd5b8073ffffffffffffffffffffffffffffffffffffffff16ff5b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600073ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff1614151515610b5357600080fd5b8073ffffffffffffffffffffffffffffffffffffffff166000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e060405160405180910390a3806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550505600a165627a7a72305820671041663bf890c482985d0c4d2c16df9df3c59ff6d16e68bb7bda1a6d93b8340029",
+  "sourceMap": "253:1358:0:-;;;614:24;8:9:-1;5:2;;;30:1;27;20:12;5:2;614:24:0;575:10:8;567:5;;:18;;;;;;;;;;;;;;;;;;253:1358:0;;;;;;",
+  "deployedSourceMap": "253:1358:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;253:1358:0;;303:32;;8:9:-1;5:2;;;30:1;27;20:12;5:2;303:32:0;;;;;;;;;;;;;;;;;;;;;;;;;;;827:111:8;;8:9:-1;5:2;;;30:1;27;20:12;5:2;827:111:8;;;;;;366:66:5;;8:9:-1;5:2;;;30:1;27;20:12;5:2;366:66:5;;;;;;238:20:8;;8:9:-1;5:2;;;30:1;27;20:12;5:2;238:20:8;;;;;;;;;;;;;;;;;;;;;;;;;;;672:287:0;;8:9:-1;5:2;;;30:1;27;20:12;5:2;672:287:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;383:44;;8:9:-1;5:2;;;30:1;27;20:12;5:2;383:44:0;;;;;;;;;;;;;;;;;;;;;;;;;;;1274:335;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1274:335:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;965:303;;8:9:-1;5:2;;;30:1;27;20:12;5:2;965:303:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1100:103:8;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1100:103:8;;;;;;;;;;;;;;;;;;;;;;;;;;;;436:96:5;;8:9:-1;5:2;;;30:1;27;20:12;5:2;436:96:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;341:36:0;;8:9:-1;5:2;;;30:1;27;20:12;5:2;341:36:0;;;;;;;;;;;;;;;;;;;;;;;;;;;303:32;;;;;;;;;;;;;:::o;827:111:8:-;719:5;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;903:5;;;;;;;;;;;884:25;;;;;;;;;;;;931:1;915:5;;:18;;;;;;;;;;;;;;;;;;827:111::o;366:66:5:-;719:5:8;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;421:5:5;;;;;;;;;;;408:19;;;238:20:8;;;;;;;;;;;;;:::o;672:287:0:-;778:4;798:12;719:5:8;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;821:13:0;;;;;;;;;;;798:37;;861:14;845:13;;:30;;;;;;;;;;;;;;;;;;890:41;910:4;916:14;890:41;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;948:4;941:11;;672:287;;;;:::o;383:44::-;;;;;;;;;;;;;:::o;1274:335::-;1398:4;1418:12;719:5:8;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;1441:19:0;;;;;;;;;;;1418:43;;1493:20;1471:19;;:42;;;;;;;;;;;;;;;;;;1528:53;1554:4;1560:20;1528:53;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1598:4;1591:11;;1274:335;;;;:::o;965:303::-;1077:4;1097:12;719:5:8;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;1120:15:0;;;;;;;;;;;1097:39;;1164:16;1146:15;;:34;;;;;;;;;;;;;;;;;;1195:45;1217:4;1223:16;1195:45;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1257:4;1250:11;;965:303;;;;:::o;1100:103:8:-;719:5;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;1169:29;1188:9;1169:18;:29::i;:::-;1100:103;:::o;436:96:5:-;719:5:8;;;;;;;;;;;705:19;;:10;:19;;;697:28;;;;;;;;516:10:5;503:24;;;341:36:0;;;;;;;;;;;;;:::o;1338:171:8:-;1429:1;1408:23;;:9;:23;;;;1400:32;;;;;;;;1471:9;1443:38;;1464:5;;;;;;;;;;;1443:38;;;;;;;;;;;;1495:9;1487:5;;:17;;;;;;;;;;;;;;;;;;1338:171;:::o",
+  "source": "pragma solidity 0.4.24;\n\n\nimport \"openzeppelin-solidity/contracts/lifecycle/Destructible.sol\";\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"./LinniaUsers.sol\";\nimport \"./LinniaRecords.sol\";\nimport \"./LinniaPermissions.sol\";\n\n\ncontract LinniaHub is Ownable, Destructible {\n    LinniaUsers public usersContract;\n    LinniaRecords public recordsContract;\n    LinniaPermissions public permissionsContract;\n\n    event LogUsersContractSet(address from, address to);\n    event LogRecordsContractSet(address from, address to);\n    event LogPermissionsContractSet(address from, address to);\n\n    constructor() public { }\n\n    function () public { }\n\n    function setUsersContract(LinniaUsers _usersContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(usersContract);\n        usersContract = _usersContract;\n        emit LogUsersContractSet(prev, _usersContract);\n        return true;\n    }\n\n    function setRecordsContract(LinniaRecords _recordsContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(recordsContract);\n        recordsContract = _recordsContract;\n        emit LogRecordsContractSet(prev, _recordsContract);\n        return true;\n    }\n\n    function setPermissionsContract(LinniaPermissions _permissionsContract)\n        onlyOwner\n        external\n        returns (bool)\n    {\n        address prev = address(permissionsContract);\n        permissionsContract = _permissionsContract;\n        emit LogPermissionsContractSet(prev, _permissionsContract);\n        return true;\n    }\n}\n",
   "sourcePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaHub.sol",
   "ast": {
     "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaHub.sol",
     "exportedSymbols": {
       "LinniaHub": [
-        121
+        124
       ]
     },
-    "id": 122,
+    "id": 125,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 1,
         "literals": [
           "solidity",
-          "^",
           "0.4",
-          ".23"
+          ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:0"
+        "src": "0:23:0"
       },
       {
-        "absolutePath": "node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol",
-        "file": "node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol",
+        "absolutePath": "openzeppelin-solidity/contracts/lifecycle/Destructible.sol",
+        "file": "openzeppelin-solidity/contracts/lifecycle/Destructible.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 1164,
-        "src": "26:72:0",
+        "scope": 125,
+        "sourceUnit": 1100,
+        "src": "26:68:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "id": 3,
+        "nodeType": "ImportDirective",
+        "scope": 125,
+        "sourceUnit": 1340,
+        "src": "95:63:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaUsers.sol",
         "file": "./LinniaUsers.sol",
-        "id": 3,
+        "id": 4,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 955,
-        "src": "99:27:0",
+        "scope": 125,
+        "sourceUnit": 1009,
+        "src": "159:27:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaRecords.sol",
         "file": "./LinniaRecords.sol",
-        "id": 4,
+        "id": 5,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 811,
-        "src": "127:29:0",
+        "scope": 125,
+        "sourceUnit": 857,
+        "src": "187:29:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaPermissions.sol",
         "file": "./LinniaPermissions.sol",
-        "id": 5,
+        "id": 6,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 311,
-        "src": "157:33:0",
+        "scope": 125,
+        "sourceUnit": 327,
+        "src": "217:33:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -285,57 +339,77 @@ module.exports = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 6,
+              "id": 7,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1163,
-              "src": "215:7:0",
+              "referencedDeclaration": 1339,
+              "src": "275:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1163",
+                "typeIdentifier": "t_contract$_Ownable_$1339",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 7,
+            "id": 8,
             "nodeType": "InheritanceSpecifier",
-            "src": "215:7:0"
+            "src": "275:7:0"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 9,
+              "name": "Destructible",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1099,
+              "src": "284:12:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Destructible_$1099",
+                "typeString": "contract Destructible"
+              }
+            },
+            "id": 10,
+            "nodeType": "InheritanceSpecifier",
+            "src": "284:12:0"
           }
         ],
         "contractDependencies": [
-          1163
+          1099,
+          1339
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 121,
+        "id": 124,
         "linearizedBaseContracts": [
-          121,
-          1163
+          124,
+          1099,
+          1339
         ],
         "name": "LinniaHub",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 9,
+            "id": 12,
             "name": "usersContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "229:32:0",
+            "scope": 124,
+            "src": "303:32:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaUsers_$954",
+              "typeIdentifier": "t_contract$_LinniaUsers_$1008",
               "typeString": "contract LinniaUsers"
             },
             "typeName": {
               "contractScope": null,
-              "id": 8,
+              "id": 11,
               "name": "LinniaUsers",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 954,
-              "src": "229:11:0",
+              "referencedDeclaration": 1008,
+              "src": "303:11:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                 "typeString": "contract LinniaUsers"
               }
             },
@@ -344,26 +418,26 @@ module.exports = {
           },
           {
             "constant": false,
-            "id": 11,
+            "id": 14,
             "name": "recordsContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "267:36:0",
+            "scope": 124,
+            "src": "341:36:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaRecords_$810",
+              "typeIdentifier": "t_contract$_LinniaRecords_$856",
               "typeString": "contract LinniaRecords"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10,
+              "id": 13,
               "name": "LinniaRecords",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 810,
-              "src": "267:13:0",
+              "referencedDeclaration": 856,
+              "src": "341:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                "typeIdentifier": "t_contract$_LinniaRecords_$856",
                 "typeString": "contract LinniaRecords"
               }
             },
@@ -372,26 +446,26 @@ module.exports = {
           },
           {
             "constant": false,
-            "id": 13,
+            "id": 16,
             "name": "permissionsContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "309:44:0",
+            "scope": 124,
+            "src": "383:44:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+              "typeIdentifier": "t_contract$_LinniaPermissions_$326",
               "typeString": "contract LinniaPermissions"
             },
             "typeName": {
               "contractScope": null,
-              "id": 12,
+              "id": 15,
               "name": "LinniaPermissions",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 310,
-              "src": "309:17:0",
+              "referencedDeclaration": 326,
+              "src": "383:17:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                 "typeString": "contract LinniaPermissions"
               }
             },
@@ -401,21 +475,21 @@ module.exports = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 19,
+            "id": 22,
             "name": "LogUsersContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 18,
+              "id": 21,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 15,
+                  "id": 18,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19,
-                  "src": "386:12:0",
+                  "scope": 22,
+                  "src": "460:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -423,10 +497,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 14,
+                    "id": 17,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "386:7:0",
+                    "src": "460:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -437,12 +511,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 17,
+                  "id": 20,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19,
-                  "src": "400:10:0",
+                  "scope": 22,
+                  "src": "474:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -450,10 +524,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 16,
+                    "id": 19,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "400:7:0",
+                    "src": "474:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -463,28 +537,28 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "385:26:0"
+              "src": "459:26:0"
             },
-            "src": "360:52:0"
+            "src": "434:52:0"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 25,
+            "id": 28,
             "name": "LogRecordsContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 24,
+              "id": 27,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21,
+                  "id": 24,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 25,
-                  "src": "445:12:0",
+                  "scope": 28,
+                  "src": "519:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -492,10 +566,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 20,
+                    "id": 23,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "445:7:0",
+                    "src": "519:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -506,12 +580,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 23,
+                  "id": 26,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 25,
-                  "src": "459:10:0",
+                  "scope": 28,
+                  "src": "533:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -519,10 +593,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 22,
+                    "id": 25,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "459:7:0",
+                    "src": "533:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -532,28 +606,28 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "444:26:0"
+              "src": "518:26:0"
             },
-            "src": "417:54:0"
+            "src": "491:54:0"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 31,
+            "id": 34,
             "name": "LogPermissionsContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 30,
+              "id": 33,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 27,
+                  "id": 30,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 31,
-                  "src": "508:12:0",
+                  "scope": 34,
+                  "src": "582:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -561,10 +635,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 26,
+                    "id": 29,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "508:7:0",
+                    "src": "582:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -575,12 +649,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 29,
+                  "id": 32,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 31,
-                  "src": "522:10:0",
+                  "scope": 34,
+                  "src": "596:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -588,10 +662,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 28,
+                    "id": 31,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "522:7:0",
+                    "src": "596:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -601,19 +675,19 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "507:26:0"
+              "src": "581:26:0"
             },
-            "src": "476:58:0"
+            "src": "550:58:0"
           },
           {
             "body": {
-              "id": 34,
+              "id": 37,
               "nodeType": "Block",
-              "src": "561:3:0",
+              "src": "635:3:0",
               "statements": []
             },
             "documentation": null,
-            "id": 35,
+            "id": 38,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -621,33 +695,33 @@ module.exports = {
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 32,
+              "id": 35,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "551:2:0"
+              "src": "625:2:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 33,
+              "id": 36,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "561:0:0"
+              "src": "635:0:0"
             },
-            "scope": 121,
-            "src": "540:24:0",
+            "scope": 124,
+            "src": "614:24:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 38,
+              "id": 41,
               "nodeType": "Block",
-              "src": "589:3:0",
+              "src": "663:3:0",
               "statements": []
             },
             "documentation": null,
-            "id": 39,
+            "id": 42,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -655,42 +729,42 @@ module.exports = {
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 36,
+              "id": 39,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "579:2:0"
+              "src": "653:2:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 37,
+              "id": 40,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "589:0:0"
+              "src": "663:0:0"
             },
-            "scope": 121,
-            "src": "570:22:0",
+            "scope": 124,
+            "src": "644:22:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 65,
+              "id": 68,
               "nodeType": "Block",
-              "src": "714:171:0",
+              "src": "788:171:0",
               "statements": [
                 {
                   "assignments": [
-                    49
+                    52
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 49,
+                      "id": 52,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 66,
-                      "src": "724:12:0",
+                      "scope": 69,
+                      "src": "798:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -698,10 +772,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 48,
+                        "id": 51,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "724:7:0",
+                        "src": "798:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -711,20 +785,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 53,
+                  "id": 56,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 51,
+                        "id": 54,
                         "name": "usersContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 9,
-                        "src": "747:13:0",
+                        "referencedDeclaration": 12,
+                        "src": "821:13:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       }
@@ -732,24 +806,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       ],
-                      "id": 50,
+                      "id": 53,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "739:7:0",
+                      "src": "813:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 52,
+                    "id": 55,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -757,33 +831,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "739:22:0",
+                    "src": "813:22:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "724:37:0"
+                  "src": "798:37:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 56,
+                    "id": 59,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 54,
+                      "id": 57,
                       "name": "usersContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9,
-                      "src": "771:13:0",
+                      "referencedDeclaration": 12,
+                      "src": "845:13:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                        "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                         "typeString": "contract LinniaUsers"
                       }
                     },
@@ -791,26 +865,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 55,
+                      "id": 58,
                       "name": "_usersContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 41,
-                      "src": "787:14:0",
+                      "referencedDeclaration": 44,
+                      "src": "861:14:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                        "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                         "typeString": "contract LinniaUsers"
                       }
                     },
-                    "src": "771:30:0",
+                    "src": "845:30:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                      "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                       "typeString": "contract LinniaUsers"
                     }
                   },
-                  "id": 57,
+                  "id": 60,
                   "nodeType": "ExpressionStatement",
-                  "src": "771:30:0"
+                  "src": "845:30:0"
                 },
                 {
                   "eventCall": {
@@ -818,12 +892,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 59,
+                        "id": 62,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 49,
-                        "src": "836:4:0",
+                        "referencedDeclaration": 52,
+                        "src": "910:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -831,14 +905,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 60,
+                        "id": 63,
                         "name": "_usersContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 41,
-                        "src": "842:14:0",
+                        "referencedDeclaration": 44,
+                        "src": "916:14:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       }
@@ -850,22 +924,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       ],
-                      "id": 58,
+                      "id": 61,
                       "name": "LogUsersContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19,
-                      "src": "816:19:0",
+                      "referencedDeclaration": 22,
+                      "src": "890:19:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 61,
+                    "id": 64,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -873,28 +947,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "816:41:0",
+                    "src": "890:41:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 62,
+                  "id": 65,
                   "nodeType": "EmitStatement",
-                  "src": "811:46:0"
+                  "src": "885:46:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 63,
+                    "id": 66,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "874:4:0",
+                    "src": "948:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -902,67 +976,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 47,
-                  "id": 64,
+                  "functionReturnParameters": 50,
+                  "id": 67,
                   "nodeType": "Return",
-                  "src": "867:11:0"
+                  "src": "941:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 66,
+            "id": 69,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 44,
+                "id": 47,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 43,
+                  "id": 46,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "660:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "734:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "660:9:0"
+                "src": "734:9:0"
               }
             ],
             "name": "setUsersContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 42,
+              "id": 45,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 41,
+                  "id": 44,
                   "name": "_usersContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 66,
-                  "src": "624:26:0",
+                  "scope": 69,
+                  "src": "698:26:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                    "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                     "typeString": "contract LinniaUsers"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 40,
+                    "id": 43,
                     "name": "LinniaUsers",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 954,
-                    "src": "624:11:0",
+                    "referencedDeclaration": 1008,
+                    "src": "698:11:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                      "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                       "typeString": "contract LinniaUsers"
                     }
                   },
@@ -970,20 +1044,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "623:28:0"
+              "src": "697:28:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 47,
+              "id": 50,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 46,
+                  "id": 49,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 66,
-                  "src": "704:4:0",
+                  "scope": 69,
+                  "src": "778:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -991,10 +1065,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 45,
+                    "id": 48,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "704:4:0",
+                    "src": "778:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1004,32 +1078,32 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "703:6:0"
+              "src": "777:6:0"
             },
-            "scope": 121,
-            "src": "598:287:0",
+            "scope": 124,
+            "src": "672:287:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 92,
+              "id": 95,
               "nodeType": "Block",
-              "src": "1013:181:0",
+              "src": "1087:181:0",
               "statements": [
                 {
                   "assignments": [
-                    76
+                    79
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 76,
+                      "id": 79,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 93,
-                      "src": "1023:12:0",
+                      "scope": 96,
+                      "src": "1097:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -1037,10 +1111,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 75,
+                        "id": 78,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "1023:7:0",
+                        "src": "1097:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1050,20 +1124,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 80,
+                  "id": 83,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 78,
+                        "id": 81,
                         "name": "recordsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11,
-                        "src": "1046:15:0",
+                        "referencedDeclaration": 14,
+                        "src": "1120:15:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       }
@@ -1071,24 +1145,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       ],
-                      "id": 77,
+                      "id": 80,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1038:7:0",
+                      "src": "1112:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 79,
+                    "id": 82,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1096,33 +1170,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1038:24:0",
+                    "src": "1112:24:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1023:39:0"
+                  "src": "1097:39:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 83,
+                    "id": 86,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 81,
+                      "id": 84,
                       "name": "recordsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11,
-                      "src": "1072:15:0",
+                      "referencedDeclaration": 14,
+                      "src": "1146:15:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                        "typeIdentifier": "t_contract$_LinniaRecords_$856",
                         "typeString": "contract LinniaRecords"
                       }
                     },
@@ -1130,26 +1204,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 82,
+                      "id": 85,
                       "name": "_recordsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 68,
-                      "src": "1090:16:0",
+                      "referencedDeclaration": 71,
+                      "src": "1164:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                        "typeIdentifier": "t_contract$_LinniaRecords_$856",
                         "typeString": "contract LinniaRecords"
                       }
                     },
-                    "src": "1072:34:0",
+                    "src": "1146:34:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                      "typeIdentifier": "t_contract$_LinniaRecords_$856",
                       "typeString": "contract LinniaRecords"
                     }
                   },
-                  "id": 84,
+                  "id": 87,
                   "nodeType": "ExpressionStatement",
-                  "src": "1072:34:0"
+                  "src": "1146:34:0"
                 },
                 {
                   "eventCall": {
@@ -1157,12 +1231,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 86,
+                        "id": 89,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 76,
-                        "src": "1143:4:0",
+                        "referencedDeclaration": 79,
+                        "src": "1217:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1170,14 +1244,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 87,
+                        "id": 90,
                         "name": "_recordsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 68,
-                        "src": "1149:16:0",
+                        "referencedDeclaration": 71,
+                        "src": "1223:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       }
@@ -1189,22 +1263,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       ],
-                      "id": 85,
+                      "id": 88,
                       "name": "LogRecordsContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 25,
-                      "src": "1121:21:0",
+                      "referencedDeclaration": 28,
+                      "src": "1195:21:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 88,
+                    "id": 91,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1212,28 +1286,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1121:45:0",
+                    "src": "1195:45:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 89,
+                  "id": 92,
                   "nodeType": "EmitStatement",
-                  "src": "1116:50:0"
+                  "src": "1190:50:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 90,
+                    "id": 93,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1183:4:0",
+                    "src": "1257:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -1241,67 +1315,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 74,
-                  "id": 91,
+                  "functionReturnParameters": 77,
+                  "id": 94,
                   "nodeType": "Return",
-                  "src": "1176:11:0"
+                  "src": "1250:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 93,
+            "id": 96,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 71,
+                "id": 74,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 70,
+                  "id": 73,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "959:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "1033:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "959:9:0"
+                "src": "1033:9:0"
               }
             ],
             "name": "setRecordsContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 69,
+              "id": 72,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 68,
+                  "id": 71,
                   "name": "_recordsContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 93,
-                  "src": "919:30:0",
+                  "scope": 96,
+                  "src": "993:30:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                    "typeIdentifier": "t_contract$_LinniaRecords_$856",
                     "typeString": "contract LinniaRecords"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 67,
+                    "id": 70,
                     "name": "LinniaRecords",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 810,
-                    "src": "919:13:0",
+                    "referencedDeclaration": 856,
+                    "src": "993:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                      "typeIdentifier": "t_contract$_LinniaRecords_$856",
                       "typeString": "contract LinniaRecords"
                     }
                   },
@@ -1309,20 +1383,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "918:32:0"
+              "src": "992:32:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 74,
+              "id": 77,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 73,
+                  "id": 76,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 93,
-                  "src": "1003:4:0",
+                  "scope": 96,
+                  "src": "1077:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1330,10 +1404,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 72,
+                    "id": 75,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1003:4:0",
+                    "src": "1077:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1343,32 +1417,32 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1002:6:0"
+              "src": "1076:6:0"
             },
-            "scope": 121,
-            "src": "891:303:0",
+            "scope": 124,
+            "src": "965:303:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 119,
+              "id": 122,
               "nodeType": "Block",
-              "src": "1334:201:0",
+              "src": "1408:201:0",
               "statements": [
                 {
                   "assignments": [
-                    103
+                    106
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 103,
+                      "id": 106,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 120,
-                      "src": "1344:12:0",
+                      "scope": 123,
+                      "src": "1418:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -1376,10 +1450,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 102,
+                        "id": 105,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "1344:7:0",
+                        "src": "1418:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1389,20 +1463,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 107,
+                  "id": 110,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 105,
+                        "id": 108,
                         "name": "permissionsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13,
-                        "src": "1367:19:0",
+                        "referencedDeclaration": 16,
+                        "src": "1441:19:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       }
@@ -1410,24 +1484,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       ],
-                      "id": 104,
+                      "id": 107,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1359:7:0",
+                      "src": "1433:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 106,
+                    "id": 109,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1435,33 +1509,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1359:28:0",
+                    "src": "1433:28:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1344:43:0"
+                  "src": "1418:43:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 110,
+                    "id": 113,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 108,
+                      "id": 111,
                       "name": "permissionsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13,
-                      "src": "1397:19:0",
+                      "referencedDeclaration": 16,
+                      "src": "1471:19:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                        "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                         "typeString": "contract LinniaPermissions"
                       }
                     },
@@ -1469,26 +1543,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 109,
+                      "id": 112,
                       "name": "_permissionsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 95,
-                      "src": "1419:20:0",
+                      "referencedDeclaration": 98,
+                      "src": "1493:20:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                        "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                         "typeString": "contract LinniaPermissions"
                       }
                     },
-                    "src": "1397:42:0",
+                    "src": "1471:42:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                      "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                       "typeString": "contract LinniaPermissions"
                     }
                   },
-                  "id": 111,
+                  "id": 114,
                   "nodeType": "ExpressionStatement",
-                  "src": "1397:42:0"
+                  "src": "1471:42:0"
                 },
                 {
                   "eventCall": {
@@ -1496,12 +1570,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 113,
+                        "id": 116,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 103,
-                        "src": "1480:4:0",
+                        "referencedDeclaration": 106,
+                        "src": "1554:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -1509,14 +1583,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 114,
+                        "id": 117,
                         "name": "_permissionsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 95,
-                        "src": "1486:20:0",
+                        "referencedDeclaration": 98,
+                        "src": "1560:20:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       }
@@ -1528,22 +1602,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       ],
-                      "id": 112,
+                      "id": 115,
                       "name": "LogPermissionsContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 31,
-                      "src": "1454:25:0",
+                      "referencedDeclaration": 34,
+                      "src": "1528:25:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 115,
+                    "id": 118,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1551,28 +1625,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1454:53:0",
+                    "src": "1528:53:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 116,
+                  "id": 119,
                   "nodeType": "EmitStatement",
-                  "src": "1449:58:0"
+                  "src": "1523:58:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 117,
+                    "id": 120,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1524:4:0",
+                    "src": "1598:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -1580,67 +1654,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 101,
-                  "id": 118,
+                  "functionReturnParameters": 104,
+                  "id": 121,
                   "nodeType": "Return",
-                  "src": "1517:11:0"
+                  "src": "1591:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 120,
+            "id": 123,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 98,
+                "id": 101,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 97,
+                  "id": 100,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "1280:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "1354:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1280:9:0"
+                "src": "1354:9:0"
               }
             ],
             "name": "setPermissionsContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 96,
+              "id": 99,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 95,
+                  "id": 98,
                   "name": "_permissionsContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 120,
-                  "src": "1232:38:0",
+                  "scope": 123,
+                  "src": "1306:38:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                    "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                     "typeString": "contract LinniaPermissions"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 94,
+                    "id": 97,
                     "name": "LinniaPermissions",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 310,
-                    "src": "1232:17:0",
+                    "referencedDeclaration": 326,
+                    "src": "1306:17:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                      "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                       "typeString": "contract LinniaPermissions"
                     }
                   },
@@ -1648,20 +1722,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1231:40:0"
+              "src": "1305:40:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 101,
+              "id": 104,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 100,
+                  "id": 103,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 120,
-                  "src": "1324:4:0",
+                  "scope": 123,
+                  "src": "1398:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1669,10 +1743,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 99,
+                    "id": 102,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1324:4:0",
+                    "src": "1398:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1682,83 +1756,93 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1323:6:0"
+              "src": "1397:6:0"
             },
-            "scope": 121,
-            "src": "1200:335:0",
+            "scope": 124,
+            "src": "1274:335:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 122,
-        "src": "193:1344:0"
+        "scope": 125,
+        "src": "253:1358:0"
       }
     ],
-    "src": "0:1538:0"
+    "src": "0:1612:0"
   },
   "legacyAST": {
     "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaHub.sol",
     "exportedSymbols": {
       "LinniaHub": [
-        121
+        124
       ]
     },
-    "id": 122,
+    "id": 125,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 1,
         "literals": [
           "solidity",
-          "^",
           "0.4",
-          ".23"
+          ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:0"
+        "src": "0:23:0"
       },
       {
-        "absolutePath": "node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol",
-        "file": "node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol",
+        "absolutePath": "openzeppelin-solidity/contracts/lifecycle/Destructible.sol",
+        "file": "openzeppelin-solidity/contracts/lifecycle/Destructible.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 1164,
-        "src": "26:72:0",
+        "scope": 125,
+        "sourceUnit": 1100,
+        "src": "26:68:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
+        "id": 3,
+        "nodeType": "ImportDirective",
+        "scope": 125,
+        "sourceUnit": 1340,
+        "src": "95:63:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaUsers.sol",
         "file": "./LinniaUsers.sol",
-        "id": 3,
+        "id": 4,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 955,
-        "src": "99:27:0",
+        "scope": 125,
+        "sourceUnit": 1009,
+        "src": "159:27:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaRecords.sol",
         "file": "./LinniaRecords.sol",
-        "id": 4,
+        "id": 5,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 811,
-        "src": "127:29:0",
+        "scope": 125,
+        "sourceUnit": 857,
+        "src": "187:29:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
         "absolutePath": "/home/liberty/workspace/linnia/Linnia-Smart-Contracts/contracts/LinniaPermissions.sol",
         "file": "./LinniaPermissions.sol",
-        "id": 5,
+        "id": 6,
         "nodeType": "ImportDirective",
-        "scope": 122,
-        "sourceUnit": 311,
-        "src": "157:33:0",
+        "scope": 125,
+        "sourceUnit": 327,
+        "src": "217:33:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -1768,57 +1852,77 @@ module.exports = {
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 6,
+              "id": 7,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1163,
-              "src": "215:7:0",
+              "referencedDeclaration": 1339,
+              "src": "275:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$1163",
+                "typeIdentifier": "t_contract$_Ownable_$1339",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 7,
+            "id": 8,
             "nodeType": "InheritanceSpecifier",
-            "src": "215:7:0"
+            "src": "275:7:0"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 9,
+              "name": "Destructible",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 1099,
+              "src": "284:12:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Destructible_$1099",
+                "typeString": "contract Destructible"
+              }
+            },
+            "id": 10,
+            "nodeType": "InheritanceSpecifier",
+            "src": "284:12:0"
           }
         ],
         "contractDependencies": [
-          1163
+          1099,
+          1339
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 121,
+        "id": 124,
         "linearizedBaseContracts": [
-          121,
-          1163
+          124,
+          1099,
+          1339
         ],
         "name": "LinniaHub",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 9,
+            "id": 12,
             "name": "usersContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "229:32:0",
+            "scope": 124,
+            "src": "303:32:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaUsers_$954",
+              "typeIdentifier": "t_contract$_LinniaUsers_$1008",
               "typeString": "contract LinniaUsers"
             },
             "typeName": {
               "contractScope": null,
-              "id": 8,
+              "id": 11,
               "name": "LinniaUsers",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 954,
-              "src": "229:11:0",
+              "referencedDeclaration": 1008,
+              "src": "303:11:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                 "typeString": "contract LinniaUsers"
               }
             },
@@ -1827,26 +1931,26 @@ module.exports = {
           },
           {
             "constant": false,
-            "id": 11,
+            "id": 14,
             "name": "recordsContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "267:36:0",
+            "scope": 124,
+            "src": "341:36:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaRecords_$810",
+              "typeIdentifier": "t_contract$_LinniaRecords_$856",
               "typeString": "contract LinniaRecords"
             },
             "typeName": {
               "contractScope": null,
-              "id": 10,
+              "id": 13,
               "name": "LinniaRecords",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 810,
-              "src": "267:13:0",
+              "referencedDeclaration": 856,
+              "src": "341:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                "typeIdentifier": "t_contract$_LinniaRecords_$856",
                 "typeString": "contract LinniaRecords"
               }
             },
@@ -1855,26 +1959,26 @@ module.exports = {
           },
           {
             "constant": false,
-            "id": 13,
+            "id": 16,
             "name": "permissionsContract",
             "nodeType": "VariableDeclaration",
-            "scope": 121,
-            "src": "309:44:0",
+            "scope": 124,
+            "src": "383:44:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+              "typeIdentifier": "t_contract$_LinniaPermissions_$326",
               "typeString": "contract LinniaPermissions"
             },
             "typeName": {
               "contractScope": null,
-              "id": 12,
+              "id": 15,
               "name": "LinniaPermissions",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 310,
-              "src": "309:17:0",
+              "referencedDeclaration": 326,
+              "src": "383:17:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                 "typeString": "contract LinniaPermissions"
               }
             },
@@ -1884,21 +1988,21 @@ module.exports = {
           {
             "anonymous": false,
             "documentation": null,
-            "id": 19,
+            "id": 22,
             "name": "LogUsersContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 18,
+              "id": 21,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 15,
+                  "id": 18,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19,
-                  "src": "386:12:0",
+                  "scope": 22,
+                  "src": "460:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1906,10 +2010,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 14,
+                    "id": 17,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "386:7:0",
+                    "src": "460:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1920,12 +2024,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 17,
+                  "id": 20,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 19,
-                  "src": "400:10:0",
+                  "scope": 22,
+                  "src": "474:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1933,10 +2037,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 16,
+                    "id": 19,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "400:7:0",
+                    "src": "474:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1946,28 +2050,28 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "385:26:0"
+              "src": "459:26:0"
             },
-            "src": "360:52:0"
+            "src": "434:52:0"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 25,
+            "id": 28,
             "name": "LogRecordsContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 24,
+              "id": 27,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 21,
+                  "id": 24,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 25,
-                  "src": "445:12:0",
+                  "scope": 28,
+                  "src": "519:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1975,10 +2079,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 20,
+                    "id": 23,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "445:7:0",
+                    "src": "519:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1989,12 +2093,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 23,
+                  "id": 26,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 25,
-                  "src": "459:10:0",
+                  "scope": 28,
+                  "src": "533:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2002,10 +2106,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 22,
+                    "id": 25,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "459:7:0",
+                    "src": "533:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -2015,28 +2119,28 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "444:26:0"
+              "src": "518:26:0"
             },
-            "src": "417:54:0"
+            "src": "491:54:0"
           },
           {
             "anonymous": false,
             "documentation": null,
-            "id": 31,
+            "id": 34,
             "name": "LogPermissionsContractSet",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 30,
+              "id": 33,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 27,
+                  "id": 30,
                   "indexed": false,
                   "name": "from",
                   "nodeType": "VariableDeclaration",
-                  "scope": 31,
-                  "src": "508:12:0",
+                  "scope": 34,
+                  "src": "582:12:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2044,10 +2148,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 26,
+                    "id": 29,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "508:7:0",
+                    "src": "582:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -2058,12 +2162,12 @@ module.exports = {
                 },
                 {
                   "constant": false,
-                  "id": 29,
+                  "id": 32,
                   "indexed": false,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 31,
-                  "src": "522:10:0",
+                  "scope": 34,
+                  "src": "596:10:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2071,10 +2175,10 @@ module.exports = {
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 28,
+                    "id": 31,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "522:7:0",
+                    "src": "596:7:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -2084,19 +2188,19 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "507:26:0"
+              "src": "581:26:0"
             },
-            "src": "476:58:0"
+            "src": "550:58:0"
           },
           {
             "body": {
-              "id": 34,
+              "id": 37,
               "nodeType": "Block",
-              "src": "561:3:0",
+              "src": "635:3:0",
               "statements": []
             },
             "documentation": null,
-            "id": 35,
+            "id": 38,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -2104,33 +2208,33 @@ module.exports = {
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 32,
+              "id": 35,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "551:2:0"
+              "src": "625:2:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 33,
+              "id": 36,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "561:0:0"
+              "src": "635:0:0"
             },
-            "scope": 121,
-            "src": "540:24:0",
+            "scope": 124,
+            "src": "614:24:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 38,
+              "id": 41,
               "nodeType": "Block",
-              "src": "589:3:0",
+              "src": "663:3:0",
               "statements": []
             },
             "documentation": null,
-            "id": 39,
+            "id": 42,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -2138,42 +2242,42 @@ module.exports = {
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 36,
+              "id": 39,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "579:2:0"
+              "src": "653:2:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 37,
+              "id": 40,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "589:0:0"
+              "src": "663:0:0"
             },
-            "scope": 121,
-            "src": "570:22:0",
+            "scope": 124,
+            "src": "644:22:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 65,
+              "id": 68,
               "nodeType": "Block",
-              "src": "714:171:0",
+              "src": "788:171:0",
               "statements": [
                 {
                   "assignments": [
-                    49
+                    52
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 49,
+                      "id": 52,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 66,
-                      "src": "724:12:0",
+                      "scope": 69,
+                      "src": "798:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -2181,10 +2285,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 48,
+                        "id": 51,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "724:7:0",
+                        "src": "798:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2194,20 +2298,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 53,
+                  "id": 56,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 51,
+                        "id": 54,
                         "name": "usersContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 9,
-                        "src": "747:13:0",
+                        "referencedDeclaration": 12,
+                        "src": "821:13:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       }
@@ -2215,24 +2319,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       ],
-                      "id": 50,
+                      "id": 53,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "739:7:0",
+                      "src": "813:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 52,
+                    "id": 55,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2240,33 +2344,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "739:22:0",
+                    "src": "813:22:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "724:37:0"
+                  "src": "798:37:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 56,
+                    "id": 59,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 54,
+                      "id": 57,
                       "name": "usersContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 9,
-                      "src": "771:13:0",
+                      "referencedDeclaration": 12,
+                      "src": "845:13:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                        "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                         "typeString": "contract LinniaUsers"
                       }
                     },
@@ -2274,26 +2378,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 55,
+                      "id": 58,
                       "name": "_usersContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 41,
-                      "src": "787:14:0",
+                      "referencedDeclaration": 44,
+                      "src": "861:14:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                        "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                         "typeString": "contract LinniaUsers"
                       }
                     },
-                    "src": "771:30:0",
+                    "src": "845:30:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                      "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                       "typeString": "contract LinniaUsers"
                     }
                   },
-                  "id": 57,
+                  "id": 60,
                   "nodeType": "ExpressionStatement",
-                  "src": "771:30:0"
+                  "src": "845:30:0"
                 },
                 {
                   "eventCall": {
@@ -2301,12 +2405,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 59,
+                        "id": 62,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 49,
-                        "src": "836:4:0",
+                        "referencedDeclaration": 52,
+                        "src": "910:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2314,14 +2418,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 60,
+                        "id": 63,
                         "name": "_usersContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 41,
-                        "src": "842:14:0",
+                        "referencedDeclaration": 44,
+                        "src": "916:14:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       }
@@ -2333,22 +2437,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                          "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                           "typeString": "contract LinniaUsers"
                         }
                       ],
-                      "id": 58,
+                      "id": 61,
                       "name": "LogUsersContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 19,
-                      "src": "816:19:0",
+                      "referencedDeclaration": 22,
+                      "src": "890:19:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 61,
+                    "id": 64,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2356,28 +2460,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "816:41:0",
+                    "src": "890:41:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 62,
+                  "id": 65,
                   "nodeType": "EmitStatement",
-                  "src": "811:46:0"
+                  "src": "885:46:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 63,
+                    "id": 66,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "874:4:0",
+                    "src": "948:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -2385,67 +2489,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 47,
-                  "id": 64,
+                  "functionReturnParameters": 50,
+                  "id": 67,
                   "nodeType": "Return",
-                  "src": "867:11:0"
+                  "src": "941:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 66,
+            "id": 69,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 44,
+                "id": 47,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 43,
+                  "id": 46,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "660:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "734:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "660:9:0"
+                "src": "734:9:0"
               }
             ],
             "name": "setUsersContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 42,
+              "id": 45,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 41,
+                  "id": 44,
                   "name": "_usersContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 66,
-                  "src": "624:26:0",
+                  "scope": 69,
+                  "src": "698:26:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                    "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                     "typeString": "contract LinniaUsers"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 40,
+                    "id": 43,
                     "name": "LinniaUsers",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 954,
-                    "src": "624:11:0",
+                    "referencedDeclaration": 1008,
+                    "src": "698:11:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaUsers_$954",
+                      "typeIdentifier": "t_contract$_LinniaUsers_$1008",
                       "typeString": "contract LinniaUsers"
                     }
                   },
@@ -2453,20 +2557,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "623:28:0"
+              "src": "697:28:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 47,
+              "id": 50,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 46,
+                  "id": 49,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 66,
-                  "src": "704:4:0",
+                  "scope": 69,
+                  "src": "778:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2474,10 +2578,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 45,
+                    "id": 48,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "704:4:0",
+                    "src": "778:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2487,32 +2591,32 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "703:6:0"
+              "src": "777:6:0"
             },
-            "scope": 121,
-            "src": "598:287:0",
+            "scope": 124,
+            "src": "672:287:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 92,
+              "id": 95,
               "nodeType": "Block",
-              "src": "1013:181:0",
+              "src": "1087:181:0",
               "statements": [
                 {
                   "assignments": [
-                    76
+                    79
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 76,
+                      "id": 79,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 93,
-                      "src": "1023:12:0",
+                      "scope": 96,
+                      "src": "1097:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -2520,10 +2624,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 75,
+                        "id": 78,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "1023:7:0",
+                        "src": "1097:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2533,20 +2637,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 80,
+                  "id": 83,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 78,
+                        "id": 81,
                         "name": "recordsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11,
-                        "src": "1046:15:0",
+                        "referencedDeclaration": 14,
+                        "src": "1120:15:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       }
@@ -2554,24 +2658,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       ],
-                      "id": 77,
+                      "id": 80,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1038:7:0",
+                      "src": "1112:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 79,
+                    "id": 82,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2579,33 +2683,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1038:24:0",
+                    "src": "1112:24:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1023:39:0"
+                  "src": "1097:39:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 83,
+                    "id": 86,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 81,
+                      "id": 84,
                       "name": "recordsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11,
-                      "src": "1072:15:0",
+                      "referencedDeclaration": 14,
+                      "src": "1146:15:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                        "typeIdentifier": "t_contract$_LinniaRecords_$856",
                         "typeString": "contract LinniaRecords"
                       }
                     },
@@ -2613,26 +2717,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 82,
+                      "id": 85,
                       "name": "_recordsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 68,
-                      "src": "1090:16:0",
+                      "referencedDeclaration": 71,
+                      "src": "1164:16:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                        "typeIdentifier": "t_contract$_LinniaRecords_$856",
                         "typeString": "contract LinniaRecords"
                       }
                     },
-                    "src": "1072:34:0",
+                    "src": "1146:34:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                      "typeIdentifier": "t_contract$_LinniaRecords_$856",
                       "typeString": "contract LinniaRecords"
                     }
                   },
-                  "id": 84,
+                  "id": 87,
                   "nodeType": "ExpressionStatement",
-                  "src": "1072:34:0"
+                  "src": "1146:34:0"
                 },
                 {
                   "eventCall": {
@@ -2640,12 +2744,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 86,
+                        "id": 89,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 76,
-                        "src": "1143:4:0",
+                        "referencedDeclaration": 79,
+                        "src": "1217:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2653,14 +2757,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 87,
+                        "id": 90,
                         "name": "_recordsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 68,
-                        "src": "1149:16:0",
+                        "referencedDeclaration": 71,
+                        "src": "1223:16:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       }
@@ -2672,22 +2776,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                          "typeIdentifier": "t_contract$_LinniaRecords_$856",
                           "typeString": "contract LinniaRecords"
                         }
                       ],
-                      "id": 85,
+                      "id": 88,
                       "name": "LogRecordsContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 25,
-                      "src": "1121:21:0",
+                      "referencedDeclaration": 28,
+                      "src": "1195:21:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 88,
+                    "id": 91,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2695,28 +2799,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1121:45:0",
+                    "src": "1195:45:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 89,
+                  "id": 92,
                   "nodeType": "EmitStatement",
-                  "src": "1116:50:0"
+                  "src": "1190:50:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 90,
+                    "id": 93,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1183:4:0",
+                    "src": "1257:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -2724,67 +2828,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 74,
-                  "id": 91,
+                  "functionReturnParameters": 77,
+                  "id": 94,
                   "nodeType": "Return",
-                  "src": "1176:11:0"
+                  "src": "1250:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 93,
+            "id": 96,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 71,
+                "id": 74,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 70,
+                  "id": 73,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "959:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "1033:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "959:9:0"
+                "src": "1033:9:0"
               }
             ],
             "name": "setRecordsContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 69,
+              "id": 72,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 68,
+                  "id": 71,
                   "name": "_recordsContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 93,
-                  "src": "919:30:0",
+                  "scope": 96,
+                  "src": "993:30:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                    "typeIdentifier": "t_contract$_LinniaRecords_$856",
                     "typeString": "contract LinniaRecords"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 67,
+                    "id": 70,
                     "name": "LinniaRecords",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 810,
-                    "src": "919:13:0",
+                    "referencedDeclaration": 856,
+                    "src": "993:13:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaRecords_$810",
+                      "typeIdentifier": "t_contract$_LinniaRecords_$856",
                       "typeString": "contract LinniaRecords"
                     }
                   },
@@ -2792,20 +2896,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "918:32:0"
+              "src": "992:32:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 74,
+              "id": 77,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 73,
+                  "id": 76,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 93,
-                  "src": "1003:4:0",
+                  "scope": 96,
+                  "src": "1077:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2813,10 +2917,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 72,
+                    "id": 75,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1003:4:0",
+                    "src": "1077:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2826,32 +2930,32 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1002:6:0"
+              "src": "1076:6:0"
             },
-            "scope": 121,
-            "src": "891:303:0",
+            "scope": 124,
+            "src": "965:303:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": {
-              "id": 119,
+              "id": 122,
               "nodeType": "Block",
-              "src": "1334:201:0",
+              "src": "1408:201:0",
               "statements": [
                 {
                   "assignments": [
-                    103
+                    106
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 103,
+                      "id": 106,
                       "name": "prev",
                       "nodeType": "VariableDeclaration",
-                      "scope": 120,
-                      "src": "1344:12:0",
+                      "scope": 123,
+                      "src": "1418:12:0",
                       "stateVariable": false,
                       "storageLocation": "default",
                       "typeDescriptions": {
@@ -2859,10 +2963,10 @@ module.exports = {
                         "typeString": "address"
                       },
                       "typeName": {
-                        "id": 102,
+                        "id": 105,
                         "name": "address",
                         "nodeType": "ElementaryTypeName",
-                        "src": "1344:7:0",
+                        "src": "1418:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2872,20 +2976,20 @@ module.exports = {
                       "visibility": "internal"
                     }
                   ],
-                  "id": 107,
+                  "id": 110,
                   "initialValue": {
                     "argumentTypes": null,
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 105,
+                        "id": 108,
                         "name": "permissionsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 13,
-                        "src": "1367:19:0",
+                        "referencedDeclaration": 16,
+                        "src": "1441:19:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       }
@@ -2893,24 +2997,24 @@ module.exports = {
                     "expression": {
                       "argumentTypes": [
                         {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       ],
-                      "id": 104,
+                      "id": 107,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1359:7:0",
+                      "src": "1433:7:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 106,
+                    "id": 109,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2918,33 +3022,33 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1359:28:0",
+                    "src": "1433:28:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   },
                   "nodeType": "VariableDeclarationStatement",
-                  "src": "1344:43:0"
+                  "src": "1418:43:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 110,
+                    "id": 113,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 108,
+                      "id": 111,
                       "name": "permissionsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 13,
-                      "src": "1397:19:0",
+                      "referencedDeclaration": 16,
+                      "src": "1471:19:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                        "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                         "typeString": "contract LinniaPermissions"
                       }
                     },
@@ -2952,26 +3056,26 @@ module.exports = {
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 109,
+                      "id": 112,
                       "name": "_permissionsContract",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 95,
-                      "src": "1419:20:0",
+                      "referencedDeclaration": 98,
+                      "src": "1493:20:0",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                        "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                         "typeString": "contract LinniaPermissions"
                       }
                     },
-                    "src": "1397:42:0",
+                    "src": "1471:42:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                      "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                       "typeString": "contract LinniaPermissions"
                     }
                   },
-                  "id": 111,
+                  "id": 114,
                   "nodeType": "ExpressionStatement",
-                  "src": "1397:42:0"
+                  "src": "1471:42:0"
                 },
                 {
                   "eventCall": {
@@ -2979,12 +3083,12 @@ module.exports = {
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 113,
+                        "id": 116,
                         "name": "prev",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 103,
-                        "src": "1480:4:0",
+                        "referencedDeclaration": 106,
+                        "src": "1554:4:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2992,14 +3096,14 @@ module.exports = {
                       },
                       {
                         "argumentTypes": null,
-                        "id": 114,
+                        "id": 117,
                         "name": "_permissionsContract",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 95,
-                        "src": "1486:20:0",
+                        "referencedDeclaration": 98,
+                        "src": "1560:20:0",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       }
@@ -3011,22 +3115,22 @@ module.exports = {
                           "typeString": "address"
                         },
                         {
-                          "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                          "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                           "typeString": "contract LinniaPermissions"
                         }
                       ],
-                      "id": 112,
+                      "id": 115,
                       "name": "LogPermissionsContractSet",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 31,
-                      "src": "1454:25:0",
+                      "referencedDeclaration": 34,
+                      "src": "1528:25:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$returns$__$",
                         "typeString": "function (address,address)"
                       }
                     },
-                    "id": 115,
+                    "id": 118,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -3034,28 +3138,28 @@ module.exports = {
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1454:53:0",
+                    "src": "1528:53:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 116,
+                  "id": 119,
                   "nodeType": "EmitStatement",
-                  "src": "1449:58:0"
+                  "src": "1523:58:0"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
                     "hexValue": "74727565",
-                    "id": 117,
+                    "id": 120,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "bool",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1524:4:0",
+                    "src": "1598:4:0",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
@@ -3063,67 +3167,67 @@ module.exports = {
                     },
                     "value": "true"
                   },
-                  "functionReturnParameters": 101,
-                  "id": 118,
+                  "functionReturnParameters": 104,
+                  "id": 121,
                   "nodeType": "Return",
-                  "src": "1517:11:0"
+                  "src": "1591:11:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 120,
+            "id": 123,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 98,
+                "id": 101,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 97,
+                  "id": 100,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1137,
-                  "src": "1280:9:0",
+                  "referencedDeclaration": 1287,
+                  "src": "1354:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
                     "typeString": "modifier ()"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1280:9:0"
+                "src": "1354:9:0"
               }
             ],
             "name": "setPermissionsContract",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 96,
+              "id": 99,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 95,
+                  "id": 98,
                   "name": "_permissionsContract",
                   "nodeType": "VariableDeclaration",
-                  "scope": 120,
-                  "src": "1232:38:0",
+                  "scope": 123,
+                  "src": "1306:38:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                    "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                     "typeString": "contract LinniaPermissions"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 94,
+                    "id": 97,
                     "name": "LinniaPermissions",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 310,
-                    "src": "1232:17:0",
+                    "referencedDeclaration": 326,
+                    "src": "1306:17:0",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_LinniaPermissions_$310",
+                      "typeIdentifier": "t_contract$_LinniaPermissions_$326",
                       "typeString": "contract LinniaPermissions"
                     }
                   },
@@ -3131,20 +3235,20 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1231:40:0"
+              "src": "1305:40:0"
             },
             "payable": false,
             "returnParameters": {
-              "id": 101,
+              "id": 104,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 100,
+                  "id": 103,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 120,
-                  "src": "1324:4:0",
+                  "scope": 123,
+                  "src": "1398:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3152,10 +3256,10 @@ module.exports = {
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 99,
+                    "id": 102,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1324:4:0",
+                    "src": "1398:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -3165,24 +3269,24 @@ module.exports = {
                   "visibility": "internal"
                 }
               ],
-              "src": "1323:6:0"
+              "src": "1397:6:0"
             },
-            "scope": 121,
-            "src": "1200:335:0",
+            "scope": 124,
+            "src": "1274:335:0",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 122,
-        "src": "193:1344:0"
+        "scope": 125,
+        "src": "253:1358:0"
       }
     ],
-    "src": "0:1538:0"
+    "src": "0:1612:0"
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
     "3": {
@@ -3238,6 +3342,18 @@ module.exports = {
           "name": "LogPermissionsContractSet",
           "type": "event"
         },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event"
+        },
         "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
           "anonymous": false,
           "inputs": [
@@ -3257,10 +3373,10 @@ module.exports = {
         }
       },
       "links": {},
-      "address": "0x16b926511f04d06a709b448df71af4580428cf4d",
-      "transactionHash": "0x6cc4521c0ed36bb494cb1d68cd63a0552b00e3901aeff516ae30d2642e6b1b0f"
+      "address": "0xc39f2e4645de2550ee3b64e6dc47f927e8a98934",
+      "transactionHash": "0xe05842a198afc3c28c241e92845b3407c4d2430ccf8413a73f276def1a66198a"
     }
   },
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-06-03T04:08:51.044Z"
+  "updatedAt": "2018-06-25T22:30:05.683Z"
 }

@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import ethjsUtil from 'ethjs-util';
+import eutil from 'ethereumjs-util';
 import Web3 from 'web3';
 import Linnia from '../src';
 
@@ -14,9 +14,9 @@ describe('Linnia-deploy', () => {
       hub, users, records, permissions,
     } = await linnia.getContractInstances();
     // deployed contracts shouldn't have zero address
-    assert.lengthOf(ethjsUtil.stripHexPrefix(hub.address), 40);
-    assert.lengthOf(ethjsUtil.stripHexPrefix(users.address), 40);
-    assert.lengthOf(ethjsUtil.stripHexPrefix(records.address), 40);
-    assert.lengthOf(ethjsUtil.stripHexPrefix(permissions.address), 40);
+    assert.lengthOf(eutil.stripHexPrefix(hub.address), 40);
+    assert.lengthOf(eutil.stripHexPrefix(users.address), 40);
+    assert.lengthOf(eutil.stripHexPrefix(records.address), 40);
+    assert.lengthOf(eutil.stripHexPrefix(permissions.address), 40);
   });
 });
