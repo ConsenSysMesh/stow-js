@@ -35,8 +35,8 @@ jobs:
 
       # run tests!
 
-      - run: npm run testrpc & sleep 5s
-      - run: npm test
+      - run: npm run testrpc &
+      - run: sleep 5s && npm test
 
 
 
