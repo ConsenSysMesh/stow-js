@@ -34,9 +34,11 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-
-      - run: npm run testrpc &
-      - run: sleep 15s && npm test
+      - run:
+          command: npm run testrpc
+          background: true
+      - run: sleep 5
+      - run: npm test
 
 
 
