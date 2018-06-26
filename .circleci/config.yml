@@ -39,14 +39,15 @@ jobs:
           background: true
       - run: sleep 5
       - run: npm test
+      - run: npm run build
 
       # Teardown
       #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
       # Save test results
-      - store_test_results:
-          path:  coverage
-      # Save artifacts
+#      - store_test_results:
+#          path:  coverage
+#      # Save artifacts
+#      - store_artifacts:
+#          path: coverage
       - store_artifacts:
-          path: coverage
-      - store_artifacts:
-          path: build
+          path: dist
