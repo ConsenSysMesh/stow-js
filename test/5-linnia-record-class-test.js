@@ -7,12 +7,9 @@ import Linnia from '../src';
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testData = 'foobar';
 const testDataHash = '0x38d18acb67d25c8bb9942764b62f18e17054f66a817bd4295423adf9ed98873e';
-// TODO: replace this with non-raw string like
-// /ipfs/QmUMqi1rr4Ad1eZ3ctsRUEmqK2U3CyZqpetUe51LB9GiAM
-// when contract artifacts are updated
-const testDataUri = '0x59742369c54039d5611d84452aa6c31b72da336b76ed4029b12c3dc5479836ba';
+const testDataUri = 'QmYvPnLBAwfsWoj8NqGCt8ZoNDrz4mgVZT5zxNKNRHA9XK';
 const testMetaData = 'Blood_Pressure';
-const testSharedUri = '0xde1f76340a34698d41d362010bbc3c05c26f25d659904ef08ef7bd5eac0dbea4';
+const testSharedUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b';
 const pubKey = eutil.bufferToHex(eutil.privateToPublic(privKey));
 
@@ -41,6 +38,7 @@ describe('Record class', () => {
     // share the file with user2
     await contracts.permissions.grantAccess(testDataHash, user2, testSharedUri, {
       from: user1,
+      gas: 500000,
     });
   });
   describe('get attestation', () => {
@@ -66,8 +64,7 @@ describe('Record class', () => {
       const record = await linnia.getRecord(testDataHash);
       const perm = await record.getPermission(user3);
       assert.isFalse(perm.canAccess);
-      // XXX
-      assert.equal(perm.dataUri, `0x${'00'.repeat(32)}`);
+      assert.isEmpty(perm.dataUri);
     });
   });
   describe('decrypt', () => {

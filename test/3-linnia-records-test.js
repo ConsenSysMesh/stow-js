@@ -4,10 +4,7 @@ import Linnia from '../src';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a217fb1ef14';
-// TODO: replace this with non-raw string like
-// /ipfs/QmUMqi1rr4Ad1eZ3ctsRUEmqK2U3CyZqpetUe51LB9GiAM
-// when contract artifacts are updated
-const testDataUri = '0x59742369c54039d5611d84452aa6c31b72da336b76ed4029b12c3dc5479836ba';
+const testDataUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const testMetaData = 'Blood_Pressure';
 
 describe('Linnia-records', () => {

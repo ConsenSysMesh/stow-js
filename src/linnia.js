@@ -9,7 +9,6 @@ import Record from './record';
 import _deploy from './deploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
-import _encoding from './encoding';
 import _util from './util';
 
 /**
@@ -117,7 +116,6 @@ class Linnia {
   }
 }
 
-Linnia.encoding = _encoding;
 Linnia.util = _util;
 
 export default Linnia;

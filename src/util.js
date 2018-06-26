@@ -1,19 +1,5 @@
 import ecies from 'eth-ecies';
-import ethjsUtil from 'ethjs-util';
-import { Buffer } from 'safe-buffer';
-
-const toBuffer = (v) => {
-  if (Buffer.isBuffer(v)) {
-    return v;
-  }
-  if (typeof v !== 'string') {
-    throw new Error('value must be string or buffer');
-  }
-  if (ethjsUtil.isHexString(v)) {
-    return Buffer.from(ethjsUtil.padToEven(ethjsUtil.stripHexPrefix(v)), 'hex');
-  }
-  return Buffer.from(v);
-};
+import { toBuffer } from 'ethereumjs-util';
 
 /**
  * ECIES encrypt
