@@ -89,6 +89,15 @@ class Linnia {
     return _permissionsFunctions.getPermission(permissions, dataHash, viewerAddress);
   }
 
+  /**
+   * Get the data from IPFS given an IPFS path
+   * @param {String} ipfsPath
+   */
+  async resolveIpfsUri(ipfsPath) {
+    const res = await this.ipfs.files.get(ipfsPath);
+    return res[0].content;
+  }
+
   async _getHubInstance() {
     // get hub contract instance
     // look up address either from user defined address or artifact
