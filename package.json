@@ -28,8 +28,7 @@
     "bignumber.js": "^7.2.1",
     "eth-ecies": "^1.0.3",
     "ethereumjs-util": "^5.2.0",
-    "truffle-contract": "^3.0.5",
-    "web3": "^0.20.6"
+    "truffle-contract": "^3.0.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -47,7 +46,9 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
     "ganache-cli": "^6.1.2",
+    "ipfs-api": "^22.1.1",
     "mocha": "^5.2.0",
+    "web3": "^0.20.6",
     "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4"
   }
