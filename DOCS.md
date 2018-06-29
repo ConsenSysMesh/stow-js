@@ -121,6 +121,27 @@ Gets the permission information of a record
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
 
+## linnia.resolveIpfsUri
+```javascript
+linnia.resolveIpfsUri(ipfsPath)
+```
+Gets the data from IPFS under the specified IPFS path
+
+### Parameters
+1. `String` - The IPFS path, should be a base-58 encoded multihash
+
+### Returns
+`Promise<Buffer>` - A promise when resolved returns the data stored on IPFS
+
+### Example
+```javascript
+let ipfsPath = 'QmYvPnLBAwfsWoj8NqGCt8ZoNDrz4mgVZT5zxNKNRHA9XK'
+linnia.resolveIpfsUri(ipfsPath).then((data) => {
+  // if the buffer is plaintext, you can print it directly
+  console.log(data.toString())
+})
+```
+
 ---
 # Record class
 An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.
@@ -188,14 +209,24 @@ Gets the plaintext data of the record
 `Promise<Buffer>` - The plaintext data
 
 ### Example
+Example of using IPFS URI and resolver
 ```javascript
 let privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b'
-linnia.decryptData(privKey, (dataUri) => {
+linnia.decryptData(privKey, linnia.resolveIpfsUri).then((plainText) => {
+  console.log(plainText.toString())
+})
+```
+
+Example of using HTTP URI and resolver
+```javascript
+let privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b'
+const resolver = (dataUri) => {
   // assume data URI is HTTP URL here
   return fetch(dataUri).then((res) => {
     return res.arrayBuffer()
   })
-}).then((plainText) => {
+}
+linnia.decryptData(privKey, resolver).then((plainText) => {
   console.log(plainText.toString())
 })
 ```

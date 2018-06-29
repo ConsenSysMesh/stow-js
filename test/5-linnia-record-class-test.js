@@ -2,23 +2,36 @@ import { assert } from 'chai';
 import crypto from 'crypto';
 import eutil from 'ethereumjs-util';
 import Web3 from 'web3';
+import IPFS from 'ipfs-api';
 import Linnia from '../src';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+const ipfs = IPFS('localhost', '5001');
 const testData = 'foobar';
-const testDataHash = '0x38d18acb67d25c8bb9942764b62f18e17054f66a817bd4295423adf9ed98873e';
 const testDataUri = 'QmYvPnLBAwfsWoj8NqGCt8ZoNDrz4mgVZT5zxNKNRHA9XK';
+const testDataHash = eutil.bufferToHex(eutil.keccak256(testData));
 const testMetaData = 'Blood_Pressure';
 const testSharedUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b';
 const pubKey = eutil.bufferToHex(eutil.privateToPublic(privKey));
+const privKey2 = '0xeffdde42ec247b6753d6dc950dc1741a1e364eaefdd838928c81fd41d98db59a';
+const pubKey2 = eutil.bufferToHex(eutil.privateToPublic(privKey2));
+
+const ipfsResolverMock = dataUri => new Promise((resolve, reject) => {
+  if (dataUri === testDataUri) {
+    resolve(Linnia.util.encrypt(pubKey, testData));
+  } else if (dataUri === testSharedUri) {
+    resolve(Linnia.util.encrypt(pubKey2, testData));
+  }
+  reject(new Error('unknown ipfs uri'));
+});
 
 describe('Record class', () => {
   const [admin, user1, user2, user3, provider] = web3.eth.accounts;
   let linnia;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {
-    linnia = await Linnia.deploy(web3, null, {
+    linnia = await Linnia.deploy(web3, ipfs, {
       from: admin,
       gas: 4000000,
     });
@@ -69,11 +82,10 @@ describe('Record class', () => {
   });
   describe('decrypt', () => {
     it('should decrypt the data if hash is correct', async () => {
-      // make the URI resolver always return the encrypted data
       const uriResolver = (dataUri) => {
         // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return ipfsResolverMock(dataUri);
       };
       const record = await linnia.getRecord(testDataHash);
       const plain = await record.decryptData(privKey, uriResolver);
@@ -96,14 +108,14 @@ describe('Record class', () => {
       const uriResolver = (dataUri) => {
         // the URI being passed in should be the shared copy
         assert.equal(dataUri, testSharedUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return ipfsResolverMock(dataUri);
       };
       const record = await linnia.getRecord(testDataHash);
-      const plain = await record.decryptPermissioned(user2, privKey, uriResolver);
+      const plain = await record.decryptPermissioned(user2, privKey2, uriResolver);
       assert.equal(plain.toString(), testData);
     });
     it('should throw if viewer has no permission', async () => {
-      const uriResolver = () => Linnia.util.encrypt(pubKey, testData);
+      const uriResolver = ipfsResolverMock;
       const record = await linnia.getRecord(testDataHash);
       try {
         await record.decryptPermissioned(user3, privKey, uriResolver);
@@ -140,7 +152,7 @@ describe('Record class', () => {
     it('should re-encrypt to the public key', async () => {
       const uriResolver = (dataUri) => {
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return ipfsResolverMock(dataUri);
       };
       // make a new keypair
       const priv = crypto.randomBytes(32);
