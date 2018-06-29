@@ -17,14 +17,14 @@ const pubKey = eutil.bufferToHex(eutil.privateToPublic(privKey));
 const privKey2 = '0xeffdde42ec247b6753d6dc950dc1741a1e364eaefdd838928c81fd41d98db59a';
 const pubKey2 = eutil.bufferToHex(eutil.privateToPublic(privKey2));
 
-const ipfsResolverMock = (dataUri) => {
+const ipfsResolverMock = dataUri => new Promise((resolve, reject) => {
   if (dataUri === testDataUri) {
-    return Linnia.util.encrypt(pubKey, testData);
+    resolve(Linnia.util.encrypt(pubKey, testData));
   } else if (dataUri === testSharedUri) {
-    return Linnia.util.encrypt(pubKey2, testData);
+    resolve(Linnia.util.encrypt(pubKey2, testData));
   }
-  throw new Error('unknown ipfs uri');
-};
+  reject(new Error('unknown ipfs uri'));
+});
 
 describe('Record class', () => {
   const [admin, user1, user2, user3, provider] = web3.eth.accounts;
