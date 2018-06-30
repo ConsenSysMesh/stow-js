@@ -7,8 +7,8 @@ const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a21
 const testDataUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const testMetaData = 'Blood_Pressure';
 
-describe('Linnia-records', () => {
-  const [admin, patient, provider] = web3.eth.accounts;
+describe('Linnia-records', async () => {
+  const [admin, patient, provider] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
   let recordAddTime;
@@ -30,13 +30,15 @@ describe('Linnia-records', () => {
         gas: 500000,
       },
     );
-    recordAddTime = web3.eth.getBlock(tx.receipt.blockNumber).timestamp;
+    const blockNumber = tx.receipt.blockNumber;
+    const block = await web3.eth.getBlock(blockNumber);
+    recordAddTime = block.timestamp;
   });
   describe('get record', () => {
     it('should return the formatted data record', async () => {
       const record = await linnia.getRecord(testDataHash);
-      assert.equal(record.owner, patient);
-      assert.equal(record.metadataHash, web3.sha3(testMetaData));
+      assert.equal(record.owner.toLowerCase(), patient.toLowerCase());
+      assert.equal(record.metadataHash, web3.utils.sha3(testMetaData));
       assert.equal(record.sigCount, 1);
       assert.equal(record.irisScore, 1);
       assert.equal(record.dataUri, testDataUri);

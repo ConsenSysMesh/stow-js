@@ -21,7 +21,21 @@ const encrypt = (pubKeyTo, plaintext, opts) =>
 const decrypt = (privKey, encrypted) =>
   ecies.decrypt(toBuffer(privKey), toBuffer(encrypted));
 
+const truffleHack = (contract) => {
+    if (typeof contract.currentProvider.sendAsync !== "function") {
+        contract.currentProvider.sendAsync = function() {
+            return contract.currentProvider.send.apply(
+                contract.currentProvider, arguments
+            );
+        };
+    }
+    return contract;
+};
+
 export default {
   encrypt,
   decrypt,
+  truffleHack
 };
+
+

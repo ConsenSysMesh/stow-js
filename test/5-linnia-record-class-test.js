@@ -13,8 +13,8 @@ const testSharedUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const privKey = '0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b';
 const pubKey = eutil.bufferToHex(eutil.privateToPublic(privKey));
 
-describe('Record class', () => {
-  const [admin, user1, user2, user3, provider] = web3.eth.accounts;
+describe('Record class', async () => {
+  const [admin, user1, user2, user3, provider] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {
