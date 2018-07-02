@@ -34,4 +34,35 @@ describe('Linnia-redeploy', () => {
     assert.notEqual(records.address, oldRecords);
     assert.equal(permissions.address, oldPermissions);
   });
+
+  it('should redeploy the users contract', async () => {
+    const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+    const accounts = await web3.eth.getAccounts();
+    const linnia = await Linnia.deploy(web3, null, {
+      from: accounts[0],
+      gas: 4000000,
+    });
+    var {
+      hub, users, records, permissions,
+    } = await linnia.getContractInstances();
+
+    // Old addresses
+    const oldHub = hub.address
+    const oldUsers = users.address
+    const oldRecords = records.address
+    const oldPermissions = permissions.address
+
+    const newUsers = await linnia.redeployLinniaUsers({
+      from: accounts[0],
+      gas: 5000000,
+    })
+    var { hub, users, records, permissions } = await linnia.getContractInstances()
+
+    // all contracts should mantain the same address except the users
+    assert.equal(hub.address, oldHub);
+    assert.equal(newUsers.address, users.address);
+    assert.notEqual(users.address, oldUsers);
+    assert.equal(records.address, oldRecords);
+    assert.equal(permissions.address, oldPermissions);
+  });
 });
