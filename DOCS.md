@@ -121,6 +121,24 @@ Gets the permission information of a record
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
 
+## linnia.redeployLinniaRecords 
+
+*This function can only be called by the owner which is the address that deployed the Hub
+
+```javascript
+linnia.redeployLinniaRecords([, options])
+```
+
+Redeploy the records contract and keep all the others. This can be used in order to make changes in the code or just to remove all the data.
+
+### Parameters
+
+1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction). If not specified, defaults will be used in the transactions that deploy the contract.
+
+### Returns
+
+`Promise<LinniaRecords>` - A promise when resolved returns the new instance of the LinniaRecords contract
+
 ---
 # Record class
 An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.
