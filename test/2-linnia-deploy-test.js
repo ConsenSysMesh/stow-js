@@ -6,8 +6,9 @@ import Linnia from '../src';
 describe('Linnia-deploy', () => {
   it('should deploy the contracts', async () => {
     const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+    const accounts = await web3.eth.getAccounts();
     const linnia = await Linnia.deploy(web3, null, {
-      from: web3.eth.accounts[0],
+      from: accounts[0],
       gas: 4000000,
     });
     const {

@@ -8,8 +8,8 @@ const testDataUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const testMetaData = 'Blood_Pressure';
 const testSharedUri = '0xde1f76340a34698d41d362010bbc3c05c26f25d659904ef08ef7bd5eac0dbea4';
 
-describe('Linnia-permissions', () => {
-  const [admin, user1, user2, user3, provider] = web3.eth.accounts;
+describe('Linnia-permissions', async () => {
+  const [admin, user1, user2, user3, provider] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {

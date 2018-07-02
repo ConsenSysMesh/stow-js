@@ -26,14 +26,18 @@ class Linnia {
     this.web3 = web3;
     this.ipfs = ipfs;
     // truffle contracts
-    this._hub = TruffleContract(LinniaHub);
-    this._users = TruffleContract(LinniaUsers);
-    this._records = TruffleContract(LinniaRecords);
-    this._permissions = TruffleContract(LinniaPermissions);
-    this._hub.setProvider(web3.currentProvider);
-    this._users.setProvider(web3.currentProvider);
-    this._records.setProvider(web3.currentProvider);
-    this._permissions.setProvider(web3.currentProvider);
+    const _hub = TruffleContract(LinniaHub);
+    const _users = TruffleContract(LinniaUsers);
+    const _records = TruffleContract(LinniaRecords);
+    const _permissions = TruffleContract(LinniaPermissions);
+    _hub.setProvider(web3.currentProvider);
+    _users.setProvider(web3.currentProvider);
+    _records.setProvider(web3.currentProvider);
+    _permissions.setProvider(web3.currentProvider);
+    this._hub = _util.truffleHack(_hub);
+    this._users = _util.truffleHack(_users);
+    this._records = _util.truffleHack(_records);
+    this._permissions = _util.truffleHack(_permissions);
     // set hub address
     if (opt.hubAddress) {
       // using user defined address
