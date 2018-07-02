@@ -21,7 +21,7 @@ describe('Linnia-redeploy', () => {
     const oldRecords = records.address
     const oldPermissions = permissions.address
 
-    await linnia.reDeployLinniaRecords({
+    const newRecords = await linnia.redeployLinniaRecords({
       from: accounts[0],
       gas: 5000000,
     })
@@ -30,6 +30,7 @@ describe('Linnia-redeploy', () => {
     // all contracts should mantain the same address except the records
     assert.equal(hub.address, oldHub);
     assert.equal(users.address, oldUsers);
+    assert.equal(newRecords.address, records.address);
     assert.notEqual(records.address, oldRecords);
     assert.equal(permissions.address, oldPermissions);
   });

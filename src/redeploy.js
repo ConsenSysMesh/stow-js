@@ -25,7 +25,11 @@ const redeploy = async (web3, opt, hub, contract) => {
     case "LinniaPermissions":
         await hub.setPermissionsContract(contractInstance.address, opt);
         break;
+    default:
+        throw Error('The contract does not exists');
   }
+
+  return contractInstance;
 
 };
 

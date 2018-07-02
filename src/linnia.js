@@ -7,7 +7,7 @@ import LinniaPermissions from './contracts/LinniaPermissions';
 
 import Record from './record';
 import _deploy from './deploy';
-import _redeploy from './re-deploy';
+import _redeploy from './redeploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
@@ -123,10 +123,12 @@ class Linnia {
 
   /**
    * Re-Deploy LinniaRecords contract and replace it in the same Hub
+   * * @returns {Promise<LinniaRecords>} instance of the new LinnniaRecords contract
    */
-  async reDeployLinniaRecords(opt) {
+  async redeployLinniaRecords(opt) {
     const hub = await this._getHubInstance()
-    await _redeploy(this.web3, opt, hub, LinniaRecords);
+    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaRecords);
+    return contractInstance;
   }
 }
 
