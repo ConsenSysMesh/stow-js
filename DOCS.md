@@ -139,6 +139,26 @@ Redeploy the records contract and keep all the others. This can be used in order
 
 `Promise<LinniaRecords>` - A promise when resolved returns the new instance of the LinniaRecords contract
 
+
+
+## linnia.redeployLinniaUsers
+
+*This function can only be called by the owner which is the address that deployed the Hub
+
+```javascript
+linnia.redeployLinniaUsers([, options])
+```
+
+Redeploy the users contract and keep all the others. This can be used in order to make changes in the code or just to remove all the users.
+
+### Parameters
+
+1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction). If not specified, defaults will be used in the transactions that deploy the contract.
+
+### Returns
+
+`Promise<LinniaUsers>` - A promise when resolved returns the new instance of the LinniaRecords contract
+
 ---
 # Record class
 An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.

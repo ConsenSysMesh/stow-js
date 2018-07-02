@@ -130,6 +130,16 @@ class Linnia {
     const contractInstance = await _redeploy(this.web3, opt, hub, LinniaRecords);
     return contractInstance;
   }
+
+  /**
+   * Re-Deploy LinniaUsers contract and replace it in the same Hub
+   * * @returns {Promise<LinniaUsers>} instance of the new LinnniaUsers contract
+   */
+  async redeployLinniaUsers(opt) {
+    const hub = await this._getHubInstance()
+    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaUsers);
+    return contractInstance;
+  }
 }
 
 Linnia.util = _util;
