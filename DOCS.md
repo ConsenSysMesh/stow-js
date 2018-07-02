@@ -119,7 +119,19 @@ Gets the permission information of a record
 ### Returns
 `Promise<Object>` - A promise when resolved returns a Linnia Permission object.
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
-- `dataUri`: `String` - The data URI of the shared record
+- `dataUri`: `String` - The data URI of the shared recordg
+
+## linnia.reDeployLinniaRecords
+
+```javascript
+linnia.reDeployLinniaRecords([, options])
+```
+
+Redeploy the records contract and keep all the others. This can be used in order to make changes in the code or just to remove all the data.
+
+### Parameters
+
+1. `Object` - (Optional) A web3 [transaction object](https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethsendtransaction). If not specified, defaults will be used in the transactions that deploy the contract.
 
 ---
 # Record class

@@ -7,6 +7,7 @@ import LinniaPermissions from './contracts/LinniaPermissions';
 
 import Record from './record';
 import _deploy from './deploy';
+import _redeploy from './re-deploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
@@ -117,6 +118,15 @@ class Linnia {
     return new Linnia(web3, ipfs, {
       hubAddress: deployed.hubInstance.address,
     });
+  }
+
+
+  /**
+   * Re-Deploy LinniaRecords contract and replace it in the same Hub
+   */
+  async reDeployLinniaRecords(opt) {
+    const hub = await this._getHubInstance()
+    await _redeploy(this.web3, opt, hub, LinniaRecords);
   }
 }
 
