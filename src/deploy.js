@@ -12,9 +12,6 @@ const deploy = async (web3, opt) => {
     throw Error('web3 is undefined!');
   }
 
-  const accounts = await web3.eth.getAccounts();
-  web3.eth.defaultAccount = accounts[0];
-
   const _hub = TruffleContract(LinniaHub);
   const _users = TruffleContract(LinniaUsers);
   const _records = TruffleContract(LinniaRecords);

@@ -8,7 +8,7 @@ const testDataUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const testMetaData = 'Blood_Pressure';
 
 describe('Linnia-records', async () => {
-  const [admin, patient, provider] = await web3.eth.getAccounts();
+  const [admin, user, provider] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
   let recordAddTime;
@@ -18,13 +18,13 @@ describe('Linnia-records', async () => {
       gas: 4000000,
     });
     contracts = await linnia.getContractInstances();
-    // add a patient and a provider
-    await contracts.users.register({ from: patient });
+    // add a user and a provider
+    await contracts.users.register({ from: user });
     await contracts.users.register({ from: provider });
     await contracts.users.setProvenance(provider, 1, { from: admin });
     // append a file
     const tx = await contracts.records.addRecordByProvider(
-      testDataHash, patient, testMetaData,
+      testDataHash, user, testMetaData,
       testDataUri, {
         from: provider,
         gas: 500000,
@@ -37,7 +37,7 @@ describe('Linnia-records', async () => {
   describe('get record', () => {
     it('should return the formatted data record', async () => {
       const record = await linnia.getRecord(testDataHash);
-      assert.equal(record.owner.toLowerCase(), patient.toLowerCase());
+      assert.equal(record.owner.toLowerCase(), user.toLowerCase());
       assert.equal(record.metadataHash, web3.utils.sha3(testMetaData));
       assert.equal(record.sigCount, 1);
       assert.equal(record.irisScore, 1);
@@ -52,7 +52,7 @@ describe('Linnia-records', async () => {
       assert.isTrue(att);
     });
     it('should return false if not attested by specified user', async () => {
-      const att = await linnia.getAttestation(testDataHash, patient);
+      const att = await linnia.getAttestation(testDataHash, user);
       assert.isFalse(att);
     });
   });
