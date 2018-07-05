@@ -103,6 +103,8 @@ class Linnia {
     return this._hub.deployed();
   }
 
+  //TODO, Remove Deploy functionality from this library and add it to an internal repo
+
   /**
    * Deploy Linnia contracts, and construct the Linnia API that uses the newly
    *  deployed contracts.
@@ -138,6 +140,16 @@ class Linnia {
   async redeployLinniaUsers(opt) {
     const hub = await this._getHubInstance()
     const contractInstance = await _redeploy(this.web3, opt, hub, LinniaUsers);
+    return contractInstance;
+  }
+
+  /**
+   * Re-Deploy LinniaPermissions contract and replace it in the same Hub
+   * * @returns {Promise<LinniaPermissions>} instance of the new LinniaPermissions contract
+   */
+  async redeployLinniaPermissions(opt) {
+    const hub = await this._getHubInstance()
+    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaPermissions);
     return contractInstance;
   }
 }
