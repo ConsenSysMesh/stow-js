@@ -103,6 +103,8 @@ class Linnia {
     return this._hub.deployed();
   }
 
+  //TODO, Remove Deploy functionality from this library and add it to an internal repo
+
   /**
    * Deploy Linnia contracts, and construct the Linnia API that uses the newly
    *  deployed contracts.
