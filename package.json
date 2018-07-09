@@ -1,5 +1,5 @@
 {
-  "name": "@linniaprotocol/linnia",
+  "name": "@linniaprotocol/linnia-july-2018",
   "version": "0.1.0",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
@@ -18,7 +18,6 @@
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
   "author": "Wenchao Wang <wenchao.wang@consensys.net>",
-  "private": true,
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
   },
@@ -29,7 +28,8 @@
     "eth-ecies": "^1.0.3",
     "ethereumjs-util": "^5.2.0",
     "truffle-contract": "^3.0.6",
-    "web3": "^1.0.0-beta.34"
+    "web3": "^1.0.0-beta.34",
+    "websocket": "^1.0.26"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
