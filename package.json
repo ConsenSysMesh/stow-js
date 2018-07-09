@@ -1,5 +1,5 @@
 {
-  "name": "linnia",
+  "name": "@linniaprotocol/linnia",
   "version": "0.1.0",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
@@ -18,7 +18,7 @@
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
   "author": "Wenchao Wang <wenchao.wang@consensys.net>",
-  "license": "MIT",
+  "private": true,
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
   },
