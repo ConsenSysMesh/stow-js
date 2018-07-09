@@ -18,6 +18,7 @@
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
   "author": "Wenchao Wang <wenchao.wang@consensys.net>",
+  "private": true,
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
   },
