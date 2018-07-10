@@ -6,7 +6,7 @@
   "browser": "dist/linnia.js",
   "scripts": {
     "build:es5": "babel src -d lib -s",
-    "build:browser": "webpack --mode=production",
+    "build:browser": "webpack",
     "build": "npm run build:es5 && npm run build:browser",
     "lint": "eslint src",
     "testrpc": "ganache-cli -p 7545 -i 5777",
