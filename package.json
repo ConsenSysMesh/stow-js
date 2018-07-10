@@ -1,6 +1,6 @@
 {
   "name": "@linniaprotocol/linnia-july-2018",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
   "browser": "dist/linnia.js",
