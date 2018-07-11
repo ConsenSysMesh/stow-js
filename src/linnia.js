@@ -1,9 +1,9 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaHub from './contracts/LinniaHub';
-import LinniaUsers from './contracts/LinniaUsers';
-import LinniaRecords from './contracts/LinniaRecords';
-import LinniaPermissions from './contracts/LinniaPermissions';
+import LinniaHub from './contracts/LinniaHub.json';
+import LinniaUsers from './contracts/LinniaUsers.json';
+import LinniaRecords from './contracts/LinniaRecords.json';
+import LinniaPermissions from './contracts/LinniaPermissions.json';
 
 import Record from './record';
 import _deploy from './deploy';
@@ -103,7 +103,7 @@ class Linnia {
     return this._hub.deployed();
   }
 
-  //TODO, Remove Deploy functionality from this library and add it to an internal repo
+  // TODO, Remove Deploy functionality from this library and add it to an internal repo
 
   /**
    * Deploy Linnia contracts, and construct the Linnia API that uses the newly
@@ -128,7 +128,7 @@ class Linnia {
    * * @returns {Promise<LinniaRecords>} instance of the new LinnniaRecords contract
    */
   async redeployLinniaRecords(opt) {
-    const hub = await this._getHubInstance()
+    const hub = await this._getHubInstance();
     const contractInstance = await _redeploy(this.web3, opt, hub, LinniaRecords);
     return contractInstance;
   }
@@ -138,7 +138,7 @@ class Linnia {
    * * @returns {Promise<LinniaUsers>} instance of the new LinnniaUsers contract
    */
   async redeployLinniaUsers(opt) {
-    const hub = await this._getHubInstance()
+    const hub = await this._getHubInstance();
     const contractInstance = await _redeploy(this.web3, opt, hub, LinniaUsers);
     return contractInstance;
   }
@@ -148,7 +148,7 @@ class Linnia {
    * * @returns {Promise<LinniaPermissions>} instance of the new LinniaPermissions contract
    */
   async redeployLinniaPermissions(opt) {
-    const hub = await this._getHubInstance()
+    const hub = await this._getHubInstance();
     const contractInstance = await _redeploy(this.web3, opt, hub, LinniaPermissions);
     return contractInstance;
   }

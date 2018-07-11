@@ -1,9 +1,9 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaHub from './contracts/LinniaHub';
-import LinniaUsers from './contracts/LinniaUsers';
-import LinniaRecords from './contracts/LinniaRecords';
-import LinniaPermissions from './contracts/LinniaPermissions';
+import LinniaHub from './contracts/LinniaHub.json';
+import LinniaUsers from './contracts/LinniaUsers.json';
+import LinniaRecords from './contracts/LinniaRecords.json';
+import LinniaPermissions from './contracts/LinniaPermissions.json';
 
 import _util from './util';
 
@@ -22,10 +22,10 @@ const deploy = async (web3, opt) => {
   _records.setProvider(web3.currentProvider);
   _permissions.setProvider(web3.currentProvider);
 
-  const hub = _util.truffleHack(_hub)
-  const users = _util.truffleHack(_users)
-  const records = _util.truffleHack(_records)
-  const permissions = _util.truffleHack(_permissions)
+  const hub = _util.truffleHack(_hub);
+  const users = _util.truffleHack(_users);
+  const records = _util.truffleHack(_records);
+  const permissions = _util.truffleHack(_permissions);
   // deploy the hub
   const hubInstance = await hub.new(opt);
   // deploy Users

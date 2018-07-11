@@ -29,17 +29,25 @@ describe('Record class', async () => {
     await contracts.users.setProvenance(provider, 1, { from: admin });
     // append a signed file
     await contracts.records.addRecordByProvider(
-      testDataHash, user1, testMetaData,
-      testDataUri, {
+      testDataHash,
+      user1,
+      testMetaData,
+      testDataUri,
+      {
         from: provider,
         gas: 500000,
       },
     );
     // share the file with user2
-    await contracts.permissions.grantAccess(testDataHash, user2, testSharedUri, {
-      from: user1,
-      gas: 500000,
-    });
+    await contracts.permissions.grantAccess(
+      testDataHash,
+      user2,
+      testSharedUri,
+      {
+        from: user1,
+        gas: 500000,
+      },
+    );
   });
   describe('get attestation', () => {
     it('should return true if attested by specified user', async () => {
@@ -70,7 +78,7 @@ describe('Record class', async () => {
   describe('decrypt', () => {
     it('should decrypt the data if hash is correct', async () => {
       // make the URI resolver always return the encrypted data
-      const uriResolver = (dataUri) => {
+      const uriResolver = dataUri => {
         // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
         return Linnia.util.encrypt(pubKey, testData);
@@ -92,16 +100,23 @@ describe('Record class', async () => {
     });
   });
   describe('decrypt permissioned', () => {
-    it('should decrypt the data if has permission and hash is correct', async () => {
-      const uriResolver = (dataUri) => {
-        // the URI being passed in should be the shared copy
-        assert.equal(dataUri, testSharedUri);
-        return Linnia.util.encrypt(pubKey, testData);
-      };
-      const record = await linnia.getRecord(testDataHash);
-      const plain = await record.decryptPermissioned(user2, privKey, uriResolver);
-      assert.equal(plain.toString(), testData);
-    });
+    it(
+      'should decrypt the data if has permission and hash is correct',
+      async () => {
+        const uriResolver = dataUri => {
+          // the URI being passed in should be the shared copy
+          assert.equal(dataUri, testSharedUri);
+          return Linnia.util.encrypt(pubKey, testData);
+        };
+        const record = await linnia.getRecord(testDataHash);
+        const plain = await record.decryptPermissioned(
+          user2,
+          privKey,
+          uriResolver,
+        );
+        assert.equal(plain.toString(), testData);
+      },
+    );
     it('should throw if viewer has no permission', async () => {
       const uriResolver = () => Linnia.util.encrypt(pubKey, testData);
       const record = await linnia.getRecord(testDataHash);
@@ -109,7 +124,10 @@ describe('Record class', async () => {
         await record.decryptPermissioned(user3, privKey, uriResolver);
         assert.fail('expected permission error not received');
       } catch (error) {
-        assert.equal(error.message, 'viewer has no permission to view the data');
+        assert.equal(
+          error.message,
+          'viewer has no permission to view the data',
+        );
       }
     });
     it('should throw if hash does not match', async () => {
@@ -138,7 +156,7 @@ describe('Record class', async () => {
   });
   describe('reencrypt data', () => {
     it('should re-encrypt to the public key', async () => {
-      const uriResolver = (dataUri) => {
+      const uriResolver = dataUri => {
         assert.equal(dataUri, testDataUri);
         return Linnia.util.encrypt(pubKey, testData);
       };
