@@ -24,17 +24,25 @@ describe('Linnia-permissions', async () => {
     await contracts.users.setProvenance(provider, 1, { from: admin });
     // provider appends a file for user1
     await contracts.records.addRecordByProvider(
-      testDataHash, user1, testMetaData,
-      testDataUri, {
+      testDataHash,
+      user1,
+      testMetaData,
+      testDataUri,
+      {
         from: provider,
         gas: 500000,
       },
     );
     // user1 shares the file with user2
-    await contracts.permissions.grantAccess(testDataHash, user2, testSharedUri, {
-      from: user1,
-      gas: 500000,
-    });
+    await contracts.permissions.grantAccess(
+      testDataHash,
+      user2,
+      testSharedUri,
+      {
+        from: user1,
+        gas: 500000,
+      },
+    );
   });
   describe('view permission', () => {
     it('should return the permission info if viewer has access', async () => {
@@ -42,10 +50,13 @@ describe('Linnia-permissions', async () => {
       assert.isTrue(perm.canAccess);
       assert.equal(perm.dataUri, testSharedUri);
     });
-    it('should return the permission info if viewer does not have access', async () => {
-      const perm = await linnia.getPermission(testDataHash, user3);
-      assert.isFalse(perm.canAccess);
-      assert.isEmpty(perm.dataUri);
-    });
+    it(
+      'should return the permission info if viewer does not have access',
+      async () => {
+        const perm = await linnia.getPermission(testDataHash, user3);
+        assert.isFalse(perm.canAccess);
+        assert.isEmpty(perm.dataUri);
+      },
+    );
   });
 });

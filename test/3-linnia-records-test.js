@@ -24,8 +24,11 @@ describe('Linnia-records', async () => {
     await contracts.users.setProvenance(provider, 1, { from: admin });
     // append a file
     const tx = await contracts.records.addRecordByProvider(
-      testDataHash, user, testMetaData,
-      testDataUri, {
+      testDataHash,
+      user,
+      testMetaData,
+      testDataUri,
+      {
         from: provider,
         gas: 500000,
       },
