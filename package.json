@@ -14,7 +14,7 @@
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
   "private": true,
-  "author": "Wenchao Wang <wenchao.wang@consensys.net>",
+  "author": "Linnia",
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
   },
@@ -22,7 +22,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^7.2.1",
-    "eth-ecies": "^1.0.3",
+    "eth-crypto": "^1.2.3",
     "ethereumjs-util": "^5.2.0",
     "truffle-contract": "3.0.5",
     "web3": "^1.0.0-beta.34",

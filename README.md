@@ -23,17 +23,10 @@ const { hub, users, records, permissions } = await linnia.getContractInstances()
 ```
 
 # Building
-## Building for Node.js
 ```
-npm run build:es5
+npm run build
 ```
 The compiled library is generated in `lib`, which you can require by typing `require('./lib')`
-
-## Building for browser
-```
-npm run build:browser
-```
-The compiled browser library is generated at `dist/linnia.js`.
 
 # Setting up a development environment
 
