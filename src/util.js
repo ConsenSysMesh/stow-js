@@ -1,7 +1,7 @@
 import EthCrypto from 'eth-crypto';
 import { toBuffer } from 'ethereumjs-util';
 
-//TODO: Add @param version to the encrypt and decrypt functions for version control
+// TODO: Add @param version to the encrypt and decrypt functions for version control
 // Check this: https://github.com/MetaMask/eth-sig-util/pull/18#issuecomment-384399986
 
 /**
@@ -12,15 +12,15 @@ import { toBuffer } from 'ethereumjs-util';
  * @returns {Buffer} Encrypted message, serialized, 113+ bytes
  */
 const encrypt = async (pubKeyTo, plaintext) => {
-  const hexPubKeyString = pubKeyTo.toString('hex')
+  const hexPubKeyString = pubKeyTo.toString('hex');
   const hexPubKey = hexPubKeyString.substr(0, 2) === '0x' ? hexPubKeyString.toString('hex').substr(2) : hexPubKeyString.toString('hex');
 
   const payload = {
-      message: plaintext
+    message: plaintext,
   };
   const encrypted = await EthCrypto.encryptWithPublicKey(hexPubKey, JSON.stringify(payload));
   return EthCrypto.cipher.stringify(encrypted);
-}
+};
 
 /**
  * ECIES decrypt
@@ -29,17 +29,17 @@ const encrypt = async (pubKeyTo, plaintext) => {
  * @returns {Buffer} plaintext
  */
 const decrypt = async (privKey, encrypted) => {
-  const hexPrivKeyString = privKey.toString('hex')
+  const hexPrivKeyString = privKey.toString('hex');
   const hexPrivKey = hexPrivKeyString.substr(0, 2) === '0x' ? hexPrivKeyString : `0x${hexPrivKeyString}`;
 
   const encryptedObject = EthCrypto.cipher.parse(encrypted);
   const decrypted = await EthCrypto.decryptWithPrivateKey(
     hexPrivKey,
-    encryptedObject
+    encryptedObject,
   );
   const decryptedPayload = JSON.parse(decrypted);
-  return decryptedPayload.message
-}
+  return decryptedPayload.message;
+};
 
 const truffleHack = (contract) => {
   if (typeof contract.currentProvider.sendAsync !== 'function') {
