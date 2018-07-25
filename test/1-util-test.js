@@ -26,8 +26,8 @@ describe('ECIES', () => {
     });
     it('should fail when encrypt with bad key', async () => {
       const data = 'foo';
-      const privKey2 = '5230a384e9d271d59a05a9d9f94b79cd9';
-      return Linnia.util.encrypt(`0x${privKey2}`, data).then(() => { throw RangeError('public key length is invalid'); }, () => {});
+      const pubKey2 = '5230a384e9d271d59a05a9d9f94b79cd9';
+      return Linnia.util.encrypt(`0x${pubKey2}`, data).then(() => { throw RangeError('public key length is invalid'); }, () => {});
     });
     it('should fail when decrypt with wrong key', async () => {
       const data = 'foo';
