@@ -9,14 +9,13 @@ import { toBuffer } from 'ethereumjs-util';
  * @returns {Buffer} Encrypted message, serialized, 113+ bytes
  */
 const encrypt = async (pubKeyTo, plaintext) => {
-  pubKeyTo = pubKeyTo.toString('hex')
-  if(pubKeyTo.substr(0,2) === '0x'){
-    pubKeyTo = pubKeyTo.substr(2)
-  }
+  const hexPubKeyString = pubKeyTo.toString('hex')
+  const hexPubKey = hexPubKeyString.substr(0, 2) === '0x' ? hexPubKeyString.toString('hex').substr(2) : hexPubKeyString.toString('hex');
+
   const payload = {
       message: plaintext
   };
-  const encrypted = await EthCrypto.encryptWithPublicKey(pubKeyTo, JSON.stringify(payload));
+  const encrypted = await EthCrypto.encryptWithPublicKey(hexPubKey, JSON.stringify(payload));
   return EthCrypto.cipher.stringify(encrypted);
 }
 
@@ -27,13 +26,12 @@ const encrypt = async (pubKeyTo, plaintext) => {
  * @returns {Buffer} plaintext
  */
 const decrypt = async (privKey, encrypted) => {
-  privKey = privKey.toString('hex')
-  if(privKey.substr(0,2) !== '0x'){
-    privKey = '0x'+privKey
-  }
+  const hexPrivKeyString = privKey.toString('hex')
+  const hexPrivKey = hexPrivKeyString.substr(0, 2) === '0x' ? hexPrivKeyString : `0x${hexPrivKeyString}`;
+
   const encryptedObject = EthCrypto.cipher.parse(encrypted);
   const decrypted = await EthCrypto.decryptWithPrivateKey(
-    privKey,
+    hexPrivKey,
     encryptedObject
   );
   const decryptedPayload = JSON.parse(decrypted);
