@@ -18,4 +18,27 @@ describe('ECIES', () => {
       assert.deepEqual(pt.toString(), data);
     });
   });
+
+  describe('failure', async () => {
+    it('should fail when encrypt with empty key', async () => {
+      const data = 'foo';
+      return Linnia.util.encrypt('', data).then(() => {throw RangeError('public key length is invalid')}, () => {});
+    });
+    it('should fail when encrypt with bad key', async () => {
+      const data = 'foo';
+      const privKey2 = '5230a384e9d271d59a05a9d9f94b79cd9';
+      return Linnia.util.encrypt(`0x${privKey2}`, data).then(() => {throw RangeError('public key length is invalid')}, () => {});
+    });
+    it('should fail when decrypt with wrong key', async () => {
+      const data = 'foo';
+      const privWrongKey = '5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2c';
+      const ct = await Linnia.util.encrypt(Buffer.from(pubKey1, 'hex'), data);
+      return Linnia.util.decrypt(Buffer.from(privWrongKey, 'hex'), ct).then(() => {throw Error('Bad MAC')}, () => {});
+    });
+    it('should fail when decrypt with empty key', async () => {
+      const data = 'foo';
+      const ct = await Linnia.util.encrypt(Buffer.from(pubKey1, 'hex'), data);
+      return Linnia.util.decrypt('', ct).then(() => {throw Error('Bad input')}, () => {});
+    });
+  });
 });
