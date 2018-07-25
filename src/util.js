@@ -1,6 +1,9 @@
 import EthCrypto from 'eth-crypto';
 import { toBuffer } from 'ethereumjs-util';
 
+//TODO: Add @param version to the encrypt and decrypt functions for version control
+// Check this: https://github.com/MetaMask/eth-sig-util/pull/18#issuecomment-384399986
+
 /**
  * ECIES encrypt
  * @param {Buffer|String} pubKeyTo Ethereum pub key, 64 bytes
