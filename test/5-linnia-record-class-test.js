@@ -78,10 +78,10 @@ describe('Record class', async () => {
   describe('decrypt', () => {
     it('should decrypt the data if hash is correct', async () => {
       // make the URI resolver always return the encrypted data
-      const uriResolver = dataUri => {
+      const uriResolver = async dataUri => {
         // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return await Linnia.util.encrypt(pubKey, testData);
       };
       const record = await linnia.getRecord(testDataHash);
       const plain = await record.decryptData(privKey, uriResolver);
@@ -89,7 +89,7 @@ describe('Record class', async () => {
     });
     it('should throw if hash does not match', async () => {
       // make the URI resolver return a decryptable but wrong data
-      const uriResolver = () => Linnia.util.encrypt(pubKey, 'fox');
+      const uriResolver = async () => await Linnia.util.encrypt(pubKey, 'fox');
       const record = await linnia.getRecord(testDataHash);
       try {
         await record.decryptData(privKey, uriResolver);
@@ -103,10 +103,10 @@ describe('Record class', async () => {
     it(
       'should decrypt the data if has permission and hash is correct',
       async () => {
-        const uriResolver = dataUri => {
+        const uriResolver = async dataUri => {
           // the URI being passed in should be the shared copy
           assert.equal(dataUri, testSharedUri);
-          return Linnia.util.encrypt(pubKey, testData);
+          return await Linnia.util.encrypt(pubKey, testData);
         };
         const record = await linnia.getRecord(testDataHash);
         const plain = await record.decryptPermissioned(
@@ -118,7 +118,7 @@ describe('Record class', async () => {
       },
     );
     it('should throw if viewer has no permission', async () => {
-      const uriResolver = () => Linnia.util.encrypt(pubKey, testData);
+      const uriResolver = async () => await Linnia.util.encrypt(pubKey, testData);
       const record = await linnia.getRecord(testDataHash);
       try {
         await record.decryptPermissioned(user3, privKey, uriResolver);
@@ -132,7 +132,7 @@ describe('Record class', async () => {
     });
     it('should throw if hash does not match', async () => {
       // make the URI resolver return a decryptable but wrong data
-      const uriResolver = () => Linnia.util.encrypt(pubKey, 'fox');
+      const uriResolver = async () => await Linnia.util.encrypt(pubKey, 'fox');
       const record = await linnia.getRecord(testDataHash);
       try {
         await record.decryptPermissioned(user2, privKey, uriResolver);
@@ -156,9 +156,9 @@ describe('Record class', async () => {
   });
   describe('reencrypt data', () => {
     it('should re-encrypt to the public key', async () => {
-      const uriResolver = dataUri => {
+      const uriResolver = async dataUri => {
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return await Linnia.util.encrypt(pubKey, testData);
       };
       // make a new keypair
       const priv = crypto.randomBytes(32);
@@ -166,7 +166,8 @@ describe('Record class', async () => {
       const record = await linnia.getRecord(testDataHash);
       const reencrypted = await record.reencryptData(pub, privKey, uriResolver);
       // the re-encrypted data should be decryptable by the new priv key
-      assert.equal(Linnia.util.decrypt(priv, reencrypted).toString(), testData);
+      const decrypted = await Linnia.util.decrypt(priv, reencrypted);
+      assert.equal(decrypted.toString(), testData);
     });
   });
 });
