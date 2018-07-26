@@ -27,7 +27,7 @@ jobs:
           - v1-dependencies-
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
-      # start testrpc so that prepare runs successfully
+      # start testrpc so that prepare runs without errors
       - run:
           command: npm run testrpc
           background: true
