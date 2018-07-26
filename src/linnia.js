@@ -1,9 +1,9 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaHub from '@linniaprotocol/linnia-smart-contracts-july2017/build/contracts//LinniaHub.json';
-import LinniaUsers from '@linniaprotocol/linnia-smart-contracts-july2017/build/contracts//LinniaUsers.json';
-import LinniaRecords from '@linniaprotocol/linnia-smart-contracts-july2017/build/contracts//LinniaRecords.json';
-import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts-july2017/build/contracts//LinniaPermissions.json';
+import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
+import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
+import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
+import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
 
 import Record from './record';
 import _deploy from './deploy';
