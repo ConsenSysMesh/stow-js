@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ConsenSys/linnia-js#readme",
   "dependencies": {
+    "@linniaprotocol/linnia-smart-contracts-july2017": "^1.0.0",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^7.2.1",
     "eth-crypto": "^1.2.3",
