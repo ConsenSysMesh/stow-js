@@ -1,8 +1,12 @@
 {
   "name": "@linniaprotocol/linnia-july-2018",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
   "scripts": {
     "build": "babel src -d lib -s --copy-files",
     "lint": "eslint src",
@@ -13,7 +17,6 @@
     "type": "git",
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
-  "private": true,
   "author": "Linnia",
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
