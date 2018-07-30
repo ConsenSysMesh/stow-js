@@ -3,6 +3,7 @@
   "version": "0.1.8",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
+  "private": true,
   "files": [
     "lib/*",
     "src/*"
