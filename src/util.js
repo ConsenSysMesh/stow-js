@@ -46,7 +46,7 @@ const decrypt = async (privKey, encrypted) => {
 const truffleHack = (contract, ...args) => {
   if (typeof contract.currentProvider.sendAsync !== 'function') {
     contract.currentProvider.sendAsync = function () {
-      return contract.currentProvider.send.spread(contract.currentProvider, args);
+      return contract.currentProvider.send.apply(contract.currentProvider, args);
     };
   }
   return contract;
