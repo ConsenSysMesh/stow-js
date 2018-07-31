@@ -1,8 +1,9 @@
 {
   "name": "@linniaprotocol/linnia-july-2018",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
+  "private": true,
   "files": [
     "lib/*",
     "src/*"
@@ -23,7 +24,7 @@
   },
   "homepage": "https://github.com/ConsenSys/linnia-js#readme",
   "dependencies": {
-    "@linniaprotocol/linnia-smart-contracts": "^0.1.0",
+    "@linniaprotocol/linnia-smart-contracts": "^0.1.1",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^7.2.1",
     "eth-crypto": "^1.2.3",
