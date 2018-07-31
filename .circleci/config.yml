@@ -44,7 +44,7 @@ jobs:
       - run: npm test
       - run: npm run build
 
-      - run: npm lint
+      - run: npm run lint
 
       # Teardown
       #   If you break your build into multiple jobs with workflows, you will probably want to do the parts of this that are relevant in each
