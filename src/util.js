@@ -1,5 +1,5 @@
 import EthCrypto from 'eth-crypto';
-import { toBuffer } from 'ethereumjs-util';
+// import { toBuffer } from 'ethereumjs-util';
 
 // TODO: Add @param version to the encrypt and decrypt functions for version control
 // Check this: https://github.com/MetaMask/eth-sig-util/pull/18#issuecomment-384399986
@@ -41,14 +41,18 @@ const decrypt = async (privKey, encrypted) => {
   return decryptedPayload.message;
 };
 
-const truffleHack = (contract) => {
+/* eslint-disable */ 
+
+const truffleHack = (contract, ...args) => {
   if (typeof contract.currentProvider.sendAsync !== 'function') {
     contract.currentProvider.sendAsync = function () {
-      return contract.currentProvider.send.apply(contract.currentProvider, arguments);
+      return contract.currentProvider.send.spread(contract.currentProvider, args);
     };
   }
   return contract;
 };
+
+/* eslint-enable */
 
 export default {
   encrypt,

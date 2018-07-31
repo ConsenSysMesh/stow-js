@@ -91,7 +91,8 @@ class Record {
    */
   async reencryptData(pubKey, privKey, uriResolver) {
     const plaintext = await this.decryptData(privKey, uriResolver);
-    return await _util.encrypt(pubKey, plaintext);
+    const encryptedData = await _util.encrypt(pubKey, plaintext);
+    return encryptedData;
   }
 
   static async fromContract(recordsContract, permissionsContract, dataHash) {
