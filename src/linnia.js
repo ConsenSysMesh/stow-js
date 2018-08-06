@@ -6,8 +6,6 @@ import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contract
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
 
 import Record from './record';
-import _deploy from './deploy';
-import _redeploy from './redeploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
