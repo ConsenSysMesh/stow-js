@@ -19,6 +19,7 @@
     "url": "git+https://github.com/ConsenSys/linnia-js.git"
   },
   "author": "Linnia",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ConsenSys/linnia-js/issues"
   },
