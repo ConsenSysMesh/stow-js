@@ -1,6 +1,6 @@
 {
   "name": "@linniaprotocol/linnia-js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Linnia JavaScript API",
   "main": "lib/index.js",
   "private": true,
