@@ -1,4 +1,4 @@
-linnia-js
+# linnia-js  [![NPM Package](https://img.shields.io/npm/v/@linniaprotocol/linnia-js.svg?style=flat-square)](https://www.npmjs.com/package/@linniaprotocol/linnia-js) ![Build Status](https://circleci.com/gh/ConsenSys/linnia-js.png?circle-token=:circle-token&style=shield) 
 ---
 Linnia JavaScript library
 
