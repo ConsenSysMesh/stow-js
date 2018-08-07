@@ -108,7 +108,6 @@ class Linnia {
       hubAddress: deployed.hubInstance.address,
     });
   }
-
 }
 
 Linnia.util = _util;
