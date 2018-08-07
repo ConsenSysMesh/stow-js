@@ -4,10 +4,11 @@ import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/Li
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
+import Linnia from '../src'
 
 import _util from '../src/util';
 
-const deploy = async (web3, opt) => {
+const _deploy = async (web3, opt) => {
   if (web3 === undefined) {
     throw Error('web3 is undefined!');
   }
@@ -46,4 +47,26 @@ const deploy = async (web3, opt) => {
   };
 };
 
-export default deploy;
+/**
+-   * Deploy Linnia contracts, and construct the Linnia API that uses the newly
+-   *  deployed contracts.
+-   * @param {Object} web3 An instantiated web3 API object, configured to the
+-   *  network you want to deploy the contracts on
+-   * @param {Object} ipfs An instantiated ipfs API object, used by the created
+-   *  Linnia API
+-   * @param {?Object} opt Optional web3 transaction object
+-   * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
+*/
+
+class LinniaDeploy {
+
+  static async deploy(web3, ipfs, opt = {}) {
+    const deployed = await _deploy(web3, opt);
+    return new Linnia(web3, ipfs, {
+      hubAddress: deployed.hubInstance.address,
+    });
+  }
+
+}
+
+export default LinniaDeploy;

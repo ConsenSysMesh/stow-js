@@ -6,7 +6,6 @@ import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contract
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
 
 import Record from './record';
-import _deploy from '../test/deploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
@@ -100,13 +99,6 @@ class Linnia {
       return this._hub.at(this._hubAddress);
     }
     return this._hub.deployed();
-  }
-
-  static async deploy(web3, ipfs, opt = {}) {
-    const deployed = await _deploy(web3, opt);
-    return new Linnia(web3, ipfs, {
-      hubAddress: deployed.hubInstance.address,
-    });
   }
 }
 
