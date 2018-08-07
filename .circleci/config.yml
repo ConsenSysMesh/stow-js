@@ -25,15 +25,15 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
       # start testrpc so that prepare runs without errors
+
+      - run: npm ci
+
       - run:
           command: npm run testrpc
           background: true
       - run: sleep 5
-
-      - run: npm ci
 
       - save_cache:
           paths:
