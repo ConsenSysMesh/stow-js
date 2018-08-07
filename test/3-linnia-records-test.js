@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import Linnia from '../src';
+import LinniaDeploy from './deployForTests';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a217fb1ef14';
@@ -13,7 +14,7 @@ describe('Linnia-records', async () => {
   let contracts;
   let recordAddTime;
   beforeEach('deploy the contracts and set up roles', async () => {
-    linnia = await Linnia.deploy(web3, null, {
+    linnia = await LinniaDeploy.deploy(web3, null, {
       from: admin,
       gas: 4000000,
     });

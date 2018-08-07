@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import eutil from 'ethereumjs-util';
 import Web3 from 'web3';
 import Linnia from '../src';
+import LinniaDeploy from './deployForTests';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testData = 'foobar';
@@ -18,7 +19,7 @@ describe('Record class', async () => {
   let linnia;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {
-    linnia = await Linnia.deploy(web3, null, {
+    linnia = await LinniaDeploy.deploy(web3, null, {
       from: admin,
       gas: 4000000,
     });

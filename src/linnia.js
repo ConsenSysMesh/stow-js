@@ -6,8 +6,6 @@ import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contract
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
 
 import Record from './record';
-import _deploy from './deploy';
-import _redeploy from './redeploy';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
@@ -101,56 +99,6 @@ class Linnia {
       return this._hub.at(this._hubAddress);
     }
     return this._hub.deployed();
-  }
-
-  // TODO, Remove Deploy functionality from this library and add it to an internal repo
-
-  /**
-   * Deploy Linnia contracts, and construct the Linnia API that uses the newly
-   *  deployed contracts.
-   * @param {Object} web3 An instantiated web3 API object, configured to the
-   *  network you want to deploy the contracts on
-   * @param {Object} ipfs An instantiated ipfs API object, used by the created
-   *  Linnia API
-   * @param {?Object} opt Optional web3 transaction object
-   * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
-   */
-  static async deploy(web3, ipfs, opt = {}) {
-    const deployed = await _deploy(web3, opt);
-    return new Linnia(web3, ipfs, {
-      hubAddress: deployed.hubInstance.address,
-    });
-  }
-
-
-  /**
-   * Re-Deploy LinniaRecords contract and replace it in the same Hub
-   * * @returns {Promise<LinniaRecords>} instance of the new LinnniaRecords contract
-   */
-  async redeployLinniaRecords(opt) {
-    const hub = await this._getHubInstance();
-    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaRecords);
-    return contractInstance;
-  }
-
-  /**
-   * Re-Deploy LinniaUsers contract and replace it in the same Hub
-   * * @returns {Promise<LinniaUsers>} instance of the new LinnniaUsers contract
-   */
-  async redeployLinniaUsers(opt) {
-    const hub = await this._getHubInstance();
-    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaUsers);
-    return contractInstance;
-  }
-
-  /**
-   * Re-Deploy LinniaPermissions contract and replace it in the same Hub
-   * * @returns {Promise<LinniaPermissions>} instance of the new LinniaPermissions contract
-   */
-  async redeployLinniaPermissions(opt) {
-    const hub = await this._getHubInstance();
-    const contractInstance = await _redeploy(this.web3, opt, hub, LinniaPermissions);
-    return contractInstance;
   }
 }
 
