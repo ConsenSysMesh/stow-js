@@ -1,6 +1,6 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
+import LinniaContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
@@ -18,14 +18,14 @@ class Linnia {
    * Create a new Linnia API object
    * @param {Object} web3 An instantiated web3 API object
    * @param {Object} ipfs An instantiated ipfs API object
-   * @param {?{?hubAddress: String}} opt Optional constructor options
+   * @param {?{?linniaContractUpgradeHubAddress: String}} opt Optional constructor options
    * @returns {Linnia} Created Linnia API object
    */
   constructor(web3, ipfs, opt = {}) {
     this.web3 = web3;
     this.ipfs = ipfs;
     // truffle contracts
-    const _hub = TruffleContract(LinniaHub);
+    const _hub = TruffleContract(LinniaContractUpgradeHub);
     const _users = TruffleContract(LinniaUsers);
     const _records = TruffleContract(LinniaRecords);
     const _permissions = TruffleContract(LinniaPermissions);
@@ -37,10 +37,10 @@ class Linnia {
     this._users = _util.truffleHack(_users);
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
-    // set hub address
-    if (opt.hubAddress) {
+    // set linniaContractUpgradeHubAddress address
+    if (opt.linniaContractUpgradeHubAddress) {
       // using user defined address
-      this._hubAddress = opt.hubAddress;
+      this._hubAddress = opt.linniaContractUpgradeHubAddress;
     }
   }
 
@@ -54,7 +54,7 @@ class Linnia {
     const recordsAddress = await hubInstance.recordsContract();
     const permissionsAddress = await hubInstance.permissionsContract();
     return {
-      hub: hubInstance,
+      linniaContractUpgradeHub: hubInstance,
       users: await this._users.at(usersAddress),
       records: await this._records.at(recordsAddress),
       permissions: await this._permissions.at(permissionsAddress),
@@ -92,8 +92,13 @@ class Linnia {
     return _permissionsFunctions.getPermission(permissions, dataHash, viewerAddress);
   }
 
+  /**
+   * Internal DO NOT USE
+   * @returns {Promise<*>}
+   * @private
+   */
   async _getHubInstance() {
-    // get hub contract instance
+    // get linniaContractUpgradeHubAddress contract instance
     // look up address either from user defined address or artifact
     if (this._hubAddress) {
       return this._hub.at(this._hubAddress);
