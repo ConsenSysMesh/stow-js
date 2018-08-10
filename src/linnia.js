@@ -54,7 +54,7 @@ class Linnia {
     const recordsAddress = await hubInstance.recordsContract();
     const permissionsAddress = await hubInstance.permissionsContract();
     return {
-      linniaContractUpgradeHub: hubInstance,
+      _linniaContractUpgradeHub: hubInstance,
       users: await this._users.at(usersAddress),
       records: await this._records.at(recordsAddress),
       permissions: await this._permissions.at(permissionsAddress),
