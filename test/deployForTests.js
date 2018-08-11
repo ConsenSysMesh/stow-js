@@ -63,7 +63,7 @@ class LinniaDeploy {
   static async deploy(web3, ipfs, opt = {}) {
     const deployed = await _deploy(web3, opt);
     return new Linnia(web3, ipfs, {
-      hubAddress: deployed.hubInstance.address,
+      linniaContractUpgradeHubAddress: deployed.hubInstance.address,
     });
   }
 
