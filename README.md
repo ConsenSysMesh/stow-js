@@ -27,6 +27,20 @@ const linnia = new Linnia(web3, ipfs)
 const { _, users, records, permissions } = await linnia.getContractInstances()
 ```
 
+## Installation
+
+You can install using npm:
+
+```bash
+npm i @linniaprotocol/linnia-js
+```
+
+or add inject the library onto the `window` using a script tag:
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@linniaprotocol/linnia-js-script-tag@0.1.1/dist/index.min.js"></script>
+```
+
 Building
 ---
 ```
