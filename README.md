@@ -24,7 +24,7 @@ const ipfs = new IPFS({
 const linnia = new Linnia(web3, ipfs)
 
 // get the deployed contracts
-const { hub, users, records, permissions } = await linnia.getContractInstances()
+const { _, users, records, permissions } = await linnia.getContractInstances()
 ```
 
 Building
@@ -52,7 +52,7 @@ new Linnia(web3, ipfs [, options])
 1. `Object` - An instantiated web3 API object
 1. `Object` - An instantiated IPFS API object
 1. `Object` - (Optional) Constructor options
-  - `hubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
+  - `linniaContractUpgradeHubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
 
 ### Example
 ```javascript
@@ -72,7 +72,7 @@ Gets Linnia contract instances, wrapped in truffle contract.
 
 ### Returns
 `Promise<Object>` - A promise when resolved returns an object with truffle Contract instances.
-- `hub`: `Object` - LinniaHub truffle contract instance
+- `linniaContractUpgradeHubAddress`: `Object` - DO NOT USE - INTERNAL - LinniaHub truffle contract instance
 - `users`: `Object` - LinniaUsers truffle contract instance
 - `records`: `Object` - LinniaRecords truffle contract instance
 - `permissions`: `Object` - LinniaPermissions truffle contract instance
@@ -80,7 +80,6 @@ Gets Linnia contract instances, wrapped in truffle contract.
 ### Example
 ```javascript
 linnia.getContractInstances().then((instances) => {
-  let hub = instances.hub
   let users = instances.users
   let records = instances.records
   let permissions = instances.permissions
