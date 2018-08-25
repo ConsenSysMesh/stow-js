@@ -10,7 +10,7 @@
 ## Quickstart
 ```javascript
 const Web3 = require('web3')
-const Linnia = require('linnia')
+const Linnia = require('@linniaprotocol/linnia-js')
 const IPFS = require('ipfs-api')
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'))
