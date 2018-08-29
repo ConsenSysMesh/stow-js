@@ -16,8 +16,9 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
-const getAttestation = async (recordsContract, dataHash, attestator) =>
-  recordsContract.sigExists.call(dataHash, attestator);
+const getAttestation = async (
+  recordsContract, dataHash, attestator,
+) => recordsContract.sigExists.call(dataHash, attestator);
 
 export default {
   getRecord,

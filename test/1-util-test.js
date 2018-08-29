@@ -1,44 +1,38 @@
 import { assert } from 'chai';
 import Linnia from '../src';
 
-describe('ECIES', () => {
-  const privKey1 = '5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b';
-  const pubKey1 = 'b1f26f98d374540eac3d31208f13a3935318e228207084c9ee32d741ff1ad2341af4ac9658aba4a254bf1dc6451b3c08524febba5273bec227c73e25cd376387';
-  describe('roundtrip', async () => {
-    it('should encrypt and decrypt a string, using hex-encoded keys', async () => {
+describe('Encryption Scheme', () => {
+  const privKey1 = 'wFGgG/Bv/36liIhdOGqH0TY5QpUVYkQP+Sdcbr1NgOI=';
+  const pubKey1 = 'hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=';
+  describe('roundtrip', () => {
+    it('should encrypt and decrypt a string', () => {
       const data = 'foo';
-      const ct = await Linnia.util.encrypt(`0x${pubKey1}`, data);
-      const pt = await Linnia.util.decrypt(`0x${privKey1}`, ct);
+      const ct = Linnia.util.encrypt(pubKey1, data);
+      const pt = Linnia.util.decrypt(privKey1, ct);
       assert.equal(pt.toString(), data);
-    });
-    it('should encrypt and decrypt a buffer, using keys in buffers', async () => {
-      const data = 'foo';
-      const ct = await Linnia.util.encrypt(Buffer.from(pubKey1, 'hex'), data);
-      const pt = await Linnia.util.decrypt(Buffer.from(privKey1, 'hex'), ct);
-      assert.deepEqual(pt.toString(), data);
     });
   });
 
-  describe('failure', async () => {
-    it('should fail when encrypt with empty key', async () => {
+  describe('failure', () => {
+    it('should fail when encrypt with empty key', () => {
       const data = 'foo';
-      return Linnia.util.encrypt('', data).then(() => { throw RangeError('public key length is invalid'); }, () => {});
+      assert.throws( () => Linnia.util.encrypt('', data), Error, "bad public key size");
     });
-    it('should fail when encrypt with bad key', async () => {
+    it('should fail when encrypt with bad key', () => {
       const data = 'foo';
-      const pubKey2 = '5230a384e9d271d59a05a9d9f94b79cd9';
-      return Linnia.util.encrypt(`0x${pubKey2}`, data).then(() => { throw RangeError('public key length is invalid'); }, () => {});
+      const pubKey2 = 'hQYhHJSjkL17VGyNTHNQY=';
+      assert.throws( () => Linnia.util.encrypt(pubKey2, data), Error, "invalid encoding");
     });
-    it('should fail when decrypt with wrong key', async () => {
+    it('should fail when decrypt with wrong key', () => {
       const data = 'foo';
-      const privWrongKey = '5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2c';
-      const ct = await Linnia.util.encrypt(Buffer.from(pubKey1, 'hex'), data);
-      return Linnia.util.decrypt(Buffer.from(privWrongKey, 'hex'), ct).then(() => { throw Error('Bad MAC'); }, () => {});
+      const privWrongKey = '5VdzPXk23HBA+S1tcSsSFGxjPpsHgQ5PMx3tbfsxSIU=';
+      const ct = Linnia.util.encrypt(pubKey1, data);
+      assert.throws( () => Linnia.util.decrypt(privWrongKey, ct), Error, "Decryption failed");
     });
-    it('should fail when decrypt with empty key', async () => {
+    it('should fail when decrypt with empty key', () => {
       const data = 'foo';
-      const ct = await Linnia.util.encrypt(Buffer.from(pubKey1, 'hex'), data);
-      return Linnia.util.decrypt('', ct).then(() => { throw Error('Bad input'); }, () => {});
+      const ct = Linnia.util.encrypt(pubKey1, data);
+      assert.throws( () => Linnia.util.decrypt('', ct), Error, "bad secret key size");
     });
   });
 });

@@ -1,44 +1,89 @@
-import EthCrypto from 'eth-crypto';
-// import { toBuffer } from 'ethereumjs-util';
-
-// TODO: Add @param version to the encrypt and decrypt functions for version control
-// Check this: https://github.com/MetaMask/eth-sig-util/pull/18#issuecomment-384399986
+const nacl = require('tweetnacl');
+nacl.util = require('tweetnacl-util');
 
 /**
- * ECIES encrypt
- * @param {Buffer|String} pubKeyTo Ethereum pub key, 64 bytes
- * @param {Buffer|String} plaintext Plaintext to be encrypted
- * optional iv (16 bytes) and ephem key (32 bytes)
- * @returns {Buffer} Encrypted message, serialized, 113+ bytes
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Generate Keys
+ * @returns {JSON} with publicKey and privateKey
  */
-const encrypt = async (pubKeyTo, plaintext) => {
-  const hexPubKeyString = pubKeyTo.toString('hex');
-  const hexPubKey = hexPubKeyString.substr(0, 2) === '0x' ? hexPubKeyString.toString('hex').substr(2) : hexPubKeyString.toString('hex');
-
-  const payload = {
-    message: plaintext,
+const genKeys = () => {
+  const keys = nacl.box.keyPair();
+  return {
+    privateKey: nacl.util.encodeBase64(keys.secretKey),
+    publicKey: nacl.util.encodeBase64(keys.publicKey),
   };
-  const encrypted = await EthCrypto.encryptWithPublicKey(hexPubKey, JSON.stringify(payload));
-  return EthCrypto.cipher.stringify(encrypted);
 };
 
 /**
- * ECIES decrypt
- * @param {Buffer|String} privKey Ethereum private key, 32 bytes
- * @param {Buffer|String} encrypted Encrypted message, serialized, 113+ bytes
- * @returns {Buffer} plaintext
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Encrypt
+ * @param {String} pubKeyTo
+ * @param {String} plaintext Plaintext to be encrypted
+ * @returns {JSON} Encrypted message
  */
-const decrypt = async (privKey, encrypted) => {
-  const hexPrivKeyString = privKey.toString('hex');
-  const hexPrivKey = hexPrivKeyString.substr(0, 2) === '0x' ? hexPrivKeyString : `0x${hexPrivKeyString}`;
+const encrypt = (pubKeyTo, data) => {
+  const receiverPublicKey = nacl.util.decodeBase64(pubKeyTo);
 
-  const encryptedObject = EthCrypto.cipher.parse(encrypted);
-  const decrypted = await EthCrypto.decryptWithPrivateKey(
-    hexPrivKey,
-    encryptedObject,
+  if (typeof data === 'undefined') {
+    throw new Error('Cannot detect secret message, message params should be of the form {data: "secret message"} ');
+  }
+
+  // generate ephemeral keypair
+  const ephemeralKeyPair = nacl.box.keyPair();
+
+  const msgParamsUInt8Array = nacl.util.decodeUTF8(data);
+  const nonce = nacl.randomBytes(nacl.box.nonceLength);
+
+  // encrypt
+  const encryptedMessage = nacl.box(
+    msgParamsUInt8Array,
+    nonce,
+    receiverPublicKey,
+    ephemeralKeyPair.secretKey,
   );
-  const decryptedPayload = JSON.parse(decrypted);
-  return decryptedPayload.message;
+
+  // handle encrypted data
+  const output = {
+    version: 'x25519-xsalsa20-poly1305',
+    nonce: nacl.util.encodeBase64(nonce),
+    ephemPublicKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
+    ciphertext: nacl.util.encodeBase64(encryptedMessage),
+  };
+
+  return output;
+};
+
+/**
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Decrypt
+ * @param {String} privKey
+ * @param {String} encrypted Encrypted message
+ * @returns {String} plaintext
+ */
+const decrypt = (privKey, encrypted) => {
+  const encryptionPrivateKey = nacl.util.decodeBase64(privKey);
+
+  // assemble decryption parameters
+  const nonce = nacl.util.decodeBase64(encrypted.nonce);
+  const ciphertext = nacl.util.decodeBase64(encrypted.ciphertext);
+  const ephemPublicKey = nacl.util.decodeBase64(encrypted.ephemPublicKey);
+
+  // decrypt
+  const decryptedMessage = nacl.box.open(ciphertext, nonce, ephemPublicKey, encryptionPrivateKey);
+
+  let output;
+
+  // return decrypted msg data
+  try {
+    output = nacl.util.encodeUTF8(decryptedMessage);
+  } catch (err) {
+    throw new Error('Decryption failed.');
+  }
+
+  if (output) {
+    return output;
+  }
+  throw new Error('Decryption failed.');
 };
 
 /* eslint-disable */ 
@@ -55,8 +100,8 @@ const truffleHack = (contract) => {
 /* eslint-enable */
 
 export default {
+  genKeys,
   encrypt,
   decrypt,
   truffleHack,
 };
-

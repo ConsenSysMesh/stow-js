@@ -44,7 +44,7 @@ class Record {
    */
   async decryptData(privKey, uriResolver) {
     const ciphertext = await uriResolver(this.dataUri);
-    const plaintext = await _util.decrypt(privKey, ciphertext);
+    const plaintext = _util.decrypt(privKey, ciphertext);
     // check hash
     if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
@@ -66,7 +66,7 @@ class Record {
       throw new Error('viewer has no permission to view the data');
     }
     const ciphertext = await uriResolver(perm.dataUri);
-    const plaintext = await _util.decrypt(privKey, ciphertext);
+    const plaintext = _util.decrypt(privKey, ciphertext);
     if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
     }
@@ -91,7 +91,7 @@ class Record {
    */
   async reencryptData(pubKey, privKey, uriResolver) {
     const plaintext = await this.decryptData(privKey, uriResolver);
-    const encryptedData = await _util.encrypt(pubKey, plaintext);
+    const encryptedData = _util.encrypt(pubKey, plaintext);
     return encryptedData;
   }
 
