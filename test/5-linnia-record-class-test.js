@@ -160,7 +160,7 @@ describe('Record class', async () => {
         return Linnia.util.encrypt(pubKey, testData);
       };
       // make a new keypair
-      const newKeys = Linnia.util.genKeys();
+      const newKeys = Linnia.util.genKeyPair();
       const priv = newKeys.privateKey;
       const pub = newKeys.publicKey;
       const record = await linnia.getRecord(testDataHash);

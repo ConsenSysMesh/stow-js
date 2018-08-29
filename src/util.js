@@ -6,7 +6,7 @@ nacl.util = require('tweetnacl-util');
  * Generate Keys
  * @returns {JSON} with publicKey and privateKey
  */
-const genKeys = () => {
+const genKeyPair = () => {
   const keys = nacl.box.keyPair();
   return {
     privateKey: nacl.util.encodeBase64(keys.secretKey),
@@ -25,7 +25,7 @@ const encrypt = (pubKeyTo, data) => {
   const receiverPublicKey = nacl.util.decodeBase64(pubKeyTo);
 
   if (typeof data === 'undefined') {
-    throw new Error('Cannot detect secret message, message params should be of the form {data: "secret message"} ');
+    throw new Error('Cannot encrypt empty data');
   }
 
   // generate ephemeral keypair
@@ -100,7 +100,7 @@ const truffleHack = (contract) => {
 /* eslint-enable */
 
 export default {
-  genKeys,
+  genKeyPair,
   encrypt,
   decrypt,
   truffleHack,
