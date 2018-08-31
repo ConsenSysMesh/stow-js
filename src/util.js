@@ -24,7 +24,7 @@ const genKeyPair = () => {
 const encrypt = (pubKeyTo, data) => {
   const receiverPublicKey = nacl.util.decodeBase64(pubKeyTo);
 
-  if (typeof data === 'undefined') {
+  if (!data) {
     throw new Error('Cannot encrypt empty data');
   }
 
