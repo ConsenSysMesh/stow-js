@@ -270,7 +270,7 @@ linnia
 ## record.decryptPermissioned
 
 ```javascript
-record.decryptPerissioned(viewerAddress, privKey, uriResolver);
+record.decryptPermissioned(viewerAddress, privKey, uriResolver)
 ```
 
 Gets the plaintext data of a permissioned copy of the record
