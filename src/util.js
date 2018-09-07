@@ -31,7 +31,7 @@ const encrypt = (pubKeyTo, data) => {
   if (typeof data === 'object' && data.toJSON) {
     // remove toJSON attack vector
     // TODO, remove to all possible children
-    throw new Error('Cannot encrypt with toJSON property.  please remove');
+    throw new Error('Cannot encrypt with toJSON property.  Please remove toJSON property');
   }
 
   // add padding
