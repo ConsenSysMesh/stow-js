@@ -36,14 +36,14 @@ const encrypt = (pubKeyTo, data) => {
 
   // calculate padding
   const dataLength = encodeURI(JSON.stringify(data)).split(/%..|./).length - 1;
-  const padLength = (2**11) - dataLength%(2**11);
+  const padLength = (2 ** 11) - dataLength % (2 ** 11);
   const padding = nacl.randomBytes(padLength);
 
   // add padding
   const dataWithPadding = {
-    data: data,
-    padding: padding,
-  }
+    data,
+    padding,
+  };
 
   // generate ephemeral keypair
   const ephemeralKeyPair = nacl.box.keyPair();
