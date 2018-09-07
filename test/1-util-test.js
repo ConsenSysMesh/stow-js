@@ -19,9 +19,8 @@ describe('Encryption Scheme', () => {
 
       const ctShort = Linnia.util.encrypt(pubKey1, shortString);
       const ctLong = Linnia.util.encrypt(pubKey1, longString);
-      assert.isAtLeast( Math.abs(ctShort.ciphertext.length - ctLong.ciphertext.length),
-        (Math.max(ctShort.ciphertext.length - ctLong.ciphertext.length) / 20),
-        'output should vary by at least 1/20th');
+      assert.isAtLeast((Math.max(ctShort.ciphertext.length, ctLong.ciphertext.length) / 10),
+        Math.abs(ctShort.ciphertext.length - ctLong.ciphertext.length), 'output should vary by at least 1/10th');
     });
   });
 
