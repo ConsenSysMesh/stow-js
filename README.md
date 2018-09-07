@@ -243,12 +243,12 @@ Gets the plaintext data of the record
 
 ### Parameters
 
-1. `Buffer|String` - The private key to decrypt the data
-1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
+1. `String` - The private key to decrypt the data
+1. `(String) => (Promise<String>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data.
 
 ### Returns
 
-`Promise<Buffer>` - The plaintext data
+`Promise<String>` - The plaintext data
 
 ### Example
 
@@ -278,12 +278,12 @@ Gets the plaintext data of a permissioned copy of the record
 ### Parameters
 
 1. `String` - The address of viewer
-1. `Buffer|String` - The private key to decrypt the data of the permissioned copy. Note that this is the key controlled by the viewer, not the record owner.
-1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
+1. `String` - The private key to decrypt the data of the permissioned copy. Note that this is the key controlled by the viewer, not the record owner.
+1. `(String) => (Promise<String>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data..
 
 ### Returns
 
-`Promise<Buffer>` - The plaintext data
+`Promise<String>` - The plaintext data
 
 ## record.verifyData
 
@@ -295,7 +295,7 @@ Verifies the hash of the data against the one in Linnia.
 
 ### Parameters
 
-1. `Buffer|String` - The plaintext data to be verified
+1. `String` - The plaintext data to be verified
 
 ### Returns
 
@@ -311,13 +311,13 @@ Re-encrypts the data to another public key
 
 ### Parameters
 
-1. `Buffer|String` - Public key to re-encrypt the data to
-1. `Buffer|String` - Private key to decrypt the record data. This should be a key controlled by the record owner
-1. `(String) => (Promise<Buffer>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
+1. `String` - Public key to re-encrypt the data to
+1. `String` - Private key to decrypt the record data. This should be a key controlled by the record owner
+1. `(String) => (Promise<String>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
 
 ### Returns
 
-`Buffer` - The re-encrypted data
+`String` - The re-encrypted data
 
 ---
 
@@ -326,23 +326,19 @@ Re-encrypts the data to another public key
 ## Linnia.util.encrypt
 
 ```javascript
-Linnia.util.encrypt(pubKeyTo, plaintext [, options])
+Linnia.util.encrypt(pubKeyTo, plaintext)
 ```
 
-Encrypts a message using ECIES.
+Encrypts a message..
 
 ### Parameters
 
-1. `Buffer|String` - The public key to encrypt the data to (64 bytes)
-1. `Buffer|String` - The plaintext data
-1. `Object` - (Optional) Encryption options
-
-- `iv`: `Buffer` - (Optional) Initial vector used in AES-256-CBC (16 bytes)
-- `ephemPrivKey`: `Buffer` - (Optional) Ephemeral private key in Diffie-Hellman
+1. `String` - The public key to encrypt the data to (64 bytes)
+1. `String` - The plaintext data
 
 ### Returns
 
-`Buffer` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
+`String` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
 
 ### Example
 
@@ -359,16 +355,16 @@ console.log(encrypted.toString("hex"));
 Linnia.util.decrypt(privKey, ciphertext);
 ```
 
-Decrypts a message ECIES encrypted by `Linnia.util.encrypt`.
+Decrypts a message encrypted by `Linnia.util.encrypt`.
 
 ### Parameters
 
-1. `Buffer|String` - The private key to decrypt the data (32 bytes)
-1. `Buffer|String` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
+1. `String` - The private key to decrypt the data.
+1. `String` - The encrypted data, which includes the IV, ephemeral public key, MAC, and ciphertext.
 
 ### Returns
 
-`Buffer` - The decrypted plaintext
+`String` - The decrypted plaintext
 
 ### Example
 
