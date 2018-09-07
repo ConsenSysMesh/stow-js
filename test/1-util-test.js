@@ -45,5 +45,9 @@ describe('Encryption Scheme', () => {
       const ct = Linnia.util.encrypt(pubKey1, data);
       assert.throws(() => Linnia.util.decrypt('', ct), Error, "bad secret key size");
     });
+    it('should fail when encrypt object with toJSON', () => {
+      const data = {toJSON: console.log};
+      assert.throws(() => Linnia.util.encrypt(pubKey1, data), Error, "Cannot encrypt with toJSON property.  Please remove toJSON property");
+    });
   });
 });
