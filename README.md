@@ -244,11 +244,11 @@ Gets the plaintext data of the record
 ### Parameters
 
 1. `String` - The private key to decrypt the data
-1. `(String) => (Promise<String>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data.
+1. `(String) => (String)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the plaintext data.
 
 ### Returns
 
-`Promise<String>` - The plaintext data
+`String` - The plaintext data
 
 ### Example
 
@@ -283,7 +283,7 @@ Gets the plaintext data of a permissioned copy of the record
 
 ### Returns
 
-`Promise<String>` - The plaintext data
+`String` - The plaintext data
 
 ## record.verifyData
 
@@ -313,7 +313,7 @@ Re-encrypts the data to another public key
 
 1. `String` - Public key to re-encrypt the data to
 1. `String` - Private key to decrypt the record data. This should be a key controlled by the record owner
-1. `(String) => (Promise<String>)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data in a buffer.
+1. `(String) => (String)` - A function to resolve the data URI. The parameter is the string data URI. The function should return the encrypted data.
 
 ### Returns
 
@@ -329,11 +329,11 @@ Re-encrypts the data to another public key
 Linnia.util.encrypt(pubKeyTo, plaintext)
 ```
 
-Encrypts a message..
+Encrypts a message.
 
 ### Parameters
 
-1. `String` - The public key to encrypt the data to (64 bytes)
+1. `String` - The public key to encrypt the data
 1. `String` - The plaintext data
 
 ### Returns
