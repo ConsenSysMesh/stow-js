@@ -18,7 +18,7 @@ const genKeyPair = () => {
  * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
  * Encrypt
  * @param {String} pubKeyTo
- * @param {String} plaintext Plaintext to be encrypted
+ * @param {JSON} data Data to be encrypted (Has to be JSON Object)
  * @returns {JSON} Encrypted message
  */
 const encrypt = (pubKeyTo, data) => {
@@ -28,10 +28,27 @@ const encrypt = (pubKeyTo, data) => {
     throw new Error('Cannot encrypt empty data');
   }
 
+  if (typeof data === 'object') {
+    // remove toJSON attack vector
+    // TODO, remove to all posible children
+    delete data.toJSON;
+  }
+
+  // calculate padding
+  const dataLength = encodeURI(JSON.stringify(data)).split(/%..|./).length - 1;
+  const padLength = (2**11) - dataLength%(2**11);
+  const padding = nacl.randomBytes(padLength);
+
+  // add padding
+  const dataWithPadding = {
+    data: data,
+    padding: padding,
+  }
+
   // generate ephemeral keypair
   const ephemeralKeyPair = nacl.box.keyPair();
 
-  const msgParamsUInt8Array = nacl.util.decodeUTF8(data);
+  const msgParamsUInt8Array = nacl.util.decodeUTF8(JSON.stringify(dataWithPadding));
   const nonce = nacl.randomBytes(nacl.box.nonceLength);
 
   // encrypt
@@ -81,7 +98,7 @@ const decrypt = (privKey, encrypted) => {
   }
 
   if (output) {
-    return output;
+    return JSON.parse(output).data;
   }
   throw new Error('Decryption failed.');
 };
