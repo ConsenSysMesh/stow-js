@@ -28,22 +28,21 @@ const encrypt = (pubKeyTo, data) => {
     throw new Error('Cannot encrypt empty data');
   }
 
-  if (typeof data === 'object') {
+  if (typeof data === 'object' && data.toJSON) {
     // remove toJSON attack vector
-    // TODO, remove to all posible children
-    delete data.toJSON;
+    // TODO, remove to all possible children
+    throw new Error('Cannot encrypt with toJSON property.  please remove');
   }
-
-  // calculate padding
-  const dataLength = encodeURI(JSON.stringify(data)).split(/%..|./).length - 1;
-  const padLength = (2 ** 11) - dataLength % (2 ** 11);
-  const padding = nacl.randomBytes(padLength);
 
   // add padding
   const dataWithPadding = {
     data,
-    padding,
+    padding: '0',
   };
+  // calculate padding
+  const dataLength = encodeURI(JSON.stringify(dataWithPadding)).split(/%..|./).length - 1;
+  const padLength = (2 ** 11) - (dataLength % (2 ** 11));
+  dataWithPadding.padding = nacl.randomBytes(padLength);
 
   // generate ephemeral keypair
   const ephemeralKeyPair = nacl.box.keyPair();
@@ -103,7 +102,7 @@ const decrypt = (privKey, encrypted) => {
   throw new Error('Decryption failed.');
 };
 
-/* eslint-disable */ 
+/* eslint-disable */
 
 const truffleHack = (contract) => {
   if (typeof contract.currentProvider.sendAsync !== 'function') {
