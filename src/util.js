@@ -1,4 +1,4 @@
-const {Buffer} = require('buffer');
+const { Buffer } = require('buffer');
 const nacl = require('tweetnacl');
 nacl.util = require('tweetnacl-util');
 
