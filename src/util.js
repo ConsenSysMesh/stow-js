@@ -1,3 +1,4 @@
+const {Buffer} = require('buffer');
 const nacl = require('tweetnacl');
 nacl.util = require('tweetnacl-util');
 
@@ -37,12 +38,13 @@ const encrypt = (pubKeyTo, data) => {
   // add padding
   const dataWithPadding = {
     data,
-    padding: '0',
+    padding: '',
   };
   // calculate padding
-  const dataLength = encodeURI(JSON.stringify(dataWithPadding)).split(/%..|./).length - 1;
-  const padLength = (2 ** 11) - (dataLength % (2 ** 11));
-  dataWithPadding.padding = nacl.randomBytes(padLength);
+  const dataLength = Buffer.byteLength(JSON.stringify(dataWithPadding), 'utf-8');
+  let padLength = (2 ** 11) - (dataLength % (2 ** 11));
+  padLength -= 16; // nacl extra bytes
+  dataWithPadding.padding = '0'.repeat(padLength);
 
   // generate ephemeral keypair
   const ephemeralKeyPair = nacl.box.keyPair();

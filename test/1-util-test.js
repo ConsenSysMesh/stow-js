@@ -1,17 +1,33 @@
 import {assert} from 'chai';
 import Linnia from '../src';
+const nacl = require('tweetnacl');
+nacl.util = require('tweetnacl-util');
+
+const {Buffer} = require('buffer');
 
 describe('Encryption Scheme', () => {
   const privKey1 = 'wFGgG/Bv/36liIhdOGqH0TY5QpUVYkQP+Sdcbr1NgOI=';
   const pubKey1 = 'hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=';
   describe('roundtrip', () => {
-    it('should encrypt and decrypt a string = should encrypt string len that does not reveal input len', () => {
+    it('should encrypt and decrypt a string', () => {
       const data = '1';
       const ct = Linnia.util.encrypt(pubKey1, data);
       const pt = Linnia.util.decrypt(privKey1, ct);
       assert.equal(pt.toString(), data);
     });
+    it('should encrypt so that the ciphertext aligns with filesystem blocks after decodeBase64', () => {
+      const longString = 'O coz, coz, coz, my' +
+        ' pretty little coz, that thou didst know how many fathom deep I am in love!' +
+        ' But it cannot be sounded; my affection hath an unknown bottom, like the bay of Portugal.\n';
+      const shortString = 'f';
+      const ctLong = Linnia.util.encrypt(pubKey1, longString.repeat(111));
+      const lenInBytes = Buffer.byteLength(nacl.util.decodeBase64(ctLong.ciphertext));
+      assert.equal(lenInBytes % (2 ** 11), 0, 'output should be divisable by 2k');
 
+      const ctShort = Linnia.util.encrypt(pubKey1, shortString);
+      const ctShortLenInBytes = Buffer.byteLength(nacl.util.decodeBase64(ctShort.ciphertext));
+      assert.equal(ctShortLenInBytes % (2 ** 11), 0, 'output should be divisable by 2k');
+    });
     it('should encrypt string len that does not reveal input len', () => {
       const longString = 'O coz, coz, coz, my pretty little coz, that thou didst know how many fathom deep I am in love!' +
         ' But it cannot be sounded; my affection hath an unknown bottom, like the bay of Portugal.\n';
@@ -19,8 +35,7 @@ describe('Encryption Scheme', () => {
 
       const ctShort = Linnia.util.encrypt(pubKey1, shortString);
       const ctLong = Linnia.util.encrypt(pubKey1, longString);
-      assert.isAtLeast((Math.max(ctShort.ciphertext.length, ctLong.ciphertext.length) / 10),
-        Math.abs(ctShort.ciphertext.length - ctLong.ciphertext.length), 'output should vary by at least 1/10th');
+      assert.equal(ctShort.ciphertext.length, ctLong.ciphertext.length);
     });
   });
 
