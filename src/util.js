@@ -4,6 +4,8 @@ nacl.util = require('tweetnacl-util');
 
 const DEFAULT_PADDING_LENGTH = (2 ** 11);
 const NACL_EXTRA_BYTES = 16;
+const ALGO_VERSION = 'x25519-xsalsa20-poly1305';
+
 /**
  * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
  * Generate Keys
@@ -68,7 +70,7 @@ const encrypt = (pubKeyTo, data) => {
 
   // handle encrypted data
   const output = {
-    version: 'x25519-xsalsa20-poly1305',
+    version: ALGO_VERSION,
     nonce: nacl.util.encodeBase64(nonce),
     ephemPublicKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
     ciphertext: nacl.util.encodeBase64(encryptedMessage),
@@ -86,6 +88,10 @@ const encrypt = (pubKeyTo, data) => {
  */
 const decrypt = (privKey, encrypted) => {
   const encryptionPrivateKey = nacl.util.decodeBase64(privKey);
+
+  if (encrypted.version !== ALGO_VERSION) {
+    throw new Error(`Decryption failed: Version [${encrypted.version}] is not supproted.`);
+  }
 
   // assemble decryption parameters
   const nonce = nacl.util.decodeBase64(encrypted.nonce);

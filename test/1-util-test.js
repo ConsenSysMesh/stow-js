@@ -38,7 +38,7 @@ describe('Encryption Scheme', () => {
       const lenInBytes = Buffer.byteLength(naclUtil.decodeBase64(cipherText.ciphertext));
       assert.equal((lenInBytes % DEFAULT_PADDING_LENGTH), 0, 'output should be divisable by 2k');
     });
-    it('should encrypt string len that does not reveal input len', () => {
+    it('should encrypt so that the string len that does not reveal input len', () => {
       const longString = 'O coz, coz, coz, my pretty little coz, that thou didst know how many fathom deep I am in love!' +
         ' But it cannot be sounded; my affection hath an unknown bottom, like the bay of Portugal.\n';
       const shortString = 'f';
@@ -73,6 +73,12 @@ describe('Encryption Scheme', () => {
     it('should fail when encrypt object with toJSON', () => {
       const data = {toJSON: console.log};
       assert.throws(() => Linnia.util.encrypt(pubKey1, data), Error, "Cannot encrypt with toJSON property.  Please remove toJSON property");
+    });
+    it('should fail to decrypt when version is not supported', () => {
+      const data = 'foo';
+      const ct = Linnia.util.encrypt(pubKey1, data);
+      ct.version = 'foobar';
+      assert.throws(() => Linnia.util.decrypt(privKey1, ct), Error, `Decryption failed: Version [${ct.version}] is not supproted.`);
     });
   });
 });
