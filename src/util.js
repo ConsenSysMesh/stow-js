@@ -2,6 +2,8 @@ const { Buffer } = require('buffer');
 const nacl = require('tweetnacl');
 nacl.util = require('tweetnacl-util');
 
+const DEFAULT_PADDING_LENGTH = (2 ** 11);
+const NACL_EXTRA_BYTES = 16;
 /**
  * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
  * Generate Keys
@@ -42,8 +44,12 @@ const encrypt = (pubKeyTo, data) => {
   };
   // calculate padding
   const dataLength = Buffer.byteLength(JSON.stringify(dataWithPadding), 'utf-8');
-  let padLength = (2 ** 11) - (dataLength % (2 ** 11));
-  padLength -= 16; // nacl extra bytes
+  const modVal = (dataLength % DEFAULT_PADDING_LENGTH);
+  let padLength = 0;
+  // Only pad if necessary
+  if (modVal > 0) {
+    padLength = (DEFAULT_PADDING_LENGTH - modVal) - NACL_EXTRA_BYTES; // nacl extra bytes
+  }
   dataWithPadding.padding = '0'.repeat(padLength);
 
   // generate ephemeral keypair

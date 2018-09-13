@@ -1,9 +1,9 @@
-import {assert} from 'chai';
+import { assert } from 'chai';
+import { Buffer } from 'buffer';
+import naclUtil from 'tweetnacl-util';
 import Linnia from '../src';
-const nacl = require('tweetnacl');
-nacl.util = require('tweetnacl-util');
 
-const {Buffer} = require('buffer');
+const DEFAULT_PADDING_LENGTH = (2 ** 11);
 
 describe('Encryption Scheme', () => {
   const privKey1 = 'wFGgG/Bv/36liIhdOGqH0TY5QpUVYkQP+Sdcbr1NgOI=';
@@ -21,12 +21,22 @@ describe('Encryption Scheme', () => {
         ' But it cannot be sounded; my affection hath an unknown bottom, like the bay of Portugal.\n';
       const shortString = 'f';
       const ctLong = Linnia.util.encrypt(pubKey1, longString.repeat(111));
-      const lenInBytes = Buffer.byteLength(nacl.util.decodeBase64(ctLong.ciphertext));
+      const lenInBytes = Buffer.byteLength(naclUtil.decodeBase64(ctLong.ciphertext));
       assert.equal(lenInBytes % (2 ** 11), 0, 'output should be divisable by 2k');
 
       const ctShort = Linnia.util.encrypt(pubKey1, shortString);
-      const ctShortLenInBytes = Buffer.byteLength(nacl.util.decodeBase64(ctShort.ciphertext));
+      const ctShortLenInBytes = Buffer.byteLength(naclUtil.decodeBase64(ctShort.ciphertext));
       assert.equal(ctShortLenInBytes % (2 ** 11), 0, 'output should be divisable by 2k');
+    });
+    it('should encrypt padding is only added when neccessary', () => {
+      // adjust for envelope an NACL extra bytes
+      const ENVELOPE_BYTE_LEN = 40;
+      const plainTextString = 'f'.repeat(DEFAULT_PADDING_LENGTH - ENVELOPE_BYTE_LEN);
+      const plainTextLen = Buffer.byteLength(plainTextString);
+      assert.equal(plainTextLen + ENVELOPE_BYTE_LEN, DEFAULT_PADDING_LENGTH, 'input envelope size is 2048');
+      const cipherText = Linnia.util.encrypt(pubKey1, plainTextString);
+      const lenInBytes = Buffer.byteLength(naclUtil.decodeBase64(cipherText.ciphertext));
+      assert.equal((lenInBytes % DEFAULT_PADDING_LENGTH), 0, 'output should be divisable by 2k');
     });
     it('should encrypt string len that does not reveal input len', () => {
       const longString = 'O coz, coz, coz, my pretty little coz, that thou didst know how many fathom deep I am in love!' +
