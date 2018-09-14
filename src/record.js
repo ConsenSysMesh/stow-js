@@ -38,13 +38,13 @@ class Record {
 
   /**
    * Gets the plaintext data of this record
-   * @param {Buffer|String} privKey Private key to decrypt the data
+   * @param {String} privKey Private key to decrypt the data
    * @param {Function} uriResolver Async function that takes a data URI string and returns the data
-   * @returns {Buffer} Plaintext data
+   * @returns {String} Plaintext data
    */
   async decryptData(privKey, uriResolver) {
     const ciphertext = await uriResolver(this.dataUri);
-    const plaintext = await _util.decrypt(privKey, ciphertext);
+    const plaintext = _util.decrypt(privKey, ciphertext);
     // check hash
     if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
@@ -55,9 +55,9 @@ class Record {
   /**
    * Gets the plaintext data of a permissioned copy of the record
    * @param {String} viewer Address of the viewer
-   * @param {Buffer|String} privKey Private key to decrypt the data
+   * @param {String} privKey Private key to decrypt the data
    * @param {Function} uriResolver Async function that takes a data URI string and returns the data
-   * @returns {Buffer} Plaintext data
+   * @returns {String} Plaintext data
    */
   async decryptPermissioned(viewer, privKey, uriResolver) {
     // get the permissioned data URI
@@ -66,7 +66,7 @@ class Record {
       throw new Error('viewer has no permission to view the data');
     }
     const ciphertext = await uriResolver(perm.dataUri);
-    const plaintext = await _util.decrypt(privKey, ciphertext);
+    const plaintext = _util.decrypt(privKey, ciphertext);
     if (!this.verifyData(plaintext)) {
       throw new Error('plaintext data hash mismatch');
     }
@@ -84,14 +84,14 @@ class Record {
 
   /**
    * Re-encrypts the data to another public key
-   * @param {Buffer|String} pubKey Public key to re-encrypt the data to
-   * @param {BUffer|String} privKey Private key to decrypt the record data
+   * @param {String} pubKey Public key to re-encrypt the data to
+   * @param {String} privKey Private key to decrypt the record data
    * @param {Function} uriResolver Async function that takes a data URI string and returns the data
-   * @returns {Buffer} Re-encrypted data
+   * @returns {String} Re-encrypted data
    */
   async reencryptData(pubKey, privKey, uriResolver) {
     const plaintext = await this.decryptData(privKey, uriResolver);
-    const encryptedData = await _util.encrypt(pubKey, plaintext);
+    const encryptedData = _util.encrypt(pubKey, plaintext);
     return encryptedData;
   }
 

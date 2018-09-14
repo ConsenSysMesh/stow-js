@@ -1,47 +1,122 @@
-import EthCrypto from 'eth-crypto';
-// import { toBuffer } from 'ethereumjs-util';
+const { Buffer } = require('buffer');
+const nacl = require('tweetnacl');
+nacl.util = require('tweetnacl-util');
 
-// TODO: Add @param version to the encrypt and decrypt functions for version control
-// Check this: https://github.com/MetaMask/eth-sig-util/pull/18#issuecomment-384399986
+const DEFAULT_PADDING_LENGTH = (2 ** 11);
+const NACL_EXTRA_BYTES = 16;
+const ALGO_VERSION = 'x25519-xsalsa20-poly1305';
 
 /**
- * ECIES encrypt
- * @param {Buffer|String} pubKeyTo Ethereum pub key, 64 bytes
- * @param {Buffer|String} plaintext Plaintext to be encrypted
- * optional iv (16 bytes) and ephem key (32 bytes)
- * @returns {Buffer} Encrypted message, serialized, 113+ bytes
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Generate Keys
+ * @returns {JSON} with publicKey and privateKey
  */
-const encrypt = async (pubKeyTo, plaintext) => {
-  const hexPubKeyString = pubKeyTo.toString('hex');
-  const hexPubKey = hexPubKeyString.substr(0, 2) === '0x' ? hexPubKeyString.toString('hex').substr(2) : hexPubKeyString.toString('hex');
-
-  const payload = {
-    message: plaintext,
+const genKeyPair = () => {
+  const keys = nacl.box.keyPair();
+  return {
+    privateKey: nacl.util.encodeBase64(keys.secretKey),
+    publicKey: nacl.util.encodeBase64(keys.publicKey),
   };
-  const encrypted = await EthCrypto.encryptWithPublicKey(hexPubKey, JSON.stringify(payload));
-  return EthCrypto.cipher.stringify(encrypted);
 };
 
 /**
- * ECIES decrypt
- * @param {Buffer|String} privKey Ethereum private key, 32 bytes
- * @param {Buffer|String} encrypted Encrypted message, serialized, 113+ bytes
- * @returns {Buffer} plaintext
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Encrypt
+ * @param {String} pubKeyTo
+ * @param {JSON} data Data to be encrypted (Has to be JSON Object)
+ * @returns {JSON} Encrypted message
  */
-const decrypt = async (privKey, encrypted) => {
-  const hexPrivKeyString = privKey.toString('hex');
-  const hexPrivKey = hexPrivKeyString.substr(0, 2) === '0x' ? hexPrivKeyString : `0x${hexPrivKeyString}`;
+const encrypt = (pubKeyTo, data) => {
+  const receiverPublicKey = nacl.util.decodeBase64(pubKeyTo);
 
-  const encryptedObject = EthCrypto.cipher.parse(encrypted);
-  const decrypted = await EthCrypto.decryptWithPrivateKey(
-    hexPrivKey,
-    encryptedObject,
+  if (!data) {
+    throw new Error('Cannot encrypt empty data');
+  }
+
+  if (typeof data === 'object' && data.toJSON) {
+    // remove toJSON attack vector
+    // TODO, remove to all possible children
+    throw new Error('Cannot encrypt with toJSON property.  Please remove toJSON property');
+  }
+
+  // add padding
+  const dataWithPadding = {
+    data,
+    padding: '',
+  };
+  // calculate padding
+  const dataLength = Buffer.byteLength(JSON.stringify(dataWithPadding), 'utf-8');
+  const modVal = (dataLength % DEFAULT_PADDING_LENGTH);
+  let padLength = 0;
+  // Only pad if necessary
+  if (modVal > 0) {
+    padLength = (DEFAULT_PADDING_LENGTH - modVal) - NACL_EXTRA_BYTES; // nacl extra bytes
+  }
+  dataWithPadding.padding = '0'.repeat(padLength);
+
+  // generate ephemeral keypair
+  const ephemeralKeyPair = nacl.box.keyPair();
+
+  const msgParamsUInt8Array = nacl.util.decodeUTF8(JSON.stringify(dataWithPadding));
+  const nonce = nacl.randomBytes(nacl.box.nonceLength);
+
+  // encrypt
+  const encryptedMessage = nacl.box(
+    msgParamsUInt8Array,
+    nonce,
+    receiverPublicKey,
+    ephemeralKeyPair.secretKey,
   );
-  const decryptedPayload = JSON.parse(decrypted);
-  return decryptedPayload.message;
+
+  // handle encrypted data
+  const output = {
+    version: ALGO_VERSION,
+    nonce: nacl.util.encodeBase64(nonce),
+    ephemPublicKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
+    ciphertext: nacl.util.encodeBase64(encryptedMessage),
+  };
+
+  return output;
 };
 
-/* eslint-disable */ 
+/**
+ * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
+ * Decrypt
+ * @param {String} privKey
+ * @param {String} encrypted Encrypted message
+ * @returns {String} plaintext
+ */
+const decrypt = (privKey, encrypted) => {
+  const encryptionPrivateKey = nacl.util.decodeBase64(privKey);
+
+  if (encrypted.version !== ALGO_VERSION) {
+    throw new Error(`Decryption failed: Version [${encrypted.version}] is not supproted.`);
+  }
+
+  // assemble decryption parameters
+  const nonce = nacl.util.decodeBase64(encrypted.nonce);
+  const ciphertext = nacl.util.decodeBase64(encrypted.ciphertext);
+  const ephemPublicKey = nacl.util.decodeBase64(encrypted.ephemPublicKey);
+
+  // decrypt
+  const decryptedMessage = nacl.box.open(ciphertext, nonce, ephemPublicKey, encryptionPrivateKey);
+
+  let output;
+
+  // return decrypted msg data
+  try {
+    output = nacl.util.encodeUTF8(decryptedMessage);
+  } catch (err) {
+    throw new Error('Decryption failed.');
+  }
+
+  if (output) {
+    return JSON.parse(output).data;
+  }
+  throw new Error('Decryption failed.');
+};
+
+/* eslint-disable */
 
 const truffleHack = (contract) => {
   if (typeof contract.currentProvider.sendAsync !== 'function') {
@@ -55,8 +130,8 @@ const truffleHack = (contract) => {
 /* eslint-enable */
 
 export default {
+  genKeyPair,
   encrypt,
   decrypt,
   truffleHack,
 };
-
