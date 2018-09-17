@@ -9,17 +9,10 @@
 ```javascript
 const Web3 = require("web3");
 const Linnia = require("@linniaprotocol/linnia-js");
-const IPFS = require("ipfs-api");
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
-const ipfs = new IPFS({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https"
-});
-
-const linnia = new Linnia(web3, ipfs);
+const linnia = new Linnia(web3);
 
 // get the deployed contracts
 const { _, users, records, permissions } = await linnia.getContractInstances();
@@ -56,13 +49,12 @@ New to ethereum and/or Linnia? Head over to our [resources page](https://github.
 ### Constructor
 
 ```javascript
-new Linnia(web3, ipfs [, options])
+new Linnia(web3 [, options])
 ```
 
 ### Parameters
 
 1. `Object` - An instantiated web3 API object
-1. `Object` - An instantiated IPFS API object
 1. `Object` - (Optional) Constructor options
 
 - `linniaContractUpgradeHubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
@@ -72,10 +64,8 @@ new Linnia(web3, ipfs [, options])
 ```javascript
 const Web3 = require("web3");
 const Linnia = require("@linniaprotocol/linnia-js");
-const IPFS = require("ipfs-api");
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-const ipfs = new IPFS({ host: "localhost", port: 5001, protocol: "http" });
-const linnia = new Linnia(web3, ipfs);
+const linnia = new Linnia(web3);
 ```
 
 ## linnia.getContractInstances

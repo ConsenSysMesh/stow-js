@@ -17,7 +17,7 @@ describe('Record class', async () => {
   let linnia;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {
-    linnia = await LinniaDeploy.deploy(web3, null, {
+    linnia = await LinniaDeploy.deploy(web3, {
       from: admin,
       gas: 4000000,
     });

@@ -17,13 +17,11 @@ class Linnia {
   /**
    * Create a new Linnia API object
    * @param {Object} web3 An instantiated web3 API object
-   * @param {Object} ipfs An instantiated ipfs API object
    * @param {?{?linniaContractUpgradeHubAddress: String}} opt Optional constructor options
    * @returns {Linnia} Created Linnia API object
    */
-  constructor(web3, ipfs, opt = {}) {
+  constructor(web3, opt = {}) {
     this.web3 = web3;
-    this.ipfs = ipfs;
     // truffle contracts
     const _hub = TruffleContract(LinniaContractUpgradeHub);
     const _users = TruffleContract(LinniaUsers);
