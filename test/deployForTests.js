@@ -52,17 +52,15 @@ const _deploy = async (web3, opt) => {
 -   *  deployed contracts.
 -   * @param {Object} web3 An instantiated web3 API object, configured to the
 -   *  network you want to deploy the contracts on
--   * @param {Object} ipfs An instantiated ipfs API object, used by the created
--   *  Linnia API
 -   * @param {?Object} opt Optional web3 transaction object
 -   * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
 */
 
 class LinniaDeploy {
 
-  static async deploy(web3, ipfs, opt = {}) {
+  static async deploy(web3, opt = {}) {
     const deployed = await _deploy(web3, opt);
-    return new Linnia(web3, ipfs, {
+    return new Linnia(web3, {
       linniaContractUpgradeHubAddress: deployed.hubInstance.address,
     });
   }
