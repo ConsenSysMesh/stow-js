@@ -16,11 +16,22 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
+const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams) => {
+  let finalMetadata = metadata;
+  if (typeof metadata == 'object'){
+    finalMetadata = JSON.stringify(metadata);
+  }
+  await recordsContract.addRecord(dataHash, finalMetadata, dataUri, ethParams);
+  const record = getRecord(recordsContract, dataHash)
+  return record;
+};
+
 const getAttestation = async (
   recordsContract, dataHash, attestator,
 ) => recordsContract.sigExists.call(dataHash, attestator);
 
 export default {
   getRecord,
+  addRecord,
   getAttestation,
 };

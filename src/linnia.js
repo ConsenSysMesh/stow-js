@@ -70,6 +70,19 @@ class Linnia {
   }
 
   /**
+   * Add a record from Linnia by data hash
+   * @param {String} dataHash hash of the plain text data + metadata
+   * @param {String|Object} metadata public information about the data
+   * @param {String} dataUri link to the data (eg. the IPFS hash)
+   * @param {String} ethParams ethereum account params
+   * @returns {Promise<Record>}
+   */
+  async addRecord(dataHash, metadata, dataUri, ethParams) {
+    const { records } = await this.getContractInstances();
+    return _recordsFunctions.addRecord(records, dataHash, metadata, dataUri, ethParams);
+  }
+
+  /**
     * Get record attestation from Linnia
     * @param {String} dataHash hex-encoded data hash, 0x prefixed
     * @returns {Promise<Boolean>} True if attested by specified user

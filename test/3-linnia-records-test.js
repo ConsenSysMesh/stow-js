@@ -49,6 +49,20 @@ describe('Linnia-records', async () => {
       assert.equal(record.timestamp.getTime() / 1000, recordAddTime);
     });
   });
+  describe('add record', () => {
+    it('should add the record, with web3 instance with keys', async () => {
+      const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
+      const metadata = {"encryption": "ecies", "type": "medical data"};
+      const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
+      const ethParams = {from: user, gas: 500000, gasPrice: 20000000000};
+      const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
+      assert.equal(record.owner.toLowerCase(), user.toLowerCase());
+      assert.equal(record.metadataHash, web3.utils.sha3(JSON.stringify(metadata)));
+      assert.equal(record.dataUri, dataUri);
+    });
+    it('should add the record, with private key', async () => {
+    });
+  });
   describe('get attestation', () => {
     it('should return true if attested by specified user', async () => {
       const att = await linnia.getAttestation(testDataHash, provider);
