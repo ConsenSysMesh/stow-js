@@ -164,10 +164,10 @@ In order to append data to Linnia your web3 instance need to be able to sign wit
 ## linnia.addRecord
 
 ```javascript
-linnia.getAttestation(dataHash, attestatorAddress);
+linnia.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
 
-Gets the attestation of the data
+Add record to Linnia
 
 ### Parameters
 
