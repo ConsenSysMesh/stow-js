@@ -74,7 +74,7 @@ class Linnia {
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {String|Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
-   * @param {String} ethParams ethereum account params
+   * @param {Object} ethParams ethereum account params
    * @returns {Promise<Record>}
    */
   async addRecord(dataHash, metadata, dataUri, ethParams) {

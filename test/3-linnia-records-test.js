@@ -7,6 +7,16 @@ const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a21
 const testDataUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const testMetaData = 'Blood_Pressure';
 
+// Add record should work
+const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
+const metadata = {"encryption": "ecies", "type": "medical data"};
+const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
+
+// Add record should fail
+const dataHash2 = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb688";
+const metadata2 = {"encryption": "ecies", "type": "medical data"};
+const dataUri2 = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn5sZGW";
+
 describe('Linnia-records', async () => {
   const [admin, user, provider] = await web3.eth.getAccounts();
   let linnia;
@@ -51,16 +61,19 @@ describe('Linnia-records', async () => {
   });
   describe('add record', () => {
     it('should add the record, with web3 instance with keys', async () => {
-      const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
-      const metadata = {"encryption": "ecies", "type": "medical data"};
-      const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
       const ethParams = {from: user, gas: 500000, gasPrice: 20000000000};
       const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
       assert.equal(record.owner.toLowerCase(), user.toLowerCase());
       assert.equal(record.metadataHash, web3.utils.sha3(JSON.stringify(metadata)));
       assert.equal(record.dataUri, dataUri);
     });
-    it('should add the record, with private key', async () => {
+    it('should fail adding record, with web3 instance without the keys', async () => {
+      const ethParams = {from: '0xb717d7adf0d17f5f48bb7ff0030e30fcd19eed72', gas: 500000, gasPrice: 20000000000};
+      try{
+        await linnia.addRecord(dataHash2, metadata2, dataUri2, ethParams);
+      } catch(e){
+        assert.equal(e.message, "The web3 Instance that you pass to Linnia cannot sign a transaction for this address");
+      }
     });
   });
   describe('get attestation', () => {

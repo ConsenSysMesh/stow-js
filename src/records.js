@@ -18,12 +18,21 @@ const getRecord = async (recordsContract, dataHash) => {
 
 const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams) => {
   let finalMetadata = metadata;
+
+  // If metadata is JSON
   if (typeof metadata == 'object'){
     finalMetadata = JSON.stringify(metadata);
   }
-  await recordsContract.addRecord(dataHash, finalMetadata, dataUri, ethParams);
-  const record = getRecord(recordsContract, dataHash)
-  return record;
+
+  try{
+    await recordsContract.addRecord(dataHash, finalMetadata, dataUri, ethParams);
+    return getRecord(recordsContract, dataHash);
+  } catch(e){
+    if(e.message == "sender account not recognized"){
+      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address')
+    }
+  }
+
 };
 
 const getAttestation = async (
