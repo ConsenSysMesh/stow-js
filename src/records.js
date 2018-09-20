@@ -16,11 +16,30 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
+const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams) => {
+  // If metadata is not JSON
+  if (typeof metadata !== 'object') {
+    throw new Error('Metadata has to be a JSON object');
+  }
+
+  try {
+    await recordsContract.addRecord(dataHash, JSON.stringify(metadata), dataUri, ethParams);
+    return getRecord(recordsContract, dataHash);
+  } catch (e) {
+    if (e.message === 'sender account not recognized') {
+      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+    }
+  }
+
+  return undefined;
+};
+
 const getAttestation = async (
   recordsContract, dataHash, attestator,
 ) => recordsContract.sigExists.call(dataHash, attestator);
 
 export default {
   getRecord,
+  addRecord,
   getAttestation,
 };
