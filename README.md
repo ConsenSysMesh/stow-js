@@ -159,7 +159,7 @@ Gets the permission information of a record
 
 # Append data to Linnia
 
-In order to append data to Linnia your web3 instance need to be able to sign with the private key of the owner of the data.
+In order to append data to Linnia, your web3 instance need to be able to sign with the private key of the owner of the data.
 
 ## linnia.addRecord
 
@@ -172,7 +172,7 @@ Add record to Linnia
 ### Parameters
 
 1. `String` - The data hash. Hash of the plain text data + metadata
-2. `String|Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
+2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
 3. `String` - The dataUri, link to the data (eg. the IPFS hash)
 4. `Object` - The ethParams ethereum account params. 
 
@@ -202,7 +202,7 @@ const metadata = {
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
-}
+};
 const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
 const ethParams = {
     from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
@@ -215,7 +215,7 @@ In the example above the dataUri is the IPFS Hash where the file was stored.
 
 ### Append data using Linnia Js outside of the browser
 
- If you are using a Linnia Js ouside of the browser. In order to add a file you need to generate a web3 instance that can handle the private key of the owner of the file.
+In order to add a file you need to generate a web3 instance that can handle the private keys of the owner of the file.
 
 ### Example
 
@@ -246,7 +246,7 @@ const metadata = {
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
-}
+};
 const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
 const ethParams = {
     from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000

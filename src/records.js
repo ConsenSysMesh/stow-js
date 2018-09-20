@@ -17,15 +17,13 @@ const getRecord = async (recordsContract, dataHash) => {
 };
 
 const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams) => {
-  let finalMetadata = metadata;
-
-  // If metadata is JSON
-  if (typeof metadata === 'object') {
-    finalMetadata = JSON.stringify(metadata);
+  // If metadata is not JSON
+  if (typeof metadata !== 'object') {
+    throw new Error('Metadata has to be a JSON object');
   }
 
   try {
-    await recordsContract.addRecord(dataHash, finalMetadata, dataUri, ethParams);
+    await recordsContract.addRecord(dataHash, JSON.stringify(metadata), dataUri, ethParams);
     return getRecord(recordsContract, dataHash);
   } catch (e) {
     if (e.message === 'sender account not recognized') {

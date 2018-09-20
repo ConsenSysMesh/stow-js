@@ -74,6 +74,14 @@ describe('Linnia-records', async () => {
       } catch(e){
         assert.equal(e.message, "The web3 Instance that you pass to Linnia cannot sign a transaction for this address");
       }
+    });    
+    it('should fail adding record with metadata not JSON', async () => {
+      const ethParams = {from: '0xb717d7adf0d17f5f48bb7ff0030e30fcd19eed72', gas: 500000, gasPrice: 20000000000};
+      try{
+        await linnia.addRecord(dataHash2, "Sting Metadata", dataUri2, ethParams);
+      } catch(e){
+        assert.equal(e.message, "Metadata has to be a JSON object");
+      }
     });
   });
   describe('get attestation', () => {
