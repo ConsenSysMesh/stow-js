@@ -198,10 +198,10 @@ const metadata = {
     encryptionScheme: "x25519-xsalsa20-poly1305",
     encryptionPublicKey: "hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=",
     linniajsVersion: "0.1.4",
-    ownerName: "John Linnia",
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
+    creationDate: new Date(Date.UTC(96, 1, 2, 3, 4, 5))
 };
 const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
 const ethParams = {
@@ -242,10 +242,10 @@ const metadata = {
     encryptionScheme: "x25519-xsalsa20-poly1305",
     encryptionPublicKey: "hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=",
     linniajsVersion: "0.1.4",
-    ownerName: "John Linnia",
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
+    creationDate: new Date(Date.UTC(96, 1, 2, 3, 4, 5))
 };
 const dataUri = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn7sZGW";
 const ethParams = {
