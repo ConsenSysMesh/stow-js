@@ -1,9 +1,7 @@
-const { Buffer } = require('buffer');
 const nacl = require('tweetnacl');
 nacl.util = require('tweetnacl-util');
+const ethSigUtil = require('eth-sig-util');
 
-const DEFAULT_PADDING_LENGTH = (2 ** 11);
-const NACL_EXTRA_BYTES = 16;
 const ALGO_VERSION = 'x25519-xsalsa20-poly1305';
 
 /**
@@ -26,58 +24,7 @@ const genKeyPair = () => {
  * @param {JSON} data Data to be encrypted (Has to be JSON Object)
  * @returns {JSON} Encrypted message
  */
-const encrypt = (pubKeyTo, data) => {
-  const receiverPublicKey = nacl.util.decodeBase64(pubKeyTo);
-
-  if (!data) {
-    throw new Error('Cannot encrypt empty data');
-  }
-
-  if (typeof data === 'object' && data.toJSON) {
-    // remove toJSON attack vector
-    // TODO, remove to all possible children
-    throw new Error('Cannot encrypt with toJSON property.  Please remove toJSON property');
-  }
-
-  // add padding
-  const dataWithPadding = {
-    data,
-    padding: '',
-  };
-  // calculate padding
-  const dataLength = Buffer.byteLength(JSON.stringify(dataWithPadding), 'utf-8');
-  const modVal = (dataLength % DEFAULT_PADDING_LENGTH);
-  let padLength = 0;
-  // Only pad if necessary
-  if (modVal > 0) {
-    padLength = (DEFAULT_PADDING_LENGTH - modVal) - NACL_EXTRA_BYTES; // nacl extra bytes
-  }
-  dataWithPadding.padding = '0'.repeat(padLength);
-
-  // generate ephemeral keypair
-  const ephemeralKeyPair = nacl.box.keyPair();
-
-  const msgParamsUInt8Array = nacl.util.decodeUTF8(JSON.stringify(dataWithPadding));
-  const nonce = nacl.randomBytes(nacl.box.nonceLength);
-
-  // encrypt
-  const encryptedMessage = nacl.box(
-    msgParamsUInt8Array,
-    nonce,
-    receiverPublicKey,
-    ephemeralKeyPair.secretKey,
-  );
-
-  // handle encrypted data
-  const output = {
-    version: ALGO_VERSION,
-    nonce: nacl.util.encodeBase64(nonce),
-    ephemPublicKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
-    ciphertext: nacl.util.encodeBase64(encryptedMessage),
-  };
-
-  return output;
-};
+const encrypt = (pubKeyTo, data) => ethSigUtil.encryptSafely(pubKeyTo, { data }, ALGO_VERSION);
 
 /**
  * EIP 1098 (https://github.com/ethereum/EIPs/pull/1098)
@@ -86,35 +33,7 @@ const encrypt = (pubKeyTo, data) => {
  * @param {String} encrypted Encrypted message
  * @returns {String} plaintext
  */
-const decrypt = (privKey, encrypted) => {
-  const encryptionPrivateKey = nacl.util.decodeBase64(privKey);
-
-  if (encrypted.version !== ALGO_VERSION) {
-    throw new Error(`Decryption failed: Version [${encrypted.version}] is not supproted.`);
-  }
-
-  // assemble decryption parameters
-  const nonce = nacl.util.decodeBase64(encrypted.nonce);
-  const ciphertext = nacl.util.decodeBase64(encrypted.ciphertext);
-  const ephemPublicKey = nacl.util.decodeBase64(encrypted.ephemPublicKey);
-
-  // decrypt
-  const decryptedMessage = nacl.box.open(ciphertext, nonce, ephemPublicKey, encryptionPrivateKey);
-
-  let output;
-
-  // return decrypted msg data
-  try {
-    output = nacl.util.encodeUTF8(decryptedMessage);
-  } catch (err) {
-    throw new Error('Decryption failed.');
-  }
-
-  if (output) {
-    return JSON.parse(output).data;
-  }
-  throw new Error('Decryption failed.');
-};
+const decrypt = (privKey, encrypted) => ethSigUtil.decryptSafely(encrypted, nacl.util.decodeBase64(privKey));
 
 /* eslint-disable */
 
