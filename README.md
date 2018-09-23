@@ -257,6 +257,29 @@ const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
 
 
 
+# Attest data on Linnia
+
+Attest data on Linnia means sign a record and verify that contain legitimate and correct information.
+
+## linnia.signRecord
+
+```javascript
+linnia.signRecord(dataHash, ethParams);
+```
+
+Add record to Linnia
+
+### Parameters
+
+1. `String` - The data hash, hex-encoded, 0x prefixed
+2. `Object` - The ethParams ethereum account params. 
+
+### Returns
+
+`Promise<Record>` - A promise when resolved returns the record object that was signed.
+
+
+
 # Record class
 
 An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.

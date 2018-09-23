@@ -34,6 +34,31 @@ const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams
   return undefined;
 };
 
+const signRecord = async (recordsContract, usersContract, dataHash, ethParams) => {
+  // Check provenance of attestator
+  const provenance = await usersContract.provenanceOf(ethParams.from);
+  if (!(provenance > 0)) {
+    throw new Error('The attestor does not have provenance (Invalid Attestator)');
+  }
+
+  // Check if attestator have signed the record already
+  const sigExists = await recordsContract.sigExists(dataHash, ethParams.from);
+  if (sigExists) {
+    throw new Error('The attestor have already signed this record');
+  }
+
+  try {
+    await recordsContract.addSigByProvider(dataHash, ethParams);
+    return getRecord(recordsContract, dataHash);
+  } catch (e) {
+    if (e.message === 'sender account not recognized') {
+      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+    }
+  }
+
+  return undefined;
+};
+
 const getAttestation = async (
   recordsContract, dataHash, attestator,
 ) => recordsContract.sigExists.call(dataHash, attestator);
@@ -42,4 +67,5 @@ export default {
   getRecord,
   addRecord,
   getAttestation,
+  signRecord,
 };

@@ -18,7 +18,7 @@ const metadata2 = {"encryption": "ecies", "type": "medical data"};
 const dataUri2 = "QmSg3jCiroFERczWdpFJUau5CofHfMKCSm5vZXSzn5sZGW";
 
 describe('Linnia-records', async () => {
-  const [admin, user, provider] = await web3.eth.getAccounts();
+  const [admin, user, provider, provider2] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
   let recordAddTime;
@@ -28,10 +28,12 @@ describe('Linnia-records', async () => {
       gas: 4000000,
     });
     contracts = await linnia.getContractInstances();
-    // add a user and a provider
+    // add a user and 2 providers
     await contracts.users.register({ from: user });
     await contracts.users.register({ from: provider });
+    await contracts.users.register({ from: provider2 });
     await contracts.users.setProvenance(provider, 1, { from: admin });
+    await contracts.users.setProvenance(provider2, 1, { from: admin });
     // append a file
     const tx = await contracts.records.addRecordByProvider(
       testDataHash,
@@ -92,6 +94,29 @@ describe('Linnia-records', async () => {
     it('should return false if not attested by specified user', async () => {
       const att = await linnia.getAttestation(testDataHash, user);
       assert.isFalse(att);
+    });
+  });
+  describe('sign record', () => {
+    it('should sign the record', async () => {
+      const ethParams = {from: provider2, gas: 500000, gasPrice: 20000000000};
+      const signedRecord = await linnia.signRecord(testDataHash, ethParams);
+      assert.equal(signedRecord.sigCount, 2);
+    });
+    it('should fail when sign with a user with no provenance', async () => {
+      const ethParams = {from: user, gas: 500000, gasPrice: 20000000000};
+      try{
+        await linnia.signRecord(testDataHash, ethParams);
+      } catch(e){
+        assert.equal(e.message, "The attestor does not have provenance (Invalid Attestator)");
+      }
+    });
+    it('should fail when sign with an attestator that already sign that record', async () => {
+      const ethParams = {from: provider2, gas: 500000, gasPrice: 20000000000};
+      try{
+        await linnia.signRecord(testDataHash, ethParams);
+      } catch(e){
+        assert.equal(e.message, "The attestor have already signed this record");
+      }
     });
   });
 });
