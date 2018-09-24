@@ -28,10 +28,10 @@ const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams
   } catch (e) {
     if (e.message === 'sender account not recognized') {
       throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+    } else {
+      throw new Error('Something went wrong');
     }
   }
-
-  return undefined;
 };
 
 const signRecord = async (recordsContract, usersContract, dataHash, ethParams) => {
@@ -53,10 +53,10 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
   } catch (e) {
     if (e.message === 'sender account not recognized') {
       throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+    } else {
+      throw new Error('Something went wrong');
     }
   }
-
-  return undefined;
 };
 
 const getAttestation = async (
