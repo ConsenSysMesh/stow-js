@@ -96,7 +96,7 @@ class Linnia {
    * Sign a record (add attestation)
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
    * @param {Object} ethParams ethereum account params
-   * @returns {Promise<Record>}
+   * @returns {Promise<Attestation>}
    */
   async signRecord(dataHash, ethParams) {
     const { records, users } = await this.getContractInstances();

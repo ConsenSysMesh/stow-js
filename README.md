@@ -276,7 +276,23 @@ Add record to Linnia
 
 ### Returns
 
-`Promise<Record>` - A promise when resolved returns the record object that was signed.
+`Promise<Attestation>` - A promise when resolved returns the Attestation that was added.
+
+### Example
+
+```javascript
+const Linnia = require("@linniaprotocol/linnia-js");
+const linnia = new Linnia(web3);
+
+const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
+const ethParams = {
+    from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
+};
+
+const attestation = await linnia.signRecord(dataHash, ethParams);
+```
+
+------
 
 
 
@@ -433,6 +449,17 @@ Re-encrypts the data to another public key
 `String` - The re-encrypted data
 
 ---
+
+# Attestation class
+
+## Members
+
+- `attestator`: `String` - Hex-encoded attestator address
+- `dataHash`: `String` - Hex-encoded data hash
+
+------
+
+
 
 # Utility functions
 
