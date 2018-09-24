@@ -1,7 +1,5 @@
 class Attestation {
-  constructor(
-    attestator, dataHash,
-  ) {
+  constructor(attestator, dataHash) {
     this.attestator = attestator;
     this.dataHash = dataHash;
   }

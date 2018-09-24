@@ -80,8 +80,13 @@ class Linnia {
   async addRecord(dataHash, metadata, dataUri, ethParams = {}) {
     const { records } = await this.getContractInstances();
     const finalEthParams = await this._checkFromOrAdd(ethParams);
-    return _recordsFunctions.addRecord(records, dataHash,
-      metadata, dataUri, finalEthParams);
+    return _recordsFunctions.addRecord(
+      records, 
+      dataHash,
+      metadata, 
+      dataUri, 
+      finalEthParams
+    );
   }
 
   /**
