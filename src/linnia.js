@@ -74,10 +74,14 @@ class Linnia {
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
-   * @param {Object} ethParams ethereum account params
+   * @param {Object} ethParams Optional, ethereum account params
    * @returns {Promise<Record>}
    */
-  async addRecord(dataHash, metadata, dataUri, ethParams) {
+  async addRecord(dataHash, metadata, dataUri, ethParams = {}) {
+    if(!ethParams.from){
+      const account = await this.web3.eth.getAccounts();
+      ethParams.from = account[0];
+    }
     const { records } = await this.getContractInstances();
     return _recordsFunctions.addRecord(records, dataHash, metadata, dataUri, ethParams);
   }
@@ -95,10 +99,14 @@ class Linnia {
   /**
    * Sign a record (add attestation)
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
-   * @param {Object} ethParams ethereum account params
+   * @param {Object} ethParams Optional, ethereum account params
    * @returns {Promise<Attestation>}
    */
-  async signRecord(dataHash, ethParams) {
+  async signRecord(dataHash, ethParams = {}) {
+    if(!ethParams.from){
+      const account = await this.web3.eth.getAccounts();
+      ethParams.from = account[0];
+    }
     const { records, users } = await this.getContractInstances();
     return _recordsFunctions.signRecord(records, users, dataHash, ethParams);
   }

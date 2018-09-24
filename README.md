@@ -174,7 +174,9 @@ Add record to Linnia
 1. `String` - The data hash. Hash of the plain text data + metadata
 2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
 3. `String` - The dataUri, link to the data (eg. the IPFS hash)
-4. `Object` - The ethParams ethereum account params. 
+4. `Object` - (Optional) The ethParams, ethereum account params.
+
+If you don't set the ethParams it will use the account[0] as the from address.
 
 ### Returns
 
@@ -272,7 +274,9 @@ Add record to Linnia
 ### Parameters
 
 1. `String` - The data hash, hex-encoded, 0x prefixed
-2. `Object` - The ethParams ethereum account params. 
+2. `Object` - (Optional) The ethParams, ethereum account params. 
+
+If you don't set the ethParams it will use the account[0] as the from address.
 
 ### Returns
 
