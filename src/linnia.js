@@ -79,8 +79,9 @@ class Linnia {
    */
   async addRecord(dataHash, metadata, dataUri, ethParams = {}) {
     const { records } = await this.getContractInstances();
+    const finalEthParams = await this._checkFromOrAdd(ethParams);
     return _recordsFunctions.addRecord(records, dataHash,
-      metadata, dataUri, this._checkFromOrAdd(ethParams));
+      metadata, dataUri, finalEthParams);
   }
 
   /**
@@ -101,7 +102,8 @@ class Linnia {
    */
   async signRecord(dataHash, ethParams = {}) {
     const { records, users } = await this.getContractInstances();
-    return _recordsFunctions.signRecord(records, users, dataHash, this._checkFromOrAdd(ethParams));
+    const finalEthParams = await this._checkFromOrAdd(ethParams);
+    return _recordsFunctions.signRecord(records, users, dataHash, finalEthParams);
   }
 
   /**
