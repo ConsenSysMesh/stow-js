@@ -45,7 +45,7 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
 
   // Check if record exists
   const record = await getRecord(recordsContract, dataHash);
-  if (record.owner === "0x0000000000000000000000000000000000000000") {
+  if (record.owner === '0x0000000000000000000000000000000000000000') {
     throw new Error('The record does not exists');
   }
 

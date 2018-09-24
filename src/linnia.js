@@ -78,12 +78,9 @@ class Linnia {
    * @returns {Promise<Record>}
    */
   async addRecord(dataHash, metadata, dataUri, ethParams = {}) {
-    if(!ethParams.from){
-      const account = await this.web3.eth.getAccounts();
-      ethParams.from = account[0];
-    }
     const { records } = await this.getContractInstances();
-    return _recordsFunctions.addRecord(records, dataHash, metadata, dataUri, ethParams);
+    return _recordsFunctions.addRecord(records, dataHash,
+      metadata, dataUri, this._checkFromOrAdd(ethParams));
   }
 
   /**
@@ -103,12 +100,8 @@ class Linnia {
    * @returns {Promise<Attestation>}
    */
   async signRecord(dataHash, ethParams = {}) {
-    if(!ethParams.from){
-      const account = await this.web3.eth.getAccounts();
-      ethParams.from = account[0];
-    }
     const { records, users } = await this.getContractInstances();
-    return _recordsFunctions.signRecord(records, users, dataHash, ethParams);
+    return _recordsFunctions.signRecord(records, users, dataHash, this._checkFromOrAdd(ethParams));
   }
 
   /**
@@ -134,6 +127,23 @@ class Linnia {
       return this._hub.at(this._hubAddress);
     }
     return this._hub.deployed();
+  }
+
+  /**
+   * Internal DO NOT USE
+   * @returns {Promise<Object>}
+   * @private
+   */
+  async _checkFromOrAdd(ethParams) {
+    // If the user does not define the from address to sign the transaction
+    // This function will add the first address in web3 accounts
+    if (!ethParams.from) {
+      const [account] = await this.web3.eth.getAccounts();
+      /* eslint-disable */
+      ethParams.from = account;
+      /* eslint-enable */
+    }
+    return ethParams;
   }
 }
 
