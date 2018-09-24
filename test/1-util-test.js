@@ -57,13 +57,13 @@ describe('Encryption Scheme', () => {
     it('should fail when encrypt with bad key', () => {
       const data = 'foo';
       const pubKey2 = 'hQYhHJSjkL17VGyNTHNQY=';
-      assert.throws(() => Linnia.util.encrypt(pubKey2, data), Error, "invalid encoding");
+      assert.throws(() => Linnia.util.encrypt(pubKey2, data), Error, "Bad public key");
     });
     it('should fail when decrypt with wrong key', () => {
       const data = 'foo';
       const privWrongKey = '5VdzPXk23HBA+S1tcSsSFGxjPpsHgQ5PMx3tbfsxSIU=';
       const ct = Linnia.util.encrypt(pubKey1, data);
-      assert.throws(() => Linnia.util.decrypt(privWrongKey, ct), Error, "Decryption failed");
+      assert.throws(() => Linnia.util.decrypt(privWrongKey, ct), Error, "Decryption failed.");
     });
     it('should fail when decrypt with empty key', () => {
       const data = 'foo';
@@ -78,7 +78,7 @@ describe('Encryption Scheme', () => {
       const data = 'foo';
       const ct = Linnia.util.encrypt(pubKey1, data);
       ct.version = 'foobar';
-      assert.throws(() => Linnia.util.decrypt(privKey1, ct), Error, `Decryption failed: Version [${ct.version}] is not supproted.`);
+      assert.throws(() => Linnia.util.decrypt(privKey1, ct), Error, 'Encryption type/version not supported.');
     });
   });
 });
