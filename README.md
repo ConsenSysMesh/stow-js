@@ -174,7 +174,7 @@ Add record to Linnia
 1. `String` - The data hash. Hash of the plain text data + metadata
 2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
 3. `String` - The dataUri, link to the data (eg. the IPFS hash)
-4. `Object` - The ethParams ethereum account params. 
+4. `Object` - The ethParams, ethereum account params. (The object need to contain the key 'from')
 
 ### Returns
 
@@ -254,6 +254,45 @@ const ethParams = {
 
 const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
+
+
+
+# Attest data on Linnia
+
+Attest data on Linnia means sign a record and verify that contain legitimate and correct information.
+
+## linnia.signRecord
+
+```javascript
+linnia.signRecord(dataHash, ethParams);
+```
+
+Add record to Linnia
+
+### Parameters
+
+1. `String` - The data hash, hex-encoded, 0x prefixed
+2. `Object` - The ethParams, ethereum account params. (The object need to contain the key 'from')
+
+### Returns
+
+`Promise<Attestation>` - A promise when resolved returns the Attestation that was added.
+
+### Example
+
+```javascript
+const Linnia = require("@linniaprotocol/linnia-js");
+const linnia = new Linnia(web3);
+
+const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
+const ethParams = {
+    from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
+};
+
+const attestation = await linnia.signRecord(dataHash, ethParams);
+```
+
+------
 
 
 
@@ -410,6 +449,17 @@ Re-encrypts the data to another public key
 `String` - The re-encrypted data
 
 ---
+
+# Attestation class
+
+## Members
+
+- `attestator`: `String` - Hex-encoded attestator address
+- `dataHash`: `String` - Hex-encoded data hash
+
+------
+
+
 
 # Utility functions
 

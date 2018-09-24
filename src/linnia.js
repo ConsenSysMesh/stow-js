@@ -78,8 +78,15 @@ class Linnia {
    * @returns {Promise<Record>}
    */
   async addRecord(dataHash, metadata, dataUri, ethParams) {
-    const { records } = await this.getContractInstances();
-    return _recordsFunctions.addRecord(records, dataHash, metadata, dataUri, ethParams);
+    const { records, users } = await this.getContractInstances();
+    return _recordsFunctions.addRecord(
+      records,
+      users,
+      dataHash,
+      metadata,
+      dataUri,
+      ethParams,
+    );
   }
 
   /**
@@ -90,6 +97,17 @@ class Linnia {
   async getAttestation(dataHash, attestatorAddress) {
     const { records } = await this.getContractInstances();
     return _recordsFunctions.getAttestation(records, dataHash, attestatorAddress);
+  }
+
+  /**
+   * Sign a record (add attestation)
+   * @param {String} dataHash hex-encoded data hash, 0x prefixed
+   * @param {Object} ethParams ethereum account params
+   * @returns {Promise<Attestation>}
+   */
+  async signRecord(dataHash, ethParams) {
+    const { records, users } = await this.getContractInstances();
+    return _recordsFunctions.signRecord(records, users, dataHash, ethParams);
   }
 
   /**
