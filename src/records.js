@@ -18,7 +18,19 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
-const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams) => {
+const addRecord = async (recordsContract, usersContract,
+  dataHash, metadata, dataUri, ethParams) => {
+  // Check if there is from in the ethParams
+  if (!ethParams.from) {
+    throw new Error('ethParams object does not contain a "from" key');
+  }
+
+  // Check if the owner is a Linnia User
+  const isUser = await usersContract.isUser(ethParams.from);
+  if (!isUser) {
+    throw new Error('the address is not registered in Linnia');
+  }
+
   // If metadata is not JSON
   if (typeof metadata !== 'object') {
     throw new Error('Metadata has to be a JSON object');
@@ -37,6 +49,17 @@ const addRecord = async (recordsContract, dataHash, metadata, dataUri, ethParams
 };
 
 const signRecord = async (recordsContract, usersContract, dataHash, ethParams) => {
+  // Check if there is from in the ethParams
+  if (!ethParams.from) {
+    throw new Error('ethParams object does not contain a "from" key');
+  }
+
+  // Check if the owner is a Linnia User
+  const isUser = await usersContract.isUser(ethParams.from);
+  if (!isUser) {
+    throw new Error('the address is not registered in Linnia');
+  }
+
   // Check provenance of attestator
   const provenance = await usersContract.provenanceOf(ethParams.from);
   if (!(provenance > 0)) {

@@ -74,18 +74,18 @@ class Linnia {
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
-   * @param {Object} ethParams Optional, ethereum account params
+   * @param {Object} ethParams ethereum account params
    * @returns {Promise<Record>}
    */
-  async addRecord(dataHash, metadata, dataUri, ethParams = {}) {
-    const { records } = await this.getContractInstances();
-    const finalEthParams = await this._checkFromOrAdd(ethParams);
+  async addRecord(dataHash, metadata, dataUri, ethParams) {
+    const { records, users } = await this.getContractInstances();
     return _recordsFunctions.addRecord(
       records,
+      users,
       dataHash,
       metadata,
       dataUri,
-      finalEthParams,
+      ethParams,
     );
   }
 
@@ -102,13 +102,12 @@ class Linnia {
   /**
    * Sign a record (add attestation)
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
-   * @param {Object} ethParams Optional, ethereum account params
+   * @param {Object} ethParams ethereum account params
    * @returns {Promise<Attestation>}
    */
-  async signRecord(dataHash, ethParams = {}) {
+  async signRecord(dataHash, ethParams) {
     const { records, users } = await this.getContractInstances();
-    const finalEthParams = await this._checkFromOrAdd(ethParams);
-    return _recordsFunctions.signRecord(records, users, dataHash, finalEthParams);
+    return _recordsFunctions.signRecord(records, users, dataHash, ethParams);
   }
 
   /**
@@ -134,23 +133,6 @@ class Linnia {
       return this._hub.at(this._hubAddress);
     }
     return this._hub.deployed();
-  }
-
-  /**
-   * Internal DO NOT USE
-   * @returns {Promise<Object>}
-   * @private
-   */
-  async _checkFromOrAdd(ethParams) {
-    // If the user does not define the from address to sign the transaction
-    // This function will add the first address in web3 accounts
-    if (!ethParams.from) {
-      const [account] = await this.web3.eth.getAccounts();
-      /* eslint-disable */
-      ethParams.from = account;
-      /* eslint-enable */
-    }
-    return ethParams;
   }
 }
 
