@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "babel src -d lib -s --copy-files",
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "testrpc": "ganache-cli -p 7545 -i 5777",
     "test": "mocha --require babel-register",
     "cdn-build": "webpack"
