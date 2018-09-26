@@ -8,7 +8,7 @@ import Linnia from '../src';
 
 import _util from '../src/util';
 
-const _deploy = async (web3, opt) => {
+const testDeploy = async (web3, opt) => {
   if (web3 === undefined) {
     throw Error('web3 is undefined!');
   }
@@ -58,7 +58,7 @@ const _deploy = async (web3, opt) => {
 
 class LinniaDeploy {
   static async deploy(web3, opt = {}) {
-    const deployed = await _deploy(web3, opt);
+    const deployed = await testDeploy(web3, opt);
     return new Linnia(web3, {
       linniaContractUpgradeHubAddress: deployed.hubInstance.address,
     });
