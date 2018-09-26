@@ -13,20 +13,20 @@ const _deploy = async (web3, opt) => {
     throw Error('web3 is undefined!');
   }
 
-  const _hub = TruffleContract(LinniaHub);
-  const _users = TruffleContract(LinniaUsers);
-  const _records = TruffleContract(LinniaRecords);
-  const _permissions = TruffleContract(LinniaPermissions);
+  const hubTemp = TruffleContract(LinniaHub);
+  const usersTemp = TruffleContract(LinniaUsers);
+  const recordsTemp = TruffleContract(LinniaRecords);
+  const permissionsTemp = TruffleContract(LinniaPermissions);
 
-  _hub.setProvider(web3.currentProvider);
-  _users.setProvider(web3.currentProvider);
-  _records.setProvider(web3.currentProvider);
-  _permissions.setProvider(web3.currentProvider);
+  hubTemp.setProvider(web3.currentProvider);
+  usersTemp.setProvider(web3.currentProvider);
+  recordsTemp.setProvider(web3.currentProvider);
+  permissionsTemp.setProvider(web3.currentProvider);
 
-  const hub = _util.truffleHack(_hub);
-  const users = _util.truffleHack(_users);
-  const records = _util.truffleHack(_records);
-  const permissions = _util.truffleHack(_permissions);
+  const hub = _util.truffleHack(hubTemp);
+  const users = _util.truffleHack(usersTemp);
+  const records = _util.truffleHack(recordsTemp);
+  const permissions = _util.truffleHack(permissionsTemp);
   // deploy the hub
   const hubInstance = await hub.new(opt);
   // deploy Users
