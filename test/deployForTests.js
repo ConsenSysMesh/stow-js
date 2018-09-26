@@ -4,7 +4,7 @@ import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/Li
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
-import Linnia from '../src'
+import Linnia from '../src';
 
 import _util from '../src/util';
 
@@ -57,14 +57,12 @@ const _deploy = async (web3, opt) => {
 */
 
 class LinniaDeploy {
-
   static async deploy(web3, opt = {}) {
     const deployed = await _deploy(web3, opt);
     return new Linnia(web3, {
       linniaContractUpgradeHubAddress: deployed.hubInstance.address,
     });
   }
-
 }
 
 export default LinniaDeploy;
