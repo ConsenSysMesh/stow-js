@@ -47,13 +47,13 @@ const addRecordWithReward = async (
   }
 
   try {
-    await recordsContract.addRecord(dataHash, JSON.stringify(metadata), dataUri, ethParams);
+    await recordsContract.addRecordwithReward(dataHash, JSON.stringify(metadata), dataUri, tokenAddress, ethParams);
     return getRecord(recordsContract, dataHash);
   } catch (e) {
     if (e.message === 'sender account not recognized') {
       throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
     } else {
-      throw new Error('Something went wrong');
+      throw e;
     }
   }
 };
@@ -88,7 +88,7 @@ const addRecord = async (
     if (e.message === 'sender account not recognized') {
       throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
     } else {
-      throw new Error('Something went wrong');
+      throw e;
     }
   }
 };
@@ -130,7 +130,7 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
     if (e.message === 'sender account not recognized') {
       throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
     } else {
-      throw new Error('Something went wrong');
+      throw e;
     }
   }
 };

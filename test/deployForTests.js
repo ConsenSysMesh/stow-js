@@ -48,6 +48,8 @@ const testDeploy = async (web3, opt) => {
 
   // deploy mockToken
   const tokenInstance = await mockToken.new(opt);
+  await tokenInstance.unpause(opt);
+  await tokenInstance.transfer(recordsInstance.address, web3.utils.toWei('1000', 'finney'), opt);
   return {
     hubInstance,
     usersInstance,
