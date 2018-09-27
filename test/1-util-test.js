@@ -52,27 +52,27 @@ describe('Encryption Scheme', () => {
   describe('failure', () => {
     it('should fail when encrypt with empty key', () => {
       const data = 'foo';
-      assert.throws(() => Linnia.util.encrypt('', data), Error, "bad public key size");
+      assert.throws(() => Linnia.util.encrypt('', data), Error, 'bad public key size');
     });
     it('should fail when encrypt with bad key', () => {
       const data = 'foo';
       const pubKey2 = 'hQYhHJSjkL17VGyNTHNQY=';
-      assert.throws(() => Linnia.util.encrypt(pubKey2, data), Error, "Bad public key");
+      assert.throws(() => Linnia.util.encrypt(pubKey2, data), Error, 'Bad public key');
     });
     it('should fail when decrypt with wrong key', () => {
       const data = 'foo';
       const privWrongKey = '5VdzPXk23HBA+S1tcSsSFGxjPpsHgQ5PMx3tbfsxSIU=';
       const ct = Linnia.util.encrypt(pubKey1, data);
-      assert.throws(() => Linnia.util.decrypt(privWrongKey, ct), Error, "Decryption failed.");
+      assert.throws(() => Linnia.util.decrypt(privWrongKey, ct), Error, 'Decryption failed.');
     });
     it('should fail when decrypt with empty key', () => {
       const data = 'foo';
       const ct = Linnia.util.encrypt(pubKey1, data);
-      assert.throws(() => Linnia.util.decrypt('', ct), Error, "bad secret key size");
+      assert.throws(() => Linnia.util.decrypt('', ct), Error, 'bad secret key size');
     });
     it('should fail when encrypt object with toJSON', () => {
-      const data = {toJSON: console.log};
-      assert.throws(() => Linnia.util.encrypt(pubKey1, data), Error, "Cannot encrypt with toJSON property.  Please remove toJSON property");
+      const data = { toJSON: console.log };
+      assert.throws(() => Linnia.util.encrypt(pubKey1, data), Error, 'Cannot encrypt with toJSON property.  Please remove toJSON property');
     });
     it('should fail to decrypt when version is not supported', () => {
       const data = 'foo';

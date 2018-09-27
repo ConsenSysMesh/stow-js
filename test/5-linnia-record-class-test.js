@@ -77,7 +77,7 @@ describe('Record class', async () => {
   describe('decrypt', () => {
     it('should decrypt the data if hash is correct', async () => {
       // make the URI resolver always return the encrypted data
-      const uriResolver = async dataUri => {
+      const uriResolver = async (dataUri) => {
         // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
         return Linnia.util.encrypt(pubKey, testData);
@@ -102,7 +102,7 @@ describe('Record class', async () => {
     it(
       'should decrypt the data if has permission and hash is correct',
       async () => {
-        const uriResolver = async dataUri => {
+        const uriResolver = async (dataUri) => {
           // the URI being passed in should be the shared copy
           assert.equal(dataUri, testSharedUri);
           return Linnia.util.encrypt(pubKey, testData);
@@ -155,7 +155,7 @@ describe('Record class', async () => {
   });
   describe('reencrypt data', () => {
     it('should re-encrypt to the public key', async () => {
-      const uriResolver = async dataUri => {
+      const uriResolver = async (dataUri) => {
         assert.equal(dataUri, testDataUri);
         return Linnia.util.encrypt(pubKey, testData);
       };
