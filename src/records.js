@@ -18,6 +18,40 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
+const addRecordWithReward = async (recordsContract, usersContract, dataHash, metadata, dataUri, tokenAddress, ethParams) => {
+
+  // if (!tokenAddress) {
+  //   throw new Error('tokenAddress not valid.  It is likely not set in config');
+  // }
+
+  // Check if there is from in the ethParams
+  if (!ethParams.from) {
+    throw new Error('ethParams object does not contain a "from" key');
+  }
+
+  // Check if the owner is a Linnia User
+  const isUser = await usersContract.isUser(ethParams.from);
+  if (!isUser) {
+    throw new Error('the address is not registered in Linnia');
+  }
+
+  // If metadata is not JSON
+  if (typeof metadata !== 'object') {
+    throw new Error('Metadata has to be a JSON object');
+  }
+
+  try {
+    await recordsContract.addRecord(dataHash, JSON.stringify(metadata), dataUri, ethParams);
+    return getRecord(recordsContract, dataHash);
+  } catch (e) {
+    if (e.message === 'sender account not recognized') {
+      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+    } else {
+      throw new Error('Something went wrong');
+    }
+  }
+};
+
 const addRecord = async (recordsContract, usersContract,
   dataHash, metadata, dataUri, ethParams) => {
   // Check if there is from in the ethParams
@@ -97,6 +131,7 @@ const getAttestation = async (
 export default {
   getRecord,
   addRecord,
+  addRecordWithReward,
   getAttestation,
   signRecord,
 };

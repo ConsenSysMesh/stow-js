@@ -161,6 +161,25 @@ Gets the permission information of a record
 
 In order to append data to Linnia, your web3 instance need to be able to sign with the private key of the owner of the data.
 
+## linnia.addRecordWithReward
+
+```javascript
+linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+```
+
+Add record to Linnia and receive a small reward of linnia tokens
+
+### Parameters
+
+1. `String` - The data hash. Hash of the plain text data + metadata
+2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
+3. `String` - The dataUri, link to the data (eg. the IPFS hash)
+4. `Object` - The ethParams, ethereum account params. (The object need to contain the key 'from')
+
+### Returns
+
+`Promise<Record>` - A promise when resolved returns the record object that was stored.
+
 ## linnia.addRecord
 
 ```javascript
@@ -255,8 +274,6 @@ const ethParams = {
 const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
 
-
-
 # Attest data on Linnia
 
 Attest data on Linnia means sign a record and verify that contain legitimate and correct information.
@@ -267,7 +284,7 @@ Attest data on Linnia means sign a record and verify that contain legitimate and
 linnia.signRecord(dataHash, ethParams);
 ```
 
-Add record to Linnia
+Attest a record to Linnia
 
 ### Parameters
 
