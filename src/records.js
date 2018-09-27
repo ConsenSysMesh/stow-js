@@ -26,9 +26,9 @@ const addRecordWithReward = async (
   dataUri,
   tokenAddress,
   ethParams) => {
-  // if (!tokenAddress) {
-  //   throw new Error('tokenAddress not valid.  It is likely not set in config');
-  // }
+  if (!tokenAddress) {
+    throw new Error('tokenAddress not valid.  It is likely not set in linnia constructor');
+  }
 
   // Check if there is from in the ethParams
   if (!ethParams.from) {

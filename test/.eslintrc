@@ -6,5 +6,9 @@
     "extends": "airbnb",
     "parserOptions": {
       "ecmaVersion": 2017
-    }
+    },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "max-len": 1
   }
+}

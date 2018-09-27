@@ -38,7 +38,7 @@ class Linnia {
     // set linniaContractUpgradeHubAddress address
     // using user defined address
     this._hubAddress = opt.linniaContractUpgradeHubAddress;
-    this._tokenAddress = opt.linniaTokenAddress;
+    this._tokenAddress = opt.linniaTokenContractAddress;
   }
 
   /**

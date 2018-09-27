@@ -4,6 +4,8 @@ import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/Li
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
 import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
+import MockToken from '@linniaprotocol/linnia-smart-contracts/build/contracts/ERC20Mock.json';
+
 import Linnia from '../src';
 
 import _util from '../src/util';
@@ -17,16 +19,20 @@ const testDeploy = async (web3, opt) => {
   const usersTemp = TruffleContract(LinniaUsers);
   const recordsTemp = TruffleContract(LinniaRecords);
   const permissionsTemp = TruffleContract(LinniaPermissions);
+  const mockTokenTemp = TruffleContract(MockToken);
 
   hubTemp.setProvider(web3.currentProvider);
   usersTemp.setProvider(web3.currentProvider);
   recordsTemp.setProvider(web3.currentProvider);
   permissionsTemp.setProvider(web3.currentProvider);
+  mockTokenTemp.setProvider(web3.currentProvider);
 
   const hub = _util.truffleHack(hubTemp);
   const users = _util.truffleHack(usersTemp);
   const records = _util.truffleHack(recordsTemp);
   const permissions = _util.truffleHack(permissionsTemp);
+  const mockToken = _util.truffleHack(mockTokenTemp);
+
   // deploy the hub
   const hubInstance = await hub.new(opt);
   // deploy Users
@@ -39,11 +45,15 @@ const testDeploy = async (web3, opt) => {
   await hubInstance.setUsersContract(usersInstance.address, opt);
   await hubInstance.setRecordsContract(recordsInstance.address, opt);
   await hubInstance.setPermissionsContract(permissionsInstace.address, opt);
+
+  // deploy mockToken
+  const tokenInstance = await mockToken.new(opt);
   return {
     hubInstance,
     usersInstance,
     recordsInstance,
     permissionsInstace,
+    tokenInstance,
   };
 };
 
@@ -61,6 +71,7 @@ class LinniaDeploy {
     const deployed = await testDeploy(web3, opt);
     return new Linnia(web3, {
       linniaContractUpgradeHubAddress: deployed.hubInstance.address,
+      linniaTokenContractAddress: deployed.tokenInstance.address,
     });
   }
 }
