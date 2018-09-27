@@ -18,8 +18,14 @@ const getRecord = async (recordsContract, dataHash) => {
   };
 };
 
-const addRecordWithReward = async (recordsContract, usersContract, dataHash, metadata, dataUri, tokenAddress, ethParams) => {
-
+const addRecordWithReward = async (
+  recordsContract,
+  usersContract,
+  dataHash,
+  metadata,
+  dataUri,
+  tokenAddress,
+  ethParams) => {
   // if (!tokenAddress) {
   //   throw new Error('tokenAddress not valid.  It is likely not set in config');
   // }
@@ -52,8 +58,13 @@ const addRecordWithReward = async (recordsContract, usersContract, dataHash, met
   }
 };
 
-const addRecord = async (recordsContract, usersContract,
-  dataHash, metadata, dataUri, ethParams) => {
+const addRecord = async (
+  recordsContract,
+  usersContract,
+  dataHash,
+  metadata,
+  dataUri,
+  ethParams) => {
   // Check if there is from in the ethParams
   if (!ethParams.from) {
     throw new Error('ethParams object does not contain a "from" key');
