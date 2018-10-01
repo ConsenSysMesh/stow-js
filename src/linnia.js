@@ -36,10 +36,9 @@ class Linnia {
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
     // set linniaContractUpgradeHubAddress address
-    if (opt.linniaContractUpgradeHubAddress) {
-      // using user defined address
-      this._hubAddress = opt.linniaContractUpgradeHubAddress;
-    }
+    // using user defined address
+    this._hubAddress = opt.linniaContractUpgradeHubAddress;
+    this._tokenAddress = opt.linniaTokenContractAddress;
   }
 
   /**
@@ -85,6 +84,27 @@ class Linnia {
       dataHash,
       metadata,
       dataUri,
+      ethParams,
+    );
+  }
+
+  /**
+   * Add a record from Linnia by data hash
+   * @param {String} dataHash hash of the plain text data + metadata
+   * @param {Object} metadata public information about the data
+   * @param {String} dataUri link to the data (eg. the IPFS hash)
+   * @param {Object} ethParams ethereum account params
+   * @returns {Promise<Record>}
+   */
+  async addRecordWithReward(dataHash, metadata, dataUri, ethParams) {
+    const { records, users } = await this.getContractInstances();
+    return _recordsFunctions.addRecordWithReward(
+      records,
+      users,
+      dataHash,
+      metadata,
+      dataUri,
+      this._tokenAddress,
       ethParams,
     );
   }

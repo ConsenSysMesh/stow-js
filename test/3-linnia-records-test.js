@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import LinniaDeploy from './deployForTests';
+import Linnia from '../src';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a217fb1ef14';
@@ -58,6 +59,51 @@ describe('Linnia-records', async () => {
       assert.equal(record.dataUri, testDataUri);
       assert.typeOf(record.timestamp, 'Date');
       assert.equal(record.timestamp.getTime() / 1000, recordAddTime);
+    });
+  });
+  describe('add record with reward', () => {
+    it('should add the record', async () => {
+      const ethParams = { from: user, gas: 500000, gasPrice: 20000000000 };
+      const record = await linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+      assert.equal(record.owner.toLowerCase(), user.toLowerCase());
+      assert.equal(record.metadataHash, web3.utils.sha3(JSON.stringify(metadata)));
+      assert.equal(record.dataUri, dataUri);
+    });
+    it('should fail adding record, without a token address', async () => {
+      const ethParams = { gas: 500000, gasPrice: 20000000000 };
+      try {
+        const linniaNoToken = new Linnia(
+          linnia.web3,
+          { linniaContractUpgradeHubAddress: linnia._hubAddress },
+        );
+        await linniaNoToken.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+      } catch (e) {
+        assert.equal(e.message, 'tokenAddress not valid.  It is likely not set in linnia constructor');
+      }
+    });
+    it('should fail adding record, without a from user', async () => {
+      const ethParams = { gas: 500000, gasPrice: 20000000000 };
+      try {
+        await linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+      } catch (e) {
+        assert.equal(e.message, 'ethParams object does not contain a "from" key');
+      }
+    });
+    it('should fail adding record, with a user that is not registered in Linnia', async () => {
+      const ethParams = { from: '0xb717d7adf0d17f5f48bb7ff0035e30fcd19eed72', gas: 500000, gasPrice: 20000000000 };
+      try {
+        await linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+      } catch (e) {
+        assert.equal(e.message, 'the address is not registered in Linnia');
+      }
+    });
+    it('should fail adding record with metadata not JSON', async () => {
+      const ethParams = { from: user, gas: 500000, gasPrice: 20000000000 };
+      try {
+        await linnia.addRecordWithReward(dataHash2, 'Sting Metadata', dataUri2, ethParams);
+      } catch (e) {
+        assert.equal(e.message, 'Metadata has to be a JSON object');
+      }
     });
   });
   describe('add record', () => {
