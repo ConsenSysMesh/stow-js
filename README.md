@@ -58,7 +58,7 @@ new Linnia(web3 [, options])
 1. `Object` - (Optional) Constructor options
 
 - `linniaContractUpgradeHubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
-
+- `linniaTokenContractAddress`:`String` - Address of the LinniaToken.  The Ropsten testnet Contract address is `0x4cdfbdec0aa003116bf030f249a8a7285cd6a184`
 ### Example
 
 ```javascript
@@ -167,7 +167,11 @@ In order to append data to Linnia, your web3 instance need to be able to sign wi
 linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
 ```
 
-Add record to Linnia and receive a small reward of linnia tokens
+Add record to Linnia and receive a small reward of linnia tokens.  This requires an optional parameter
+to be set in the constructor as follows: 
+
+`new Linnia(web3, (linniaTokenContractAddress: 0x4cdfbdec0aa003116bf030f249a8a7285cd6a184))`
+
 
 ### Parameters
 
