@@ -1,8 +1,8 @@
 {
-  "name": "@linniaprotocol/linnia-js",
+  "name": "@linniaprotocol/linnia-js-script-tag",
   "version": "0.3.0",
-  "description": "Linnia JavaScript API",
-  "main": "lib/index.js",
+  "description": "Linnia JavaScript API Script Tag",
+  "main": "dist/index.js",
   "private": true,
   "files": [
     "lib/*",
@@ -55,7 +55,8 @@
     "ganache-cli": "^6.1.2",
     "mocha": "^5.2.0",
     "web3": "^1.0.0-beta.34",
-    "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4"
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-merge": "^4.1.2"
   }
 }
