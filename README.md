@@ -121,7 +121,7 @@ Gets a record from Linnia by data hash
 ## linnia.getAttestation
 
 ```javascript
-linnia.getAttestation(dataHash, attestatorAddress);
+linnia.getAttestation(dataHash, attesterAddress);
 ```
 
 Gets the attestation of the data
@@ -129,11 +129,11 @@ Gets the attestation of the data
 ### Parameters
 
 1. `String` - The data hash, hex-encoded, 0x prefixed
-1. `String` - The address of the attestator
+1. `String` - The address of the attester
 
 ### Returns
 
-`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attestator.
+`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attester.
 
 ## linnia.getPermission
 
@@ -333,28 +333,28 @@ An instance of Record class is returned when `linnia.getRecord` is called and pr
 ## record.getAttestation
 
 ```javascript
-record.getAttestation(attestatorAddress);
+record.getAttestation(attesterAddress);
 ```
 
 Gets the attestation of the data
 
 ### Parameters
 
-1. `String` - The address of the attestator
+1. `String` - The address of the attester
 
 ### Returns
 
-`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attestator.
+`Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attester.
 
 ### Example
 
 ```javascript
 let dataHash =
   "0x174e6ab7cf9a53497cff763d0743258f5d5014cb20ae08c7ec22bf50f5d5e326";
-let attestator = "0xac07bea81fe26b379de0e4327f1a6ecd0875edfc";
+let attester = "0xac07bea81fe26b379de0e4327f1a6ecd0875edfc";
 linnia
   .getRecord(dataHash)
-  .then(record => record.getAttestation(attestator))
+  .then(record => record.getAttestation(attester))
   .then(attested => {
     if (attested) {
       // ...
@@ -475,7 +475,7 @@ Re-encrypts the data to another public key
 
 ## Members
 
-- `attestator`: `String` - Hex-encoded attestator address
+- `attester`: `String` - Hex-encoded attester address
 - `dataHash`: `String` - Hex-encoded data hash
 
 ------

@@ -153,7 +153,7 @@ describe('Linnia-records', async () => {
     it('should sign the record', async () => {
       const ethParams = { from: provider2, gas: 500000, gasPrice: 20000000000 };
       const att = await linnia.signRecord(testDataHash, ethParams);
-      assert.equal(att.attestator, provider2);
+      assert.equal(att.attester, provider2);
       assert.equal(att.dataHash, testDataHash);
     });
     it('should fail when sign without a from user', async () => {
@@ -177,7 +177,7 @@ describe('Linnia-records', async () => {
       try {
         await linnia.signRecord(testDataHash, ethParams);
       } catch (e) {
-        assert.equal(e.message, 'The attestor does not have provenance (Invalid Attestator)');
+        assert.equal(e.message, 'The attestor does not have provenance (Invalid attester)');
       }
     });
     it('should fail when sign a record that does not exists', async () => {
@@ -188,7 +188,7 @@ describe('Linnia-records', async () => {
         assert.equal(e.message, 'The record does not exists');
       }
     });
-    it('should fail when sign with an attestator that already sign that record', async () => {
+    it('should fail when sign with an attester that already sign that record', async () => {
       const ethParams = { from: provider2, gas: 500000, gasPrice: 20000000000 };
       try {
         await linnia.signRecord(testDataHash, ethParams);

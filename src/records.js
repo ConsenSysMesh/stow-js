@@ -105,10 +105,10 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
     throw new Error('the address is not registered in Linnia');
   }
 
-  // Check provenance of attestator
+  // Check provenance of attester
   const provenance = await usersContract.provenanceOf(ethParams.from);
   if (!(provenance > 0)) {
-    throw new Error('The attestor does not have provenance (Invalid Attestator)');
+    throw new Error('The attestor does not have provenance (Invalid Attester)');
   }
 
   // Check if record exists
@@ -117,7 +117,7 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
     throw new Error('The record does not exists');
   }
 
-  // Check if attestator have signed the record already
+  // Check if attester have signed the record already
   const sigExists = await recordsContract.sigExists(dataHash, ethParams.from);
   if (sigExists) {
     throw new Error('The attestor have already signed this record');
@@ -136,8 +136,8 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
 };
 
 const getAttestation = async (
-  recordsContract, dataHash, attestator,
-) => recordsContract.sigExists.call(dataHash, attestator);
+  recordsContract, dataHash, attester,
+) => recordsContract.sigExists.call(dataHash, attester);
 
 export default {
   getRecord,
