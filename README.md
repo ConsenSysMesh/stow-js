@@ -29,7 +29,7 @@ npm i @linniaprotocol/linnia-js
 or add inject the library onto the `window` using a script tag:
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@linniaprotocol/linnia-js-script-tag@0.1.1/dist/index.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@linniaprotocol/linnia-js-script-tag@0.3.0/dist/index.min.js"></script>
 ```
 
 ## Building
