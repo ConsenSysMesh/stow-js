@@ -37,19 +37,32 @@ class Linnia {
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
 
-    if(opt){
+    if (opt) {
       this._hubAddress = opt.hubAddress || undefined;
       this._tokenAddress = opt.tokenAddress || undefined;
     }
 
-    await web3.version.getNetwork((err, netId) => {
-      const network = (netId == 4)? 'rinkeby' : 'ropsten'
-      if(!this._hubAddress)
-        this._hubAddress = StowAdresses[network].StowSmartContracts.latest;
-      if(!this._tokenAddress)
-        this._tokenAddress = StowAdresses[network].StowToken.latest;
-    })
-    
+    this.network = new Promise((resolve) => {
+      this.web3.eth.net.getId((netId) => {
+        let network;
+        switch (netId) {
+          case 3:
+            network = 'ropsten';
+            break;
+          case 4:
+            network = 'rinkeby';
+            break;
+          default:
+            network = 'localhost';
+            break;
+        }
+
+        if (!this._hubAddress) this._hubAddress = StowAdresses[network].StowSmartContracts.latest;
+        if (!this._tokenAddress) this._tokenAddress = StowAdresses[network].StowToken.latest;
+
+        resolve(network);
+      });
+    });
   }
 
   /**
@@ -57,6 +70,7 @@ class Linnia {
    * @returns {Promise<{hub: Object, users: Object, records: Object, permissions: Object}>}
    */
   async getContractInstances() {
+    await this.network;
     const hubInstance = await this._getHubInstance();
     const usersAddress = await hubInstance.usersContract();
     const recordsAddress = await hubInstance.recordsContract();
