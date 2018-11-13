@@ -1,6 +1,6 @@
 import TruffleContract from 'truffle-contract';
 
-import StowAdresses from '@stowprotocol/stow-addresses';
+import StowAddresses from '@stowprotocol/stow-addresses';
 import LinniaContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
@@ -53,12 +53,17 @@ class Linnia {
             network = 'rinkeby';
             break;
           default:
-            network = 'localhost';
-            break;
+            network = 'unknown';
         }
 
-        if (!this._hubAddress) this._hubAddress = StowAdresses[network].StowSmartContracts.latest;
-        if (!this._tokenAddress) this._tokenAddress = StowAdresses[network].StowToken.latest;
+        if (StowAddresses[network]) {
+          if (!this._hubAddress) this._hubAddress = StowAddresses[network].StowSmartContracts.latest;
+          if (!this._tokenAddress) this._tokenAddress = StowAddresses[network].StowToken.latest;
+        }
+
+        if (!this._hubAddress) {
+          throw new Error('Must specify Linnia Hub address when using an unsupported network.');
+        }
 
         resolve(network);
       });
