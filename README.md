@@ -57,8 +57,8 @@ new Linnia(web3 [, options])
 1. `Object` - An instantiated web3 API object
 1. `Object` - (Optional) Constructor options
 
-- `linniaContractUpgradeHubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
-- `linniaTokenContractAddress`:`String` - Address of the LinniaToken.  The Ropsten testnet Contract address is `0x4cdfbdec0aa003116bf030f249a8a7285cd6a184`
+- `hubAddress`: `String` - Address of the LinniaHub. If not specified, Linnia Javascript API will attempt to find the address of the deployed LinniaHub on the network defined in `web3`.
+- `tokenAddress`:`String` - Address of the LinniaToken.  The Ropsten testnet Contract address is `0x4cdfbdec0aa003116bf030f249a8a7285cd6a184`
 ### Example
 
 ```javascript
@@ -80,7 +80,7 @@ Gets Linnia contract instances, wrapped in truffle contract.
 
 `Promise<Object>` - A promise when resolved returns an object with truffle Contract instances.
 
-- `linniaContractUpgradeHubAddress`: `Object` - DO NOT USE - INTERNAL - LinniaHub truffle contract instance
+- `_hub`: `Object` - DO NOT USE - INTERNAL - LinniaHub truffle contract instance
 - `users`: `Object` - LinniaUsers truffle contract instance
 - `records`: `Object` - LinniaRecords truffle contract instance
 - `permissions`: `Object` - LinniaPermissions truffle contract instance
@@ -170,7 +170,7 @@ linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
 Add record to Linnia and receive a small reward of linnia tokens.  This requires an optional parameter
 to be set in the constructor as follows: 
 
-`new Linnia(web3, (linniaTokenContractAddress: 0x4cdfbdec0aa003116bf030f249a8a7285cd6a184))`
+`new Linnia(web3, (tokenAddress: 0x4cdfbdec0aa003116bf030f249a8a7285cd6a184))`
 
 
 ### Parameters

@@ -19,7 +19,7 @@ class Linnia {
   /**
    * Create a new Linnia API object
    * @param {Object} web3 An instantiated web3 API object
-   * @param {?{?linniaContractUpgradeHubAddress: String}} opt Optional constructor options
+   * @param {?{?hubAddress: String},?{?tokenAddress: String}} opt Optional constructor options
    * @returns {Linnia} Created Linnia API object
    */
   constructor(web3, opt = {}) {
@@ -38,14 +38,14 @@ class Linnia {
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
     // set Hub Address
-    if(opt && opt.linniaContractUpgradeHubAddress){
-      this._hubAddress = opt.linniaContractUpgradeHubAddress;
+    if(opt && opt.hubAddress){
+      this._hubAddress = opt.hubAddress;
     } else{
       this._hubAddress = StowAdresses.ropsten.StowToken.latest;
     }
     // set Token Address
-    if(opt && opt.linniaTokenContractAddress){
-      this._tokenAddress = opt.linniaTokenContractAddress;
+    if(opt && opt.tokenAddress){
+      this._tokenAddress = opt.tokenAddress;
     } else{
       this._tokenAddress = StowAdresses.ropsten.StowSmartContracts.latest;
     }
@@ -61,7 +61,7 @@ class Linnia {
     const recordsAddress = await hubInstance.recordsContract();
     const permissionsAddress = await hubInstance.permissionsContract();
     return {
-      _linniaContractUpgradeHub: hubInstance,
+      _hub: hubInstance,
       users: await this._users.at(usersAddress),
       records: await this._records.at(recordsAddress),
       permissions: await this._permissions.at(permissionsAddress),
@@ -157,7 +157,7 @@ class Linnia {
    * @private
    */
   async _getHubInstance() {
-    // get linniaContractUpgradeHubAddress contract instance
+    // get hub contract instance
     // look up address either from user defined address or artifact
     if (this._hubAddress) {
       return this._hub.at(this._hubAddress);
