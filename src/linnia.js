@@ -36,18 +36,20 @@ class Linnia {
     this._users = _util.truffleHack(_users);
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
-    // set Hub Address
-    if (opt && opt.hubAddress) {
-      this._hubAddress = opt.hubAddress;
-    } else {
-      this._hubAddress = StowAdresses.ropsten.StowToken.latest;
+
+    if(opt){
+      this._hubAddress = opt.hubAddress || undefined;
+      this._tokenAddress = opt.tokenAddress || undefined;
     }
-    // set Token Address
-    if (opt && opt.tokenAddress) {
-      this._tokenAddress = opt.tokenAddress;
-    } else {
-      this._tokenAddress = StowAdresses.ropsten.StowSmartContracts.latest;
-    }
+
+    await web3.version.getNetwork((err, netId) => {
+      const network = (netId == 4)? 'rinkeby' : 'ropsten'
+      if(!this._hubAddress)
+        this._hubAddress = StowAdresses[network].StowSmartContracts.latest;
+      if(!this._tokenAddress)
+        this._tokenAddress = StowAdresses[network].StowToken.latest;
+    })
+    
   }
 
   /**
