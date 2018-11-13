@@ -1,5 +1,6 @@
 import TruffleContract from 'truffle-contract';
 
+import StowAdresses from '@stowprotocol/stow-addresses';
 import LinniaContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
 import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
 import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
@@ -9,8 +10,6 @@ import Record from './record';
 import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
-
-const StowAdresses = require('@stowprotocol/stow-addresses')
 
 /**
  * Linnia API object
@@ -38,15 +37,15 @@ class Linnia {
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
     // set Hub Address
-    if(opt && opt.hubAddress){
+    if (opt && opt.hubAddress) {
       this._hubAddress = opt.hubAddress;
-    } else{
+    } else {
       this._hubAddress = StowAdresses.ropsten.StowToken.latest;
     }
     // set Token Address
-    if(opt && opt.tokenAddress){
+    if (opt && opt.tokenAddress) {
       this._tokenAddress = opt.tokenAddress;
-    } else{
+    } else {
       this._tokenAddress = StowAdresses.ropsten.StowSmartContracts.latest;
     }
   }
