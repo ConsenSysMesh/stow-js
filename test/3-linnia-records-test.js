@@ -69,18 +69,6 @@ describe('Linnia-records', async () => {
       assert.equal(record.metadataHash, web3.utils.sha3(JSON.stringify(metadata)));
       assert.equal(record.dataUri, dataUri);
     });
-    it('should fail adding record, without a token address', async () => {
-      const ethParams = { gas: 500000, gasPrice: 20000000000 };
-      try {
-        const linniaNoToken = new Linnia(
-          linnia.web3,
-          { linniaContractUpgradeHubAddress: linnia._hubAddress },
-        );
-        await linniaNoToken.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
-      } catch (e) {
-        assert.equal(e.message, 'tokenAddress not valid.  It is likely not set in linnia constructor');
-      }
-    });
     it('should fail adding record, without a from user', async () => {
       const ethParams = { gas: 500000, gasPrice: 20000000000 };
       try {

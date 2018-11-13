@@ -10,6 +10,8 @@ import _recordsFunctions from './records';
 import _permissionsFunctions from './permissions';
 import _util from './util';
 
+const StowAdresses = require('@stowprotocol/stow-addresses')
+
 /**
  * Linnia API object
  */
@@ -35,10 +37,18 @@ class Linnia {
     this._users = _util.truffleHack(_users);
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
-    // set linniaContractUpgradeHubAddress address
-    // using user defined address
-    this._hubAddress = opt.linniaContractUpgradeHubAddress;
-    this._tokenAddress = opt.linniaTokenContractAddress;
+    // set Hub Address
+    if(opt && opt.linniaContractUpgradeHubAddress){
+      this._hubAddress = opt.linniaContractUpgradeHubAddress;
+    } else{
+      this._hubAddress = StowAdresses.ropsten.StowToken.latest;
+    }
+    // set Token Address
+    if(opt && opt.linniaTokenContractAddress){
+      this._tokenAddress = opt.linniaTokenContractAddress;
+    } else{
+      this._tokenAddress = StowAdresses.ropsten.StowSmartContracts.latest;
+    }
   }
 
   /**
