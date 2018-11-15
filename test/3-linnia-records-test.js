@@ -164,7 +164,7 @@ describe('Linnia-records', async () => {
       try {
         await linnia.signRecord(testDataHash, ethParams);
       } catch (e) {
-        assert.equal(e.message, 'The attestor does not have provenance (Invalid attester)');
+        assert.equal(e.message, 'The attestor does not have provenance (Invalid Attester)');
       }
     });
     it('should fail when sign a record that does not exists', async () => {
