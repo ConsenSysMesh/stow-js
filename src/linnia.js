@@ -144,9 +144,9 @@ class Linnia {
     * @param {String} dataHash hex-encoded data hash, 0x prefixed
     * @returns {Promise<Boolean>} True if attested by specified user
    */
-  async getAttestation(dataHash, attestatorAddress) {
+  async getAttestation(dataHash, attesterAddress) {
     const { records } = await this.getContractInstances();
-    return _recordsFunctions.getAttestation(records, dataHash, attestatorAddress);
+    return _recordsFunctions.getAttestation(records, dataHash, attesterAddress);
   }
 
   /**
