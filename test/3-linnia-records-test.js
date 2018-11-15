@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
 import LinniaDeploy from './deployForTests';
-import Linnia from '../src';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testDataHash = '0x276bc9ec8730ad53e827c0467c00473a53337e2cb4b61ada24760a217fb1ef14';
@@ -68,18 +67,6 @@ describe('Linnia-records', async () => {
       assert.equal(record.owner.toLowerCase(), user.toLowerCase());
       assert.equal(record.metadataHash, web3.utils.sha3(JSON.stringify(metadata)));
       assert.equal(record.dataUri, dataUri);
-    });
-    it('should fail adding record, without a token address', async () => {
-      const ethParams = { gas: 500000, gasPrice: 20000000000 };
-      try {
-        const linniaNoToken = new Linnia(
-          linnia.web3,
-          { linniaContractUpgradeHubAddress: linnia._hubAddress },
-        );
-        await linniaNoToken.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
-      } catch (e) {
-        assert.equal(e.message, 'tokenAddress not valid.  It is likely not set in linnia constructor');
-      }
     });
     it('should fail adding record, without a from user', async () => {
       const ethParams = { gas: 500000, gasPrice: 20000000000 };

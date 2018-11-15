@@ -72,8 +72,8 @@ class LinniaDeploy {
   static async deploy(web3, opt = {}) {
     const deployed = await testDeploy(web3, opt);
     return new Linnia(web3, {
-      linniaContractUpgradeHubAddress: deployed.hubInstance.address,
-      linniaTokenContractAddress: deployed.tokenInstance.address,
+      hubAddress: deployed.hubInstance.address,
+      tokenAddress: deployed.tokenInstance.address,
     });
   }
 }
