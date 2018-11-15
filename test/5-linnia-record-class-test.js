@@ -12,7 +12,7 @@ const testSharedUri = 'QmbcfaK3bdpFTATifqXXLux4qx6CmgBUcd3fVMWxVszazP';
 const privKey = 'wFGgG/Bv/36liIhdOGqH0TY5QpUVYkQP+Sdcbr1NgOI=';
 const pubKey = 'hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=';
 
-describe.only('Record class', async () => {
+describe('Record class', async () => {
   const [admin, user1, user2, user3, provider] = await web3.eth.getAccounts();
   let linnia;
   let contracts;
