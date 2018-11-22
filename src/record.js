@@ -74,7 +74,7 @@ class Record {
   }
 
   /**
-   * Verifies data against the data hash in Linnia
+   * Verifies data against the data hash in Stow
    * @param {Buffer|String} plaintext Plaintext data to be verified
    * @returns {Boolean} True if data hash matches
    */

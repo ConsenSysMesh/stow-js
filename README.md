@@ -1,21 +1,21 @@
-<img src="./linnia-logo.jpg" width="300" height="300" />
+<img src="./stow-logo.jpg" width="300" height="300" />
 
-## [![NPM Package](https://img.shields.io/npm/v/@linniaprotocol/linnia-js.svg?style=flat-square)](https://www.npmjs.com/package/@linniaprotocol/linnia-js) ![Build Status](https://circleci.com/gh/ConsenSys/linnia-js.png?circle-token=:circle-token&style=shield)
+## [![NPM Package](https://img.shields.io/npm/v/@stowprotocol/stow-js.svg?style=flat-square)](https://www.npmjs.com/package/@stowprotocol/stow-js) ![Build Status](https://circleci.com/gh/ConsenSys/stow-js.png?circle-token=:circle-token&style=shield)
 
-# LinniaJS
+# StowJS
 
 ## Quickstart
 
 ```javascript
 const Web3 = require("web3");
-const Linnia = require("@linniaprotocol/linnia-js");
+const Stow = require("@stowprotocol/stow-js");
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
-const linnia = new Linnia(web3);
+const stow = new Stow(web3);
 
 // get the deployed contracts
-const { _, users, records, permissions } = await linnia.getContractInstances();
+const { _, users, records, permissions } = await stow.getContractInstances();
 ```
 
 ## Installation
@@ -23,13 +23,13 @@ const { _, users, records, permissions } = await linnia.getContractInstances();
 You can install using npm:
 
 ```bash
-npm i @linniaprotocol/linnia-js
+npm i @stowprotocol/stow-js
 ```
 
 or add inject the library onto the `window` using a script tag:
 
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@linniaprotocol/linnia-js-script-tag@0.3.0/dist/index.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@stowprotocol/stow-js-script-tag@0.3.0/dist/index.min.js"></script>
 ```
 
 ## Building
@@ -42,14 +42,14 @@ The compiled library is generated in `lib`, which you can require by typing `req
 
 ## Setting up a Dev Environment
 
-New to ethereum and/or Linnia? Head over to our [resources page](https://github.com/ConsenSys/linnia-resources) to learn more about the protocol and how to set up your ethereum development environment.
+New to ethereum and/or Stow? Head over to our [resources page](https://github.com/ConsenSys/stow-resources) to learn more about the protocol and how to set up your ethereum development environment.
 
 ## API Documentation
 
 ### Constructor
 
 ```javascript
-new Linnia(web3 [, options])
+new Stow(web3 [, options])
 ```
 
 ### Parameters
@@ -57,51 +57,51 @@ new Linnia(web3 [, options])
 1. `Object` - An instantiated web3 API object
 1. `Object` - (Optional) Constructor options
 
-- `hubAddress`: `String` - Address of the LinniaHub. If not specified, library will use the address of the latest version of the contract deployed on the network.
-- `tokenAddress`:`String` - Address of the LinniaToken.  If not specified, library will use the address of the latest version of the contract deployed on the network.
+- `hubAddress`: `String` - Address of the StowHub. If not specified, library will use the address of the latest version of the contract deployed on the network.
+- `tokenAddress`:`String` - Address of the StowToken.  If not specified, library will use the address of the latest version of the contract deployed on the network.
 ### Example
 
 ```javascript
 const Web3 = require("web3");
-const Linnia = require("@linniaprotocol/linnia-js");
+const Stow = require("@stowprotocol/stow-js");
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-const linnia = new Linnia(web3);
+const stow = new Stow(web3);
 ```
 
-## linnia.getContractInstances
+## stow.getContractInstances
 
 ```javascript
-linnia.getContractInstances();
+stow.getContractInstances();
 ```
 
-Gets Linnia contract instances, wrapped in truffle contract.
+Gets Stow contract instances, wrapped in truffle contract.
 
 ### Returns
 
 `Promise<Object>` - A promise when resolved returns an object with truffle Contract instances.
 
-- `_hub`: `Object` - DO NOT USE - INTERNAL - LinniaHub truffle contract instance
-- `users`: `Object` - LinniaUsers truffle contract instance
-- `records`: `Object` - LinniaRecords truffle contract instance
-- `permissions`: `Object` - LinniaPermissions truffle contract instance
+- `_hub`: `Object` - DO NOT USE - INTERNAL - StowHub truffle contract instance
+- `users`: `Object` - StowUsers truffle contract instance
+- `records`: `Object` - StowRecords truffle contract instance
+- `permissions`: `Object` - StowPermissions truffle contract instance
 
 ### Example
 
 ```javascript
-linnia.getContractInstances().then(instances => {
+stow.getContractInstances().then(instances => {
   let users = instances.users;
   let records = instances.records;
   let permissions = instances.permissions;
 });
 ```
 
-## linnia.getRecord
+## stow.getRecord
 
 ```javascript
-linnia.getRecord(dataHash);
+stow.getRecord(dataHash);
 ```
 
-Gets a record from Linnia by data hash
+Gets a record from Stow by data hash
 
 ### Parameters
 
@@ -116,12 +116,12 @@ Gets a record from Linnia by data hash
 - `sigCount`: `Object` - A bignumber object, the signature count
 - `irisScore`: `Object` - A bignumber object, the IRIS score
 - `dataUri`: `String` - URI of the data
-- `timestamp`: `Date` - The timestamp when the record is added to Linnia
+- `timestamp`: `Date` - The timestamp when the record is added to Stow
 
-## linnia.getAttestation
+## stow.getAttestation
 
 ```javascript
-linnia.getAttestation(dataHash, attesterAddress);
+stow.getAttestation(dataHash, attesterAddress);
 ```
 
 Gets the attestation of the data
@@ -135,10 +135,10 @@ Gets the attestation of the data
 
 `Promise<Boolean>` - A promise when resolved returns true if the record is attested by the specified attester.
 
-## linnia.getPermission
+## stow.getPermission
 
 ```javascript
-linnia.getPermission(dataHash, viewerAddress);
+stow.getPermission(dataHash, viewerAddress);
 ```
 
 Gets the permission information of a record
@@ -150,33 +150,33 @@ Gets the permission information of a record
 
 ### Returns
 
-`Promise<Object>` - A promise when resolved returns a Linnia Permission object.
+`Promise<Object>` - A promise when resolved returns a Stow Permission object.
 
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
 
 ---
 
-# Append data to Linnia
+# Append data to Stow
 
-In order to append data to Linnia, your web3 instance need to be able to sign with the private key of the owner of the data.
+In order to append data to Stow, your web3 instance need to be able to sign with the private key of the owner of the data.
 
-## linnia.addRecordWithReward
+## stow.addRecordWithReward
 
 ```javascript
-linnia.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
+stow.addRecordWithReward(dataHash, metadata, dataUri, ethParams);
 ```
 
-Add record to Linnia and receive a small reward of linnia tokens.  This requires an optional parameter
+Add record to Stow and receive a small reward of stow tokens.  This requires an optional parameter
 to be set in the constructor as follows: 
 
-`new Linnia(web3, (tokenAddress: 0x4cdfbdec0aa003116bf030f249a8a7285cd6a184))`
+`new Stow(web3, (tokenAddress: 0x4cdfbdec0aa003116bf030f249a8a7285cd6a184))`
 
 
 ### Parameters
 
 1. `String` - The data hash. Hash of the plain text data + metadata
-2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
+2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/stow-resources/blob/master/METADATA.md)
 3. `String` - The dataUri, link to the data (eg. the IPFS hash)
 4. `Object` - The ethParams, ethereum account params. (The object need to contain the key 'from')
 
@@ -184,18 +184,18 @@ to be set in the constructor as follows:
 
 `Promise<Record>` - A promise when resolved returns the record object that was stored.
 
-## linnia.addRecord
+## stow.addRecord
 
 ```javascript
-linnia.addRecord(dataHash, metadata, dataUri, ethParams);
+stow.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
 
-Add record to Linnia
+Add record to Stow
 
 ### Parameters
 
 1. `String` - The data hash. Hash of the plain text data + metadata
-2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/linnia-resources/blob/master/METADATA.md)
+2. `Object` - The metadata of the record. [Click here to read more about the metadata](https://github.com/ConsenSys/stow-resources/blob/master/METADATA.md)
 3. `String` - The dataUri, link to the data (eg. the IPFS hash)
 4. `Object` - The ethParams, ethereum account params. (The object need to contain the key 'from')
 
@@ -203,15 +203,15 @@ Add record to Linnia
 
 `Promise<Record>` - A promise when resolved returns the record object that was stored.
 
-### Append data using Linnia Js in the browser
+### Append data using Stow Js in the browser
 
- If you are using a Linnia Js in the browser you can create the Linnia instance with the web3 object from Metamask and append a record the following way:
+ If you are using a Stow Js in the browser you can create the Stow instance with the web3 object from Metamask and append a record the following way:
 
 ### Example
 
 ```javascript
-const Linnia = require("@linniaprotocol/linnia-js");
-const linnia = new Linnia(web3);
+const Stow = require("@stowprotocol/stow-js");
+const stow = new Stow(web3);
 
 const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
 const metadata = {
@@ -220,7 +220,7 @@ const metadata = {
     storage: "IPFS",
     encryptionScheme: "x25519-xsalsa20-poly1305",
     encryptionPublicKey: "hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=",
-    linniajsVersion: "0.1.4",
+    stowjsVersion: "0.1.4",
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
@@ -231,19 +231,19 @@ const ethParams = {
     from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
 };
 
-const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
+const record = await stow.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
 
 In the example above the dataUri is the IPFS Hash where the file was stored.
 
-### Append data using Linnia Js outside of the browser
+### Append data using Stow Js outside of the browser
 
 In order to add a file you need to generate a web3 instance that can handle the private keys of the owner of the file.
 
 ### Example
 
 ```javascript
-const Linnia = require("@linniaprotocol/linnia-js");
+const Stow = require("@stowprotocol/stow-js");
 const HDWalletProvider = require('truffle-hdwallet-provider');
 
 // HERE YOU NEED TO ADD THE PRIVATE KEYS OF THE OWNERS
@@ -255,7 +255,7 @@ const provider = 'https://ropsten.infura.io/INFURA_KEY'
 const hdWalletProvider = new HDWalletProvider(privKeys, provider);
 const web3 = new Web3(hdWalletProvider);
 
-const linnia = new Linnia(web3);
+const stow = new Stow(web3);
 
 const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
 const metadata = {
@@ -264,7 +264,7 @@ const metadata = {
     storage: "IPFS",
     encryptionScheme: "x25519-xsalsa20-poly1305",
     encryptionPublicKey: "hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=",
-    linniajsVersion: "0.1.4",
+    stowjsVersion: "0.1.4",
     providerName: "SocialMedia",
     providerEthereumAddress: "0x349e31e92027f86b0ffeb5cd5e07003c7f229872",
     keywords: [ "socialmedia", "friends list", "people" ],
@@ -275,20 +275,20 @@ const ethParams = {
     from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
 };
 
-const record = await linnia.addRecord(dataHash, metadata, dataUri, ethParams);
+const record = await stow.addRecord(dataHash, metadata, dataUri, ethParams);
 ```
 
-# Attest data on Linnia
+# Attest data on Stow
 
-Attest data on Linnia means sign a record and verify that contain legitimate and correct information.
+Attest data on Stow means sign a record and verify that contain legitimate and correct information.
 
-## linnia.signRecord
+## stow.signRecord
 
 ```javascript
-linnia.signRecord(dataHash, ethParams);
+stow.signRecord(dataHash, ethParams);
 ```
 
-Attest a record to Linnia
+Attest a record to Stow
 
 ### Parameters
 
@@ -302,15 +302,15 @@ Attest a record to Linnia
 ### Example
 
 ```javascript
-const Linnia = require("@linniaprotocol/linnia-js");
-const linnia = new Linnia(web3);
+const Stow = require("@stowprotocol/stow-js");
+const stow = new Stow(web3);
 
 const dataHash = "0xcc85fc3d763b9a1d83e4386b37b4b0f3daf9881638ba8b7db0c501c417acb689";
 const ethParams = {
     from: "0xb717d7adf0d19f5f48bb7ff0030e30fcd19eed72", gas: 500000, gasPrice: 20000000000
 };
 
-const attestation = await linnia.signRecord(dataHash, ethParams);
+const attestation = await stow.signRecord(dataHash, ethParams);
 ```
 
 ------
@@ -319,7 +319,7 @@ const attestation = await linnia.signRecord(dataHash, ethParams);
 
 # Record class
 
-An instance of Record class is returned when `linnia.getRecord` is called and promise resolved.
+An instance of Record class is returned when `stow.getRecord` is called and promise resolved.
 
 ## Members
 
@@ -328,7 +328,7 @@ An instance of Record class is returned when `linnia.getRecord` is called and pr
 - `sigCount`: `Object` - A bignumber object, the signature count
 - `irisScore`: `Object` - A bignumber object, the IRIS score
 - `dataUri`: `String` - URI of the data
-- `timestamp`: `Date` - The timestamp when the record is added to Linnia
+- `timestamp`: `Date` - The timestamp when the record is added to Stow
 
 ## record.getAttestation
 
@@ -352,7 +352,7 @@ Gets the attestation of the data
 let dataHash =
   "0x174e6ab7cf9a53497cff763d0743258f5d5014cb20ae08c7ec22bf50f5d5e326";
 let attester = "0xac07bea81fe26b379de0e4327f1a6ecd0875edfc";
-linnia
+stow
   .getRecord(dataHash)
   .then(record => record.getAttestation(attester))
   .then(attested => {
@@ -378,7 +378,7 @@ Gets the permission information of a record
 
 ### Returns
 
-`Promise<Object>` - A promise when resolved returns a Linnia Permission object.
+`Promise<Object>` - A promise when resolved returns a Stow Permission object.
 
 - `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
 - `dataUri`: `String` - The data URI of the shared record
@@ -405,7 +405,7 @@ Gets the plaintext data of the record
 ```javascript
 let privKey =
   "0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b";
-linnia
+stow
   .decryptData(privKey, dataUri => {
     // assume data URI is HTTP URL here
     return fetch(dataUri).then(res => {
@@ -441,7 +441,7 @@ Gets the plaintext data of a permissioned copy of the record
 record.verifyData(plaintext);
 ```
 
-Verifies the hash of the data against the one in Linnia.
+Verifies the hash of the data against the one in Stow.
 
 ### Parameters
 
@@ -484,10 +484,10 @@ Re-encrypts the data to another public key
 
 # Utility functions
 
-## Linnia.util.encrypt
+## Stow.util.encrypt
 
 ```javascript
-Linnia.util.encrypt(pubKeyTo, plaintext)
+Stow.util.encrypt(pubKeyTo, plaintext)
 ```
 
 Encrypts a message.
@@ -506,17 +506,17 @@ Encrypts a message.
 ```javascript
 let pubKey =
   "0xb1f26f98d374540eac3d31208f13a3935318e228207084c9ee32d741ff1ad2341af4ac9658aba4a254bf1dc6451b3c08524febba5273bec227c73e25cd376387";
-let encrypted = Linnia.util.encrypt(pubKey, "foo");
+let encrypted = Stow.util.encrypt(pubKey, "foo");
 console.log(encrypted.toString("hex"));
 ```
 
-## Linnia.util.decrypt
+## Stow.util.decrypt
 
 ```javascript
-Linnia.util.decrypt(privKey, ciphertext);
+Stow.util.decrypt(privKey, ciphertext);
 ```
 
-Decrypts a message encrypted by `Linnia.util.encrypt`.
+Decrypts a message encrypted by `Stow.util.encrypt`.
 
 ### Parameters
 
@@ -534,6 +534,6 @@ let encrypted =
   "0xbf18f1b6eb4b748b18cc3bd4a8d47f5f045766a445431dd918a43d6ca7871bdf7acd2214dce02a508a97f173f0697e781cf3cbf1b2d6fc0dcce940cdcef0aab443469773eb672b04117d4cb36336891aa98cd21f07d994b756f456f52db2b26a316fdbaaf87f52a638e0ad4d4280b63ec6447befdc97ecf07117bfc9eb8f8a073f";
 let privKey =
   "0x5230a384e9d271d59a05a9d9f94b79cd98fcdcee488d1047c59057046e128d2b";
-let plaintext = Linnia.util.decrypt(privKey, encrypted).toString();
+let plaintext = Stow.util.decrypt(privKey, encrypted).toString();
 // plaintext is 'foo'
 ```

@@ -27,7 +27,7 @@ const addRecordWithReward = async (
   tokenAddress,
   ethParams) => {
   if (!tokenAddress) {
-    throw new Error('tokenAddress not valid.  It is likely not set in linnia constructor');
+    throw new Error('tokenAddress not valid.  It is likely not set in stow constructor');
   }
 
   // Check if there is from in the ethParams
@@ -35,10 +35,10 @@ const addRecordWithReward = async (
     throw new Error('ethParams object does not contain a "from" key');
   }
 
-  // Check if the owner is a Linnia User
+  // Check if the owner is a Stow User
   const isUser = await usersContract.isUser(ethParams.from);
   if (!isUser) {
-    throw new Error('the address is not registered in Linnia');
+    throw new Error('the address is not registered in Stow');
   }
 
   // If metadata is not JSON
@@ -51,7 +51,7 @@ const addRecordWithReward = async (
     return getRecord(recordsContract, dataHash);
   } catch (e) {
     if (e.message === 'sender account not recognized') {
-      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+      throw new Error('The web3 Instance that you pass to Stow cannot sign a transaction for this address');
     } else {
       throw e;
     }
@@ -70,10 +70,10 @@ const addRecord = async (
     throw new Error('ethParams object does not contain a "from" key');
   }
 
-  // Check if the owner is a Linnia User
+  // Check if the owner is a Stow User
   const isUser = await usersContract.isUser(ethParams.from);
   if (!isUser) {
-    throw new Error('the address is not registered in Linnia');
+    throw new Error('the address is not registered in Stow');
   }
 
   // If metadata is not JSON
@@ -86,7 +86,7 @@ const addRecord = async (
     return getRecord(recordsContract, dataHash);
   } catch (e) {
     if (e.message === 'sender account not recognized') {
-      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+      throw new Error('The web3 Instance that you pass to Stow cannot sign a transaction for this address');
     } else {
       throw e;
     }
@@ -99,10 +99,10 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
     throw new Error('ethParams object does not contain a "from" key');
   }
 
-  // Check if the owner is a Linnia User
+  // Check if the owner is a Stow User
   const isUser = await usersContract.isUser(ethParams.from);
   if (!isUser) {
-    throw new Error('the address is not registered in Linnia');
+    throw new Error('the address is not registered in Stow');
   }
 
   // Check provenance of attester
@@ -128,7 +128,7 @@ const signRecord = async (recordsContract, usersContract, dataHash, ethParams) =
     return new Attestation(ethParams.from, dataHash);
   } catch (e) {
     if (e.message === 'sender account not recognized') {
-      throw new Error('The web3 Instance that you pass to Linnia cannot sign a transaction for this address');
+      throw new Error('The web3 Instance that you pass to Stow cannot sign a transaction for this address');
     } else {
       throw e;
     }

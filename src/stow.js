@@ -1,10 +1,10 @@
 import TruffleContract from 'truffle-contract';
 
 import StowAddresses from '@stowprotocol/stow-addresses';
-import LinniaContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
-import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
-import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
-import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
+import StowContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
+import StowUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
+import StowRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
+import StowPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
 
 import Record from './record';
 import _recordsFunctions from './records';
@@ -12,22 +12,22 @@ import _permissionsFunctions from './permissions';
 import _util from './util';
 
 /**
- * Linnia API object
+ * Stow API object
  */
-class Linnia {
+class Stow {
   /**
-   * Create a new Linnia API object
+   * Create a new Stow API object
    * @param {Object} web3 An instantiated web3 API object
    * @param {?{?hubAddress: String},?{?tokenAddress: String}} opt Optional constructor options
-   * @returns {Linnia} Created Linnia API object
+   * @returns {Stow} Created Stow API object
    */
   constructor(web3, opt = {}) {
     this.web3 = web3;
     // truffle contracts
-    const _hub = TruffleContract(LinniaContractUpgradeHub);
-    const _users = TruffleContract(LinniaUsers);
-    const _records = TruffleContract(LinniaRecords);
-    const _permissions = TruffleContract(LinniaPermissions);
+    const _hub = TruffleContract(StowContractUpgradeHub);
+    const _users = TruffleContract(StowUsers);
+    const _records = TruffleContract(StowRecords);
+    const _permissions = TruffleContract(StowPermissions);
     _hub.setProvider(web3.currentProvider);
     _users.setProvider(web3.currentProvider);
     _records.setProvider(web3.currentProvider);
@@ -62,7 +62,7 @@ class Linnia {
         }
 
         if (!this._hubAddress) {
-          throw new Error('Must specify Linnia Hub address when using an unsupported network.');
+          throw new Error('Must specify Stow Hub address when using an unsupported network.');
         }
 
         resolve(network);
@@ -71,7 +71,7 @@ class Linnia {
   }
 
   /**
-   * Get Linnia contract instances, wrapped in truffle contract
+   * Get Stow contract instances, wrapped in truffle contract
    * @returns {Promise<{hub: Object, users: Object, records: Object, permissions: Object}>}
    */
   async getContractInstances() {
@@ -89,7 +89,7 @@ class Linnia {
   }
 
   /**
-   * Get a record from Linnia by data hash
+   * Get a record from Stow by data hash
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
    * @returns {Promise<Record>}
    */
@@ -99,7 +99,7 @@ class Linnia {
   }
 
   /**
-   * Add a record from Linnia by data hash
+   * Add a record from Stow by data hash
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
@@ -119,7 +119,7 @@ class Linnia {
   }
 
   /**
-   * Add a record from Linnia by data hash
+   * Add a record from Stow by data hash
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
@@ -140,7 +140,7 @@ class Linnia {
   }
 
   /**
-    * Get record attestation from Linnia
+    * Get record attestation from Stow
     * @param {String} dataHash hex-encoded data hash, 0x prefixed
     * @returns {Promise<Boolean>} True if attested by specified user
    */
@@ -186,6 +186,6 @@ class Linnia {
   }
 }
 
-Linnia.util = _util;
+Stow.util = _util;
 
-export default Linnia;
+export default Stow;

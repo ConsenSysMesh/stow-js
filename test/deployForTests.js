@@ -1,12 +1,12 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
-import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
-import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
-import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
+import StowHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
+import StowUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
+import StowRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
+import StowPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
 import MockToken from '@linniaprotocol/linnia-smart-contracts/build/contracts/ERC20Mock.json';
 
-import Linnia from '../src';
+import Stow from '../src';
 
 import _util from '../src/util';
 
@@ -15,10 +15,10 @@ const testDeploy = async (web3, opt) => {
     throw Error('web3 is undefined!');
   }
 
-  const hubTemp = TruffleContract(LinniaHub);
-  const usersTemp = TruffleContract(LinniaUsers);
-  const recordsTemp = TruffleContract(LinniaRecords);
-  const permissionsTemp = TruffleContract(LinniaPermissions);
+  const hubTemp = TruffleContract(StowHub);
+  const usersTemp = TruffleContract(StowUsers);
+  const recordsTemp = TruffleContract(StowRecords);
+  const permissionsTemp = TruffleContract(StowPermissions);
   const mockTokenTemp = TruffleContract(MockToken);
 
   hubTemp.setProvider(web3.currentProvider);
@@ -60,22 +60,22 @@ const testDeploy = async (web3, opt) => {
 };
 
 /**
--   * Deploy Linnia contracts, and construct the Linnia API that uses the newly
+-   * Deploy Stow contracts, and construct the Stow API that uses the newly
 -   *  deployed contracts.
 -   * @param {Object} web3 An instantiated web3 API object, configured to the
 -   *  network you want to deploy the contracts on
 -   * @param {?Object} opt Optional web3 transaction object
--   * @returns {Promise<Linnia>} A Linnia API object using the deployed contracts
+-   * @returns {Promise<Stow>} A Stow API object using the deployed contracts
 */
 
-class LinniaDeploy {
+class StowDeploy {
   static async deploy(web3, opt = {}) {
     const deployed = await testDeploy(web3, opt);
-    return new Linnia(web3, {
+    return new Stow(web3, {
       hubAddress: deployed.hubInstance.address,
       tokenAddress: deployed.tokenInstance.address,
     });
   }
 }
 
-export default LinniaDeploy;
+export default StowDeploy;
