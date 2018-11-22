@@ -1,5 +1,5 @@
 import TruffleContract from 'truffle-contract';
-
+// TODO = update to stow
 import StowHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
 import StowUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
 import StowRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
