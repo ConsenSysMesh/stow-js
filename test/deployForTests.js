@@ -1,5 +1,4 @@
 import TruffleContract from 'truffle-contract';
-// TODO = update to stow
 import StowHub from '@stowprotocol/stow-smart-contracts/build/contracts/StowHub.json';
 import StowUsers from '@stowprotocol/stow-smart-contracts/build/contracts/StowUsers.json';
 import StowRecords from '@stowprotocol/stow-smart-contracts/build/contracts/StowRecords.json';
