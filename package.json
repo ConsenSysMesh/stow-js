@@ -1,7 +1,7 @@
 {
-  "name": "@linniaprotocol/linnia-js",
+  "name": "@stowprotocol/stow-js",
   "version": "0.3.2",
-  "description": "Linnia JavaScript API",
+  "description": "Stow JavaScript API",
   "main": "lib/index.js",
   "private": true,
   "files": [
@@ -17,16 +17,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ConsenSys/linnia-js.git"
+    "url": "git+https://github.com/ConsenSys/stow-js.git"
   },
-  "author": "Linnia",
+  "author": "Stow",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ConsenSys/linnia-js/issues"
+    "url": "https://github.com/ConsenSys/stow-js/issues"
   },
-  "homepage": "https://github.com/ConsenSys/linnia-js#readme",
+  "homepage": "https://github.com/ConsenSys/stow-js#readme",
   "dependencies": {
-    "@linniaprotocol/linnia-smart-contracts": "^0.1.8",
+    "@stowprotocol/stow-smart-contracts": "^0.1.9",
     "@stowprotocol/stow-addresses": "^0.3.2",
     "babel-runtime": "^6.26.0",
     "bignumber.js": "^7.2.1",

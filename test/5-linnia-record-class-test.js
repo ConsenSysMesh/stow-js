@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import Web3 from 'web3';
-import Linnia from '../src';
-import LinniaDeploy from './deployForTests';
+import Stow from '../src';
+import StowDeploy from './deployForTests';
 
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const testData = 'foobar';
@@ -14,14 +14,14 @@ const pubKey = 'hQYhHJpzZH/tGhz1wtqSjkL17tJSnEEC4yVGyNTHNQY=';
 
 describe('Record class', async () => {
   const [admin, user1, user2, user3, provider] = await web3.eth.getAccounts();
-  let linnia;
+  let stow;
   let contracts;
   beforeEach('deploy the contracts and set up roles', async () => {
-    linnia = await LinniaDeploy.deploy(web3, {
+    stow = await StowDeploy.deploy(web3, {
       from: admin,
       gas: 4000000,
     });
-    contracts = await linnia.getContractInstances();
+    contracts = await stow.getContractInstances();
     await contracts.users.register({ from: user1 });
     await contracts.users.register({ from: user2 });
     await contracts.users.register({ from: provider });
@@ -50,25 +50,25 @@ describe('Record class', async () => {
   });
   describe('get attestation', () => {
     it('should return true if attested by specified user', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const at = await record.getAttestation(provider);
       assert.isTrue(at);
     });
     it('should return false if not attested by specified user', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const at = await record.getAttestation(user2);
       assert.isFalse(at);
     });
   });
   describe('get permission', () => {
     it('should return true if viewer has permission', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const perm = await record.getPermission(user2);
       assert.isTrue(perm.canAccess);
       assert.equal(perm.dataUri, testSharedUri);
     });
     it('should return false if viewer does not have permission', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const perm = await record.getPermission(user3);
       assert.isFalse(perm.canAccess);
       assert.isEmpty(perm.dataUri);
@@ -80,16 +80,16 @@ describe('Record class', async () => {
       const uriResolver = async (dataUri) => {
         // check that the URI being passed in is correct
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return Stow.util.encrypt(pubKey, testData);
       };
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const plain = await record.decryptData(privKey, uriResolver);
       assert.equal(plain.toString(), testData);
     });
     it('should throw if hash does not match', async () => {
       // make the URI resolver return a decryptable but wrong data
-      const uriResolver = async () => Linnia.util.encrypt(pubKey, 'fox');
-      const record = await linnia.getRecord(testDataHash);
+      const uriResolver = async () => Stow.util.encrypt(pubKey, 'fox');
+      const record = await stow.getRecord(testDataHash);
       try {
         await record.decryptData(privKey, uriResolver);
         assert.fail('expected hash mismatch error not received');
@@ -105,9 +105,9 @@ describe('Record class', async () => {
         const uriResolver = async (dataUri) => {
           // the URI being passed in should be the shared copy
           assert.equal(dataUri, testSharedUri);
-          return Linnia.util.encrypt(pubKey, testData);
+          return Stow.util.encrypt(pubKey, testData);
         };
-        const record = await linnia.getRecord(testDataHash);
+        const record = await stow.getRecord(testDataHash);
         const plain = await record.decryptPermissioned(
           user2,
           privKey,
@@ -117,8 +117,8 @@ describe('Record class', async () => {
       },
     );
     it('should throw if viewer has no permission', async () => {
-      const uriResolver = async () => Linnia.util.encrypt(pubKey, testData);
-      const record = await linnia.getRecord(testDataHash);
+      const uriResolver = async () => Stow.util.encrypt(pubKey, testData);
+      const record = await stow.getRecord(testDataHash);
       try {
         await record.decryptPermissioned(user3, privKey, uriResolver);
         assert.fail('expected permission error not received');
@@ -131,8 +131,8 @@ describe('Record class', async () => {
     });
     it('should throw if hash does not match', async () => {
       // make the URI resolver return a decryptable but wrong data
-      const uriResolver = async () => Linnia.util.encrypt(pubKey, 'fox');
-      const record = await linnia.getRecord(testDataHash);
+      const uriResolver = async () => Stow.util.encrypt(pubKey, 'fox');
+      const record = await stow.getRecord(testDataHash);
       try {
         await record.decryptPermissioned(user2, privKey, uriResolver);
         assert.fail('expected hash mismatch error not received');
@@ -143,12 +143,12 @@ describe('Record class', async () => {
   });
   describe('verify data', () => {
     it('should return true if data hash matches', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const verify = record.verifyData('foobar');
       assert.isTrue(verify);
     });
     it('should return true if data hash does not match', async () => {
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const verify = record.verifyData('fox');
       assert.isFalse(verify);
     });
@@ -157,16 +157,16 @@ describe('Record class', async () => {
     it('should re-encrypt to the public key', async () => {
       const uriResolver = async (dataUri) => {
         assert.equal(dataUri, testDataUri);
-        return Linnia.util.encrypt(pubKey, testData);
+        return Stow.util.encrypt(pubKey, testData);
       };
       // make a new keypair
-      const newKeys = Linnia.util.genKeyPair();
+      const newKeys = Stow.util.genKeyPair();
       const priv = newKeys.privateKey;
       const pub = newKeys.publicKey;
-      const record = await linnia.getRecord(testDataHash);
+      const record = await stow.getRecord(testDataHash);
       const reencrypted = await record.reencryptData(pub, privKey, uriResolver);
       // the re-encrypted data should be decryptable by the new priv key
-      const decrypted = Linnia.util.decrypt(priv, reencrypted);
+      const decrypted = Stow.util.decrypt(priv, reencrypted);
       assert.equal(decrypted.toString(), testData);
     });
   });
