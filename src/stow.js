@@ -1,10 +1,10 @@
 import TruffleContract from 'truffle-contract';
 
 import StowAddresses from '@stowprotocol/stow-addresses';
-import StowContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
-import StowUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
-import StowRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
-import StowPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
+import StowContractUpgradeHub from '@stowprotocol/stow-smart-contracts/build/contracts/StowHub.json';
+import StowUsers from '@stowprotocol/stow-smart-contracts/build/contracts/StowUsers.json';
+import StowRecords from '@stowprotocol/stow-smart-contracts/build/contracts/StowRecords.json';
+import StowPermissions from '@stowprotocol/stow-smart-contracts/build/contracts/StowPermissions.json';
 
 import Record from './record';
 import _recordsFunctions from './records';

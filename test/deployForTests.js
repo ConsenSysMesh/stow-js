@@ -1,10 +1,10 @@
 import TruffleContract from 'truffle-contract';
 // TODO = update to stow
-import StowHub from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaHub.json';
-import StowUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaUsers.json';
-import StowRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaRecords.json';
-import StowPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts/LinniaPermissions.json';
-import MockToken from '@linniaprotocol/linnia-smart-contracts/build/contracts/ERC20Mock.json';
+import StowHub from '@stowprotocol/stow-smart-contracts/build/contracts/StowHub.json';
+import StowUsers from '@stowprotocol/stow-smart-contracts/build/contracts/StowUsers.json';
+import StowRecords from '@stowprotocol/stow-smart-contracts/build/contracts/StowRecords.json';
+import StowPermissions from '@stowprotocol/stow-smart-contracts/build/contracts/StowPermissions.json';
+import MockToken from '@stowprotocol/stow-smart-contracts/build/contracts/ERC20Mock.json';
 
 import Stow from '../src';
 
