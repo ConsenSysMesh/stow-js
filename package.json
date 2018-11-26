@@ -1,9 +1,8 @@
 {
   "name": "@stowprotocol/stow-js",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "Stow JavaScript API",
   "main": "lib/index.js",
-  "private": true,
   "files": [
     "lib/*",
     "src/*"
