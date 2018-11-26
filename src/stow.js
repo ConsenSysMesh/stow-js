@@ -43,7 +43,7 @@ class Stow {
     }
 
     this.network = new Promise((resolve) => {
-      this.web3.eth.net.getId((netId) => {
+      this.web3.eth.net.getId().then((netId) => {
         let network;
         switch (netId) {
           case 3:
