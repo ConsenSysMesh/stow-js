@@ -183,9 +183,9 @@ class Stow {
   async grantPermission(dataHash, viewerAddress, viewerEncyptionPublicKey, ownerEncryptionPrivateKey) {
     const { permissions, records } = await this.getContractInstances();
     const ipfs = new IPFS({
-    host='ipfs.infura.io',
-    port=5001,
-    protocol='https'
+    host:'ipfs.infura.io',
+    port:5001,
+    protocol:'https'
     });
     return _permissionsFunctions.grantPermission(records, permissions, ipfs, dataHash, viewerAddress, viewerEncyptionPublicKey, ownerEncryptionPrivateKey);
   }
