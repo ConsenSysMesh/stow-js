@@ -1,4 +1,4 @@
-import _util from './util';
+import util from './util';
 
 const getPermission = async (permissionsContract, dataHash, viewer) => {
   const res = await permissionsContract.permissions.call(dataHash, viewer);
@@ -9,14 +9,16 @@ const getPermission = async (permissionsContract, dataHash, viewer) => {
 };
 
 const grantPermission = async (recordsContract, permissionsContract, ipfs, dataHash, viewerEthereumAddress, viewerEncyptionPublicKey, ownerEncryptionPrivateKey) => {
-  let file, decryptedData, reencrypted, IPFSDataUri;
+  let file;
+  let decryptedData;
+  let reencrypted;
+  let IPFSDataUri;
 
   // Get the record from the blockchain
   const record = await recordsContract.getRecord(dataHash);
 
   if (!record.dataHash) {
-     throw new Error('Unable to retreive record. Does a record with that dataHash exist?');
-    return;
+    throw new Error('Unable to retreive record. Does a record with that dataHash exist?');
   }
   // Pull the owner encrypted record down from ipfs
   try {
@@ -25,10 +27,8 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
         err ? reject(err) : resolve(ipfsRed);
       });
     });
-
   } catch (e) {
-     throw new Error('Unable to pull file from storage. Does record have valid dataUri?');
-    return;
+    throw new Error('Unable to pull file from storage. Does record have valid dataUri?');
   }
 
   // Decrypt the file using the owner's private key
@@ -36,16 +36,14 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
     const encryptedData = JSON.parse(file);
     decryptedData = await util.decrypt(ownerEncryptionPrivateKey, encryptedData);
   } catch (e) {
-     throw new Error('Unable to decrypt file. Is the owner private key correct?');
-    return;
+    throw new Error('Unable to decrypt file. Is the owner private key correct?');
   }
 
   // Re-encrypt the file using the viewer's public key
   try {
     reencrypted = await util.encrypt(viewerEncyptionPublicKey, decryptedData);
   } catch (e) {
-     throw new Error('Unable to encrypt file for viewer. Is the viewer public key correct?');
-    return;
+    throw new Error('Unable to encrypt file for viewer. Is the viewer public key correct?');
   }
 
   // Upload the viewer encrypted file up to a new location in IPFS
@@ -55,14 +53,12 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
         err ? reject(err) : resolve(ipfsRed);
       });
     });
-
   } catch (e) {
-     throw new Error('Unable to reupload viewer file. Please try again later.');
-    return;
+    throw new Error('Unable to reupload viewer file. Please try again later.');
   }
 
-  if(!IPFSDataUri) {
-     throw new Error('IPFS URI is not valid, please check ipfs setup');
+  if (!IPFSDataUri) {
+    throw new Error('IPFS URI is not valid, please check ipfs setup');
   }
 
   // Create a new permissions record on the blockchain
@@ -70,19 +66,17 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
     await permissionsContract.grantAccess(dataHash, viewerEthereumAddress, IPFSDataUri);
   } catch (e) {
     console.error(e);
-     throw new Error('Transaction to ethereum network failed! Please check your console for errors.');
-    return;
+    throw new Error('Transaction to ethereum network failed! Please check your console for errors.');
   }
 
   return {
     viewerEthereumAddress,
     IPFSDataUri,
-    dataHash
+    dataHash,
   };
-
- }
+};
 
 export default {
   getPermission,
-  grantPermission
+  grantPermission,
 };
