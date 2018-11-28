@@ -1,4 +1,5 @@
 import util from './util';
+import {getRecord} from './records'
 
 const getPermission = async (permissionsContract, dataHash, viewer) => {
   const res = await permissionsContract.permissions.call(dataHash, viewer);
@@ -8,16 +9,16 @@ const getPermission = async (permissionsContract, dataHash, viewer) => {
   };
 };
 
-const grantPermission = async (recordsContract, permissionsContract, ipfs, dataHash, viewerEthereumAddress, viewerEncyptionPublicKey, ownerEncryptionPrivateKey) => {
+const grantPermission = async (recordsContract, permissionsContract, ipfs, dataHash, viewerEthereumAddress, viewerEncyptionPublicKey, ownerEncryptionPrivateKey, ethParams) => {
   let file;
   let decryptedData;
   let reencrypted;
   let IPFSDataUri;
 
   // Get the record from the blockchain
-  const record = await recordsContract.getRecord(dataHash);
+  const record = await getRecord(recordsContract, dataHash);
 
-  if (!record.dataHash) {
+  if (!record.dataUri) {
     throw new Error('Unable to retreive record. Does a record with that dataHash exist?');
   }
   // Pull the owner encrypted record down from ipfs
@@ -61,15 +62,16 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
     throw new Error('IPFS URI is not valid, please check ipfs setup');
   }
 
-  // Create a new permissions record on the blockchain
+  //Create a new permissions record on the blockchain
   try {
-    await permissionsContract.grantAccess(dataHash, viewerEthereumAddress, IPFSDataUri);
+    await permissionsContract.grantAccess(dataHash, viewerEthereumAddress, IPFSDataUri, ethParams);
   } catch (e) {
     console.error(e);
     throw new Error('Transaction to ethereum network failed! Please check your console for errors.');
   }
 
   return {
+  	canAccess: true,
     viewerEthereumAddress,
     IPFSDataUri,
     dataHash,
