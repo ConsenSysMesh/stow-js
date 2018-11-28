@@ -1,5 +1,5 @@
 import util from './util';
-import {getRecord} from './records'
+import { getRecord } from './records';
 
 const getPermission = async (permissionsContract, dataHash, viewer) => {
   const res = await permissionsContract.permissions.call(dataHash, viewer);
@@ -62,7 +62,7 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
     throw new Error('IPFS URI is not valid, please check ipfs setup');
   }
 
-  //Create a new permissions record on the blockchain
+  // Create a new permissions record on the blockchain
   try {
     await permissionsContract.grantAccess(dataHash, viewerEthereumAddress, IPFSDataUri, ethParams);
   } catch (e) {
@@ -71,10 +71,7 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
   }
 
   return {
-  	canAccess: true,
-    viewerEthereumAddress,
-    IPFSDataUri,
-    dataHash,
+    canAccess: true, viewerEthereumAddress, IPFSDataUri, dataHash,
   };
 };
 
