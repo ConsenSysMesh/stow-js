@@ -1,4 +1,4 @@
-<img src="./stow-logo.jpg" width="300" height="300" />
+<img src="./stow-logo.png" width="300" height="300" />
 
 ## [![NPM Package](https://img.shields.io/npm/v/@stowprotocol/stow-js.svg?style=flat-square)](https://www.npmjs.com/package/@stowprotocol/stow-js) ![Build Status](https://circleci.com/gh/ConsenSys/stow-js.png?circle-token=:circle-token&style=shield)
 
