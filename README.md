@@ -175,10 +175,12 @@ Grants the permission of a record to the viewer
 
 ### Returns
 
-`Promise<Object>` - A promise when resolved returns a Stow Permission object.
+`Promise<Object>` - A promise when resolved returns an oject with data of the transaction.
 
-- `canAccess`: `Boolean` - True if the specified viewer is allowed to access the record
-- `dataUri`: `String` - The data URI of the shared record
+- `canAccess`: `Boolean` - True if the function has completed succesfully and viewer can now access revord
+- `viewerEthereumAddress`: `String` - Viewer address
+- `IPFSDataUri`: `String` - The new data URI of the shared record
+- `dataHash`: `String` - The dataHash of the record
 
 ---
 
