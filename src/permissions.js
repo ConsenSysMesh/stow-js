@@ -58,10 +58,6 @@ const grantPermission = async (recordsContract, permissionsContract, ipfs, dataH
     throw new Error('Unable to reupload viewer file. Please try again later.');
   }
 
-  if (!IPFSDataUri) {
-    throw new Error('IPFS URI is not valid, please check ipfs setup');
-  }
-
   // Create a new permissions record on the blockchain
   try {
     await permissionsContract.grantAccess(dataHash, viewerEthereumAddress, IPFSDataUri, ethParams);

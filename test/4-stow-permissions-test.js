@@ -69,7 +69,8 @@ describe('Stow-permissions', async () => {
   });
   describe('grant permission', () => {
     beforeEach('setup ipfs record', async function () {
-      this.timeout(10000);
+      // add timeout ecause ipfs takes time
+      this.timeout(15000);
       // provider appends a file for user1
       newTestDataHash = '0xebf0a304f0e5a6445a7fd5850d00fd851837e8694184072e0f1b79037e447485';
       const encrypted = await util.encrypt(pubKey, { hello: 'world' });
@@ -90,7 +91,8 @@ describe('Stow-permissions', async () => {
       );
     });
     it('should grant permission', async function () {
-      this.timeout(10000);
+      // add timeout ecause ipfs takes time
+      this.timeout(15000);
       const ethParams = { from: user1, gas: 500000, gasPrice: 20000000000 };
       const access = await stow.grantPermission(newTestDataHash, user2, pubKey2, privKey, ethParams);
       assert.isTrue(access.canAccess);
