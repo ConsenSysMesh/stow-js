@@ -1,9 +1,10 @@
 import TruffleContract from 'truffle-contract';
 
-import LinniaContractUpgradeHub from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaHub.json';
-import LinniaUsers from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaUsers.json';
-import LinniaRecords from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaRecords.json';
-import LinniaPermissions from '@linniaprotocol/linnia-smart-contracts/build/contracts//LinniaPermissions.json';
+import StowAddresses from '@stowprotocol/stow-addresses';
+import StowContractUpgradeHub from '@stowprotocol/stow-smart-contracts/build/contracts/StowHub.json';
+import StowUsers from '@stowprotocol/stow-smart-contracts/build/contracts/StowUsers.json';
+import StowRecords from '@stowprotocol/stow-smart-contracts/build/contracts/StowRecords.json';
+import StowPermissions from '@stowprotocol/stow-smart-contracts/build/contracts/StowPermissions.json';
 
 import Record from './record';
 import _recordsFunctions from './records';
@@ -11,22 +12,22 @@ import _permissionsFunctions from './permissions';
 import _util from './util';
 
 /**
- * Linnia API object
+ * Stow API object
  */
-class Linnia {
+class Stow {
   /**
-   * Create a new Linnia API object
+   * Create a new Stow API object
    * @param {Object} web3 An instantiated web3 API object
-   * @param {?{?linniaContractUpgradeHubAddress: String}} opt Optional constructor options
-   * @returns {Linnia} Created Linnia API object
+   * @param {?{?hubAddress: String},?{?tokenAddress: String}} opt Optional constructor options
+   * @returns {Stow} Created Stow API object
    */
   constructor(web3, opt = {}) {
     this.web3 = web3;
     // truffle contracts
-    const _hub = TruffleContract(LinniaContractUpgradeHub);
-    const _users = TruffleContract(LinniaUsers);
-    const _records = TruffleContract(LinniaRecords);
-    const _permissions = TruffleContract(LinniaPermissions);
+    const _hub = TruffleContract(StowContractUpgradeHub);
+    const _users = TruffleContract(StowUsers);
+    const _records = TruffleContract(StowRecords);
+    const _permissions = TruffleContract(StowPermissions);
     _hub.setProvider(web3.currentProvider);
     _users.setProvider(web3.currentProvider);
     _records.setProvider(web3.currentProvider);
@@ -35,23 +36,52 @@ class Linnia {
     this._users = _util.truffleHack(_users);
     this._records = _util.truffleHack(_records);
     this._permissions = _util.truffleHack(_permissions);
-    // set linniaContractUpgradeHubAddress address
-    // using user defined address
-    this._hubAddress = opt.linniaContractUpgradeHubAddress;
-    this._tokenAddress = opt.linniaTokenContractAddress;
+
+    if (opt) {
+      this._hubAddress = opt.hubAddress || undefined;
+      this._tokenAddress = opt.tokenAddress || undefined;
+    }
+
+    this.network = new Promise((resolve) => {
+      this.web3.eth.net.getId().then((netId) => {
+        let network;
+        switch (netId) {
+          case 3:
+            network = 'ropsten';
+            break;
+          case 4:
+            network = 'rinkeby';
+            break;
+          default:
+            network = 'unknown';
+        }
+
+        if (StowAddresses[network]) {
+          if (!this._hubAddress) this._hubAddress = StowAddresses[network].StowSmartContracts.latest;
+          if (!this._tokenAddress) this._tokenAddress = StowAddresses[network].StowToken.latest;
+        }
+
+        if (!this._hubAddress) {
+          throw new Error('Must specify Stow Hub address when using an unsupported network.');
+        }
+
+        resolve(network);
+      });
+    });
   }
 
   /**
-   * Get Linnia contract instances, wrapped in truffle contract
+   * Get Stow contract instances, wrapped in truffle contract
    * @returns {Promise<{hub: Object, users: Object, records: Object, permissions: Object}>}
    */
   async getContractInstances() {
+    await this.network;
     const hubInstance = await this._getHubInstance();
     const usersAddress = await hubInstance.usersContract();
     const recordsAddress = await hubInstance.recordsContract();
     const permissionsAddress = await hubInstance.permissionsContract();
     return {
-      _linniaContractUpgradeHub: hubInstance,
+      _hub: hubInstance,
       users: await this._users.at(usersAddress),
       records: await this._records.at(recordsAddress),
       permissions: await this._permissions.at(permissionsAddress),
@@ -59,7 +89,7 @@ class Linnia {
   }
 
   /**
-   * Get a record from Linnia by data hash
+   * Get a record from Stow by data hash
    * @param {String} dataHash hex-encoded data hash, 0x prefixed
    * @returns {Promise<Record>}
    */
@@ -69,7 +99,7 @@ class Linnia {
   }
 
   /**
-   * Add a record from Linnia by data hash
+   * Add a record from Stow by data hash
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
@@ -89,7 +119,7 @@ class Linnia {
   }
 
   /**
-   * Add a record from Linnia by data hash
+   * Add a record from Stow by data hash
    * @param {String} dataHash hash of the plain text data + metadata
    * @param {Object} metadata public information about the data
    * @param {String} dataUri link to the data (eg. the IPFS hash)
@@ -110,13 +140,13 @@ class Linnia {
   }
 
   /**
-    * Get record attestation from Linnia
+    * Get record attestation from Stow
     * @param {String} dataHash hex-encoded data hash, 0x prefixed
     * @returns {Promise<Boolean>} True if attested by specified user
    */
-  async getAttestation(dataHash, attestatorAddress) {
+  async getAttestation(dataHash, attesterAddress) {
     const { records } = await this.getContractInstances();
-    return _recordsFunctions.getAttestation(records, dataHash, attestatorAddress);
+    return _recordsFunctions.getAttestation(records, dataHash, attesterAddress);
   }
 
   /**
@@ -147,7 +177,7 @@ class Linnia {
    * @private
    */
   async _getHubInstance() {
-    // get linniaContractUpgradeHubAddress contract instance
+    // get hub contract instance
     // look up address either from user defined address or artifact
     if (this._hubAddress) {
       return this._hub.at(this._hubAddress);
@@ -156,6 +186,6 @@ class Linnia {
   }
 }
 
-Linnia.util = _util;
+Stow.util = _util;
 
-export default Linnia;
+export default Stow;

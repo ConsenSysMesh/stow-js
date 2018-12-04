@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const yargs = require('yargs');
 
-const libraryName = 'Linnia';
+const libraryName = 'Stow';
 const plugins = [];
 
 let outputFile;
@@ -21,7 +21,7 @@ const entry = {
 const output = {
   path: path.join(__dirname, '/dist'),
   filename: 'index.js',
-  library: 'Linnia',
+  library: 'Stow',
   libraryTarget: 'umd',
   libraryExport: "default",
   umdNamedDefine: true

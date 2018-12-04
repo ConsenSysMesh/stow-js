@@ -1,3 +1,3 @@
-import linnia from './linnia';
+import stow from './stow';
 
-export default linnia;
+export default stow;

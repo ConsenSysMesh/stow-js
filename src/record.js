@@ -19,12 +19,12 @@ class Record {
   }
 
   /**
-   * Get the attestation of the record from a specified attestator
-   * @param {String} attestator Address of the attestator
+   * Get the attestation of the record from a specified attester
+   * @param {String} attester Address of the attester
    * @returns {Promise<Boolean>}
    */
-  async getAttestation(attestator) {
-    return _recordsFunctions.getAttestation(this.contracts.records, this.dataHash, attestator);
+  async getAttestation(attester) {
+    return _recordsFunctions.getAttestation(this.contracts.records, this.dataHash, attester);
   }
 
   /**
@@ -74,7 +74,7 @@ class Record {
   }
 
   /**
-   * Verifies data against the data hash in Linnia
+   * Verifies data against the data hash in Stow
    * @param {Buffer|String} plaintext Plaintext data to be verified
    * @returns {Boolean} True if data hash matches
    */
