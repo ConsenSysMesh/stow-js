@@ -46,6 +46,9 @@ class Stow {
       this.web3.eth.net.getId().then((netId) => {
         let network;
         switch (netId) {
+          case 1:
+            network = 'mainnet';
+            break;
           case 3:
             network = 'ropsten';
             break;
